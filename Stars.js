@@ -1,18 +1,14 @@
 var THREE = require('three');
 
 const COLORS = [
-  0x5555ff,
-  0x7777ff,
-  0x3a3aff,
-  0x1a1aff
+  0x4466ff
 ]
 
 export default class Stars {
-
   constructor({
     scene
   }){
-    var i, r = 15000.0, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
+    var i, r = 1500.0, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
     for ( i = 0; i < 250; i ++ ) {
       var vertex = new THREE.Vector3();
       vertex.x = Math.random() * 2 - 1;
@@ -21,7 +17,7 @@ export default class Stars {
       vertex.multiplyScalar( r );
       starsGeometry[ 0 ].vertices.push( vertex );
     }
-    for ( i = 0; i < 1500; i ++ ) {
+    for ( i = 0; i < 150; i ++ ) {
       var vertex = new THREE.Vector3();
       vertex.x = Math.random() * 2 - 1;
       vertex.y = Math.random() * 2 - 1;
@@ -31,15 +27,10 @@ export default class Stars {
     }
     var stars;
     var starsMaterials = [
-      new THREE.PointsMaterial( { color: COLORS[0], size: 2, sizeAttenuation: false } ),
       new THREE.PointsMaterial( { color: COLORS[0], size: 1, sizeAttenuation: false } ),
-      new THREE.PointsMaterial( { color: COLORS[1], size: 2, sizeAttenuation: false } ),
-      new THREE.PointsMaterial( { color: COLORS[2], size: 1, sizeAttenuation: false } ),
-      new THREE.PointsMaterial( { color: COLORS[3], size: 2, sizeAttenuation: false } ),
-      new THREE.PointsMaterial( { color: COLORS[3], size: 1, sizeAttenuation: false } )
     ];
     for ( i = 10; i < 30; i ++ ) {
-      stars = new THREE.Points( starsGeometry[ i % 2 ], starsMaterials[ i % 6 ] );
+      stars = new THREE.Points( starsGeometry[ i % 2 ], starsMaterials[ i % 1 ] );
       stars.rotation.x = Math.random() * 6;
       stars.rotation.y = Math.random() * 6;
       stars.rotation.z = Math.random() * 6;
