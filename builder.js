@@ -1,6 +1,7 @@
 var THREE = require('three');
 var dat = require('./dat.gui.min.js');
-require('./FirstPersonControls.js');
+// require('./FirstPersonControls.js');
+require('./orbit_controls.js');
 import Stars from './Stars.js';
 import Saucer from './saucer.js';
 
@@ -19,15 +20,31 @@ init();
 initControls(controlParams);
 animate();
 
+function addLights(scene) {
+  var lights = [];
+  lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+  lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+  lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+
+  lights[ 0 ].position.set( 0, 200, 0 );
+  lights[ 1 ].position.set( 100, 200, 100 );
+  lights[ 2 ].position.set( - 100, - 200, - 100 );
+
+  scene.add( lights[ 0 ] );
+  scene.add( lights[ 1 ] );
+  scene.add( lights[ 2 ] );
+}
+
 function init() {
 	container = document.getElementById( 'container' );
 
 	// camera & controls
-	camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1600000 );
-  controls = new THREE.FirstPersonControls(camera, container);
-  controls.movementSpeed = 100.0;
+  camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1600000 );
+  camera.position.z = 30;
+  // controls = new THREE.FirstPersonControls(camera, container);
+  controls = new THREE.OrbitControls( camera, container );
+  // controls.movementSpeed = 100.0;
   controls.lookSpeed = 0.3;
-  controls.handleResize();
 
 	// scenes
   scene = new THREE.Scene();
@@ -35,29 +52,23 @@ function init() {
 
   sceneForeground = new THREE.Scene();
 
-	// light for Ground
-	var light = new THREE.PointLight( 0xffffff, 1.5, 10000 );
-	light.position.set( 500, 2500, 0 );
-	
-	sceneForeground.add(light);
+	// lights
+	addLights(scene);
 
-	// saucer
+  // saucer
   var saucer = new Saucer();
-  saucer.position.set(1.0, 100.0, 100.0);
+  saucer.position.set(0.0, 0.0, 0.0);
   scene.add(saucer);
+  camera.lookAt(saucer.position);
 
-  // light for Moon
-	var light = new THREE.PointLight( 0xffffff, 2.5, 10000 );
-	light.position.set( 1500, 3000, 0 );
-	
-  scene.add(light);
-  
+  // BG stars  
   var stars = new Stars({scene: scene});
 
 	renderer = new THREE.WebGLRenderer({
     depth: true,
     alpha: true,
-    transparency: THREE.OrderIndependentTransperancy
+    transparency: THREE.OrderIndependentTransperancy,
+    antialias: true
   });
   renderer.autoClear = false; // we need to renderers - one for aurora, one for FG since aurora have bo depth test (https://stackoverflow.com/questions/12666570)
   renderer.setClearColor( CLEAR_COLOUR );
@@ -85,7 +96,7 @@ function render() {
 	var delta = clock.getDelta(),
 	time = clock.getElapsedTime() * 10;
   
-  controls.update( delta );
+  // controls.update( delta );
   renderer.clear();
   renderer.render( scene, camera );
   renderer.clearDepth();
