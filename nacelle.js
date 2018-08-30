@@ -1,17 +1,22 @@
 var THREE = require('three');
 
-export default class Saucer {
+export default class Nacelle {
   constructor({
     radius = 10.0,
     segments = 32,
-    thetaLength = Math.PI * 2.0,
+    length = 1.0,
+    width = 2.0
   } = {}) {
-
-    var thetaStart = Math.PI * 0.5 - thetaLength / 2.0;
     var group = new THREE.Group();
 
     var geometry = new THREE.BufferGeometry();
-    var geometry = new THREE.CircleGeometry(radius, segments, thetaStart, thetaLength);
+
+    var points = [];
+    for ( var i = 0; i < 10; i ++ ) {
+      points.push( new THREE.Vector2( Math.sin( i / Math.PI ) * width, ( i * length ) ) );
+    }
+
+    var geometry = new THREE.LatheGeometry(points);
 
     var lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
     var meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide } );
