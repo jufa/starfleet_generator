@@ -1,11 +1,11 @@
 var THREE = require('three');
 var dat = require('./dat.gui.min.js');
-// require('./FirstPersonControls.js');
 require('./orbit_controls.js');
 import Stars from './Stars.js';
-import Saucer from './saucer.js';
 import Nacelle from './nacelle.js';
 import Engineering from './engineering.js';
+import Primary from './primary.js';
+import Neck from './neck.js';
 
 var container, stats;
 var camera, controls, scene, sceneForeground, renderer;
@@ -24,13 +24,13 @@ animate();
 
 function addLights(scene) {
   var lights = [];
-  lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
-  lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
-  lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+  lights[ 0 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
+  lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
+  lights[ 2 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
 
-  lights[ 0 ].position.set( 0, 200, 0 );
-  lights[ 1 ].position.set( 100, 200, 100 );
-  lights[ 2 ].position.set( - 100, - 200, - 100 );
+  lights[ 0 ].position.set( 100, 100, 0 );
+  lights[ 1 ].position.set( 100, 100, 100 );
+  lights[ 2 ].position.set( - 100, - 100, - 100 );
 
   scene.add( lights[ 0 ] );
   scene.add( lights[ 1 ] );
@@ -41,48 +41,56 @@ function init() {
 	container = document.getElementById( 'container' );
 
 	// camera & controls
-  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1600000 );
+  camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1600000 );
   camera.position.z = 30;
-  // controls = new THREE.FirstPersonControls(camera, container);
   controls = new THREE.OrbitControls( camera, container );
-  // controls.movementSpeed = 100.0;
   controls.lookSpeed = 0.3;
 
 	// scenes
   scene = new THREE.Scene();
   scene.background = new THREE.Color( SKY_COLOUR );
-
   sceneForeground = new THREE.Scene();
 
+  
 	// lights
 	addLights(scene);
-
+  
+  // ship
   var ship = new THREE.Group(); 
+  
+  // axes helper
+  var axesHelper = new THREE.AxesHelper( 10 );
+  ship.add( axesHelper );
 
-  // saucer
-  var saucer = new Saucer();
-  saucer.position.set(0.0, 0.0, 0.0);
-  ship.add(saucer);
+  //materials
+  var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 99.9, color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
+  
+  var primary = new Primary({thickness: 0.25, radius: 10.0, material: mainMaterial});
+  primary.group.position.set(0.0, 0.0, 0.0);
+  ship.add(primary.group);
 
-  var separation = 5.0;
-  var aft = 26.0;
-  var height = -3.0;
-  var length = 1.9;
-  var width = 1.0;
+  var separation = 6.0;
+  var aft = 24.0;
+  var height = -3.4;
+  var length = 1.3;
+  var width = 0.8;
 
-  var nacelle_port= new Nacelle({length: length, width: width});
+  var nacelle_port= new Nacelle({length: length, width: width, material: mainMaterial});
   nacelle_port.position.set(separation, -aft, -height);
   ship.add(nacelle_port);
 
-  var nacelle_starboard = new Nacelle({length: length, width: width});
+  var nacelle_starboard = new Nacelle({length: length, width: width, material: mainMaterial});
   nacelle_starboard.position.set(-separation, -aft, -height);
   ship.add(nacelle_starboard);
 
-  var engineering = new Engineering({length: 1.3, width: 1.6});
-  engineering.position.set(0.0, -16.0, 6.0);
-  ship.add(engineering);
+  var engineering = new Engineering({length: 1.6, width: 1.6, material: mainMaterial});
+  engineering.group.position.set(0.0, -20.0, 6.0);
+  ship.add(engineering.group);
 
-  ship.rotateX(Math.PI * 0.48);
+  var neck = new Neck({primary: primary, engineering: engineering, material: mainMaterial});
+  ship.add(neck);
+
+  ship.rotateX(Math.PI * 0.5);
   ship.translateY(10.0);
 
   scene.add(ship);
@@ -121,7 +129,7 @@ function animate() {
 function render() {
 	var delta = clock.getDelta(),
 	time = clock.getElapsedTime() * 10;
-  
+
   // controls.update( delta );
   renderer.clear();
   renderer.render( scene, camera );

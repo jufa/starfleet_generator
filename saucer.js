@@ -10,13 +10,9 @@ export default class Saucer {
     var thetaStart = Math.PI * 0.5 - thetaLength / 2.0;
     var group = new THREE.Group();
 
-    var geometry = new THREE.BufferGeometry();
     var geometry = new THREE.CircleGeometry(radius, segments, thetaStart, thetaLength);
+    var meshMaterial = new THREE.MeshPhongMaterial( { shininess: 100, color: 0x156289, emissive: 0xffffff, side: THREE.DoubleSide, flatShading: false } );
 
-    var lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
-    var meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide } );
-
-    group.add( new THREE.LineSegments( geometry, lineMaterial ) );
     group.add( new THREE.Mesh( geometry, meshMaterial ) );
 
     return group;
