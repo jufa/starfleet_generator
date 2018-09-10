@@ -21,9 +21,15 @@ export default class Nacelle {
     var geometry = new THREE.LatheGeometry(points);
     geometry.scale(widthRatio, 1.0, 1.0);
 
-    var meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
-    group.add( new THREE.Mesh( geometry, meshMaterial ) );
+    geometry.computeBoundingBox();
+    this.dimensions = {};
+    this.dimensions.x = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+    this.dimensions.y = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+    this.dimensions.z = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
 
-    return group;
+    group.add( new THREE.Mesh( geometry, material ) );
+
+    this.group = group;
+    return this;
   }
 }

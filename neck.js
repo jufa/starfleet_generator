@@ -5,7 +5,7 @@ export default class Neck {
     primaryForeOffset = 0.3, // distance away from fore edge of primary hull 1.0 = Full aft
     primaryAftOffset = 0.1, // distance away from aft edge of primary hull 1.0 = Full fore
     engineeringForeOffset = 0.2, // distance away from fore edge of engineering hull 1.0 = Full aft
-    engineeringAftOffset = -0.2, // distance away from aft edge of engineering hull 1.0 = Full fore
+    engineeringAftOffset = 0.2, // distance away from aft edge of engineering hull 1.0 = Full fore
     primary,
     engineering,
     material
@@ -44,20 +44,7 @@ export default class Neck {
     // itemSize = 3 because there are 3 values (components) per vertex
     profileGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
 
-    // var extrudeSettings = {
-    //   steps: 2,
-    //   depth: 1,
-    //   bevelEnabled: true,
-    //   bevelThickness: 1,
-    //   bevelSize: 1,
-    //   bevelSegments: 1
-    // };
-
-    // var geometry = new THREE.ExtrudeGeometry( profileGeometry, extrudeSettings );
-
-    var meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
-
-    group.add( new THREE.Mesh( profileGeometry, meshMaterial ) );
+    group.add( new THREE.Mesh( profileGeometry, material ) );
     
     return group;
   }
