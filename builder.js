@@ -34,6 +34,7 @@ var controlConfiguration = {
   primaryY: [-10, -30, 50, 0.1],
   primaryZ: [0.5, -30, 50, 0.1],
   primaryRadius: [12, 1, 30, 0.1],
+  primaryThickness: [4, 1, 10, 0.1],
   primaryWidthRatio: [1, 0, 10, 0.1],
 };
 var controlParams = {};
@@ -74,7 +75,7 @@ function buildShip(scene) {
   //materials
   var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x666666, emissive: 0x222233, side: THREE.DoubleSide, flatShading: true } );
   
-  var primary = new Primary({thickness: 0.25, radius: controlParams.primaryRadius, widthRatio: controlParams.primaryWidthRatio, material: mainMaterial});
+  var primary = new Primary({thickness: controlParams.primaryThickness, radius: controlParams.primaryRadius, widthRatio: controlParams.primaryWidthRatio, material: mainMaterial});
   primary.group.position.set(0.0, controlParams.primaryY, controlParams.primaryZ);
   ship.add(primary.group);
 
