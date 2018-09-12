@@ -2,8 +2,6 @@ var THREE = require('three');
 
 export default class Nacelle {
   constructor({
-    radius = 10.0,
-    segments = 32,
     length = 1.0,
     width = 1.8,
     widthRatio = 1.3,
@@ -11,15 +9,37 @@ export default class Nacelle {
   } = {}) {
     var group = new THREE.Group();
 
+    // nacelle
+
     var geometry = new THREE.BufferGeometry();
 
     var points = [];
-    for ( var i = 0; i < 10; i ++ ) {
-      points.push( new THREE.Vector2( Math.sin( (i - 0.3) / Math.PI ) * width + width * 0.35, ( i * length ) ) );
+    // nacelle body
+    var nacellePoints = 10.0;
+    for ( var i = 0; i <= nacellePoints; i ++ ) {
+      points.push( 
+        new THREE.Vector2( 
+          (Math.sin(i / nacellePoints * Math.PI / 2.0) * 0.7  + 0.3) * width, 
+          i / nacellePoints * length
+        ) 
+      );
     }
 
+    // bussard
+    var bussardPoints = 20.0;
+    for ( var i = bussardPoints; i >= 0; i-- ) {
+      points.push(
+        new THREE.Vector2(
+          Math.pow(i / bussardPoints, 0.4) * width * 0.9,
+          length + (1.0 - i / bussardPoints) * width * 1.5
+        )
+      );
+    }
+    
     var geometry = new THREE.LatheGeometry(points);
     geometry.scale(widthRatio, 1.0, 1.0);
+
+    // make group
 
     geometry.computeBoundingBox();
     this.dimensions = {};

@@ -12,28 +12,37 @@ var container, stats;
 var camera, controls, scene, renderer;
 var clock = new THREE.Clock();
 
-var controlParams = {
-  nacelleY: 40,
-  nacelleX: 2.5,
-  nacelleZ: -3.5,
-  nacelleLength: 2,
-  nacelleRadius: 1,
-  nacelleWidthRatio: 1,
-  engineeringZ: 1,
-  engineeringLength: 1,
-  engineeringRadius: 1,
-  engineeringWidthRatio: 1,
-  primaryY: -10,
-  primaryZ: 0.5,
-  primaryRadius: 12,
-  primaryWidthRatio: 1,
+var controlConfiguration = {
+  //paramName: [default, min, max, step]
+  nacelleY: [40, -30, 50, 0.1],
+  nacelleX: [2.5, -30, 50, 0.1],
+  nacelleZ: [-3.5, -30, 50, 0.1],
+  nacelleLength: [12, -30, 50, 0.1],
+  nacelleRadius: [1, 0.2, 12, 0.01],
+  nacelleWidthRatio: [1, 0.1, 10, 0.1],
+
+  engineeringZ: [1, -30, 50, 0.1],
+  engineeringLength: [1, -30, 50, 0.1],
+  engineeringRadius: [1, 0, 10, 0.1],
+  engineeringWidthRatio: [1, 0.1, 10, 0.1],
+
+  pylonNacelleForeOffset: [0.3, 0, 1, 0.01],
+  pylonNacelleAftOffset: [0.3, 0, 1, 0.01],
+  pylonEngineeringForeOffset: [0.3, 0, 1, 0.01],
+  pylonEngineeringAftOffset: [0.3, 0, 1, 0.01],
+
+  primaryY: [-10, -30, 50, 0.1],
+  primaryZ: [0.5, -30, 50, 0.1],
+  primaryRadius: [12, 1, 30, 0.1],
+  primaryWidthRatio: [1, 0, 10, 0.1],
 };
+var controlParams = {};
 
 const SKY_COLOUR = 0x111133;
 const CLEAR_COLOUR = 0xffffff;
 
 init();
-initControls(controlParams);
+initControls(controlConfiguration, controlParams);
 animate();
 
 function addLights(scene) {
@@ -90,10 +99,26 @@ function buildShip(scene) {
   var neck = new Neck({primary: primary, engineering: engineering, material: mainMaterial});
   ship.add(neck);
 
-  var portUpperPylon = new Pylon({nacelle: nacellePort, engineering: engineering, material: mainMaterial});
+  var portUpperPylon = new Pylon({
+    nacelle: nacellePort,
+    engineering: engineering,
+    nacelleForeOffset: controlParams.pylonNacelleForeOffset,
+    nacelleAftOffset: controlParams.pylonNacelleAftOffset,
+    engineeringForeOffset: controlParams.pylonEngineeringForeOffset,
+    engineeringAftOffset: controlParams.pylonEngineeringAftOffset,
+    material: mainMaterial
+  });
   ship.add(portUpperPylon);
 
-  var starboardUpperPylon = new Pylon({nacelle: nacelleStarboard, engineering: engineering, material: mainMaterial});
+  var starboardUpperPylon = new Pylon({
+    nacelle: nacelleStarboard,
+    engineering: engineering,
+    nacelleForeOffset: controlParams.pylonNacelleForeOffset,
+    nacelleAftOffset: controlParams.pylonNacelleAftOffset,
+    engineeringForeOffset: controlParams.pylonEngineeringForeOffset,
+    engineeringAftOffset: controlParams.pylonEngineeringAftOffset,
+    material: mainMaterial
+  });
   ship.add(starboardUpperPylon);
 
   ship.rotateX(Math.PI * 0.5);
@@ -161,10 +186,17 @@ function render() {
   renderer.clearDepth();
 }
 
-function initControls(params){
-  var gui = new dat.GUI( { autoPlace: true, width: 600 } );
-  var controls = gui.addFolder('nacelles');
-  for (var param in params) {
-    controls.add(params, param, -30, 50, 0.1);
+function initControls(config, params){
+  var gui = new dat.GUI( { autoPlace: true, width: 300 } );
+  var controls = gui.addFolder('ship shape');
+  for (var key in config) {
+    params[key] = config[key][0];
+    controls.add(
+      params, 
+      key, 
+      config[key][1],
+      config[key][2],
+      config[key][3]
+    )
   }
 }
