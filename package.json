@@ -1,8 +1,8 @@
 {
   "name": "starfleetgenerator",
   "version": "1.0.0",
-  "description": "webgl aurora viz",
-  "main": "index.js",
+  "description": "webgl procedural starship generator",
+  "main": "bundle.js",
   "scripts": {
     "watch": "webpack --watch",
     "start": "webpack-dev-server -d --config webpack.dev.config.js --content-base ./  --progress --colors"
