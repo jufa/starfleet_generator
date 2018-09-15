@@ -13,29 +13,42 @@ var camera, controls, scene, renderer;
 var clock = new THREE.Clock();
 
 var controlConfiguration = {
-  //paramName: [default, min, max, step]
-  nacelleY: [40, -30, 50, 0.1],
-  nacelleX: [2.5, -30, 50, 0.1],
-  nacelleZ: [-3.5, -30, 50, 0.1],
-  nacelleLength: [12, -30, 50, 0.1],
-  nacelleRadius: [1, 0.2, 12, 0.01],
-  nacelleWidthRatio: [1, 0.1, 10, 0.1],
-
-  engineeringZ: [1, -30, 50, 0.1],
-  engineeringLength: [1, -30, 50, 0.1],
-  engineeringRadius: [1, 0, 10, 0.1],
-  engineeringWidthRatio: [1, 0.1, 10, 0.1],
-
-  pylonNacelleForeOffset: [0.3, 0, 1, 0.01],
-  pylonNacelleAftOffset: [0.3, 0, 1, 0.01],
-  pylonEngineeringForeOffset: [0.3, 0, 1, 0.01],
-  pylonEngineeringAftOffset: [0.3, 0, 1, 0.01],
-
-  primaryY: [-10, -30, 50, 0.1],
-  primaryZ: [0.5, -30, 50, 0.1],
-  primaryRadius: [12, 1, 30, 0.1],
-  primaryThickness: [4, 1, 10, 0.1],
-  primaryWidthRatio: [1, 0, 10, 0.1],
+  // folderName: {paramName: [default, min, max, step]}
+  // refer to controlParams.folderName_paramName
+  nacelle: {
+    y: [40, -30, 50, 0.1],
+    x: [2.5, -30, 50, 0.1],
+    z: [-3.5, -30, 50, 0.1],
+    length: [12, -30, 50, 0.1],
+    radius: [1, 0.2, 12, 0.01],
+    widthRatio: [1, 0.1, 10, 0.1]
+  },
+  engineering: {
+    y: [-25, -60, 60, 0.1],
+    z: [6, -30, 50, 0.1],
+    length: [10, 1, 50, 0.1],
+    radius: [1, 0, 10, 0.1],
+    widthRatio: [1, 0.1, 10, 0.1]
+  },
+  pylon: {
+    nacelleForeOffset: [0.3, 0, 1, 0.01],
+    nacelleAftOffset: [0.3, 0, 1, 0.01],
+    engineeringForeOffset: [0.3, 0, 1, 0.01],
+    engineeringAftOffset: [0.3, 0, 1, 0.01]
+  },
+  neck: {
+    primaryForeOffset: [0.3, 0, 1, 0.01],
+    primaryAftOffset: [0.3, 0, 1, 0.01],
+    engineeringForeOffset: [0.3, 0, 1, 0.01],
+    engineeringAftOffset: [0.3, 0, 1, 0.01]
+  },
+  primary: {
+    y: [-10, -30, 50, 0.1],
+    z: [0.5, -30, 50, 0.1],
+    radius: [12, 1, 30, 0.1],
+    thickness: [4, 1, 10, 0.1],
+    widthRatio: [1, 0, 10, 0.1]
+  }
 };
 var controlParams = {};
 
@@ -75,15 +88,15 @@ function buildShip(scene) {
   //materials
   var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x666666, emissive: 0x222233, side: THREE.DoubleSide, flatShading: true } );
   
-  var primary = new Primary({thickness: controlParams.primaryThickness, radius: controlParams.primaryRadius, widthRatio: controlParams.primaryWidthRatio, material: mainMaterial});
-  primary.group.position.set(0.0, controlParams.primaryY, controlParams.primaryZ);
+  var primary = new Primary({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio, material: mainMaterial});
+  primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
   ship.add(primary.group);
 
-  var separation = controlParams.nacelleX * 2.0;
-  var aft = controlParams.nacelleY;
-  var height = controlParams.nacelleZ;
-  var length = controlParams.nacelleLength;
-  var width = controlParams.nacelleRadius;
+  var separation = controlParams.nacelle_x * 2.0;
+  var aft = controlParams.nacelle_y;
+  var height = controlParams.nacelle_z;
+  var length = controlParams.nacelle_length;
+  var width = controlParams.nacelle_radius;
 
   var nacellePort= new Nacelle({length: length, width: width, material: mainMaterial});
   nacellePort.group.position.set(separation, -aft, -height);
@@ -93,20 +106,33 @@ function buildShip(scene) {
   nacelleStarboard.group.position.set(-separation, -aft, -height);
   ship.add(nacelleStarboard.group);
 
-  var engineering = new Engineering({length: 1.6, width: 0.9, widthRatio: 2.5, material: mainMaterial});
-  engineering.group.position.set(0.0, -32.0, 6.0);
+  var engineering = new Engineering({
+    length: controlParams.engineering_length, 
+    width: controlParams.engineering_radius, 
+    widthRatio: controlParams.engineering_widthRatio, 
+    material: mainMaterial
+  });
+  engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
   ship.add(engineering.group);
 
-  var neck = new Neck({primary: primary, engineering: engineering, material: mainMaterial});
+  var neck = new Neck({
+    primary: primary,
+    engineering: engineering,
+    primaryForeOffset: controlParams.neck_primaryForeOffset,
+    primaryAftOffset: controlParams.neck_primaryAftOffset,
+    engineeringForeOffset: controlParams.neck_engineeringForeOffset,
+    engineeringAftOffset:controlParams.neck_engineeringAftOffset,
+    material: mainMaterial
+  });
   ship.add(neck);
 
   var portUpperPylon = new Pylon({
     nacelle: nacellePort,
     engineering: engineering,
-    nacelleForeOffset: controlParams.pylonNacelleForeOffset,
-    nacelleAftOffset: controlParams.pylonNacelleAftOffset,
-    engineeringForeOffset: controlParams.pylonEngineeringForeOffset,
-    engineeringAftOffset: controlParams.pylonEngineeringAftOffset,
+    nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
+    nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
+    engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
+    engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
     material: mainMaterial
   });
   ship.add(portUpperPylon);
@@ -114,10 +140,10 @@ function buildShip(scene) {
   var starboardUpperPylon = new Pylon({
     nacelle: nacelleStarboard,
     engineering: engineering,
-    nacelleForeOffset: controlParams.pylonNacelleForeOffset,
-    nacelleAftOffset: controlParams.pylonNacelleAftOffset,
-    engineeringForeOffset: controlParams.pylonEngineeringForeOffset,
-    engineeringAftOffset: controlParams.pylonEngineeringAftOffset,
+    nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
+    nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
+    engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
+    engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
     material: mainMaterial
   });
   ship.add(starboardUpperPylon);
@@ -133,7 +159,7 @@ function init() {
 
 	// camera & controls
   camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1600000 );
-  camera.position.z = 30;
+  camera.position.z = 40;
   controls = new THREE.OrbitControls( camera, container );
   controls.lookSpeed = 0.3;
 
@@ -188,16 +214,21 @@ function render() {
 }
 
 function initControls(config, params){
-  var gui = new dat.GUI( { autoPlace: true, width: 300 } );
-  var controls = gui.addFolder('ship shape');
-  for (var key in config) {
-    params[key] = config[key][0];
-    controls.add(
-      params, 
-      key, 
-      config[key][1],
-      config[key][2],
-      config[key][3]
-    )
+  var gui = new dat.GUI( { autoPlace: true, width: 400 } );
+  // var controls = gui.addFolder('ship shape');
+  for (var folder in config) {
+    var controls = gui.addFolder(folder);
+      let paramsInFolder = config[folder];
+      for (var key in paramsInFolder) {
+        params[folder + '_' + key] = paramsInFolder[key][0];
+        controls.add(
+          params, 
+          folder + '_' + key, 
+          paramsInFolder[key][1],
+          paramsInFolder[key][2],
+          paramsInFolder[key][3]
+        )
+      }
   }
+  
 }

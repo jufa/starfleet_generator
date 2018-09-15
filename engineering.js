@@ -12,9 +12,23 @@ export default class Engineering {
     var geometry = new THREE.BufferGeometry();
 
     var points = [];
-    for ( var i = 0; i < 10; i ++ ) {
-      points.push( new THREE.Vector2( Math.sin( ( i  ) / Math.PI * 0.8 + 0.1) * width , ( i * length ) ) );
+    var pointCount = 10;
+    for ( var i = 0; i <= 10; i ++ ) {
+      points.push( 
+        new THREE.Vector2(
+          Math.sin( i / pointCount * Math.PI * 0.8) * width,
+          i / pointCount * length
+        )
+      );
     }
+
+    // deflector
+    points.push(
+      new THREE.Vector2(
+        0,
+        length - length / 20.0
+      )
+    );
 
     var geometry = new THREE.LatheGeometry(points);
     geometry.scale(widthRatio, 1.0, 1.0);
