@@ -8,26 +8,12 @@ export default class Connector {
     var group = new THREE.Group();
 
     var geometry = new THREE.BufferGeometry();
-
-    // var shape = new THREE.Shape();
-
-    // var geometry = new THREE.BufferGeometry();
-
-
     var aWidth = a.dimensions.z;
     var bWidth = b.dimensions.y;
     var aThickness = a.dimensions.y;
     var aPos = a.group.position;
     var bPos = b.group.position;
 
-    // shape.moveTo(a.group.position.x, a.group.position.z, 99);
-    // shape.lineTo(a.group.position.x + 0.3, a.group.position.z);
-    // shape.lineTo(a.group.position.x + 0.3, b.group.position.z + 0.3);
-    // shape.lineTo(b.group.position.x, b.group.position.z + 0.3);
-
-
-    // create a simple square shape. We duplicate the top left and bottom right
-    // vertices because each vertex needs to appear once per triangle.
     var vertices = new Float32Array( [
       0.0, aPos.y, aPos.z,
       0.0, bPos.y + bWidth, bPos.z,
@@ -36,14 +22,6 @@ export default class Connector {
       0.0, aPos.y, aPos.z,
       0.0, bPos.y, bPos.z,
       0.0, aPos.y - aWidth / 2.0, aPos.z + aThickness / 2.0
-
-      // -1.0, -1.0,  1.0,
-      // 1.0, -1.0,  1.0,
-      // 1.0,  1.0,  1.0,
-
-      // 1.0,  1.0,  1.0,
-      // -1.0,  1.0,  1.0,
-      // -1.0, -1.0,  1.0
     ] );
 
     // itemSize = 3 because there are 3 values (components) per vertex

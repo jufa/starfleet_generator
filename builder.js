@@ -1,7 +1,7 @@
 var THREE = require('three');
 var dat = require('./dat.gui.min.js');
 require('./orbit_controls.js');
-import Stars from './Stars.js';
+
 import Nacelle from './nacelle.js';
 import Engineering from './engineering.js';
 import Primary from './primary.js';
@@ -169,9 +169,6 @@ function init() {
 
 	// lights
   addLights(scene);
-  
-  // BG stars  
-  var stars = new Stars({scene: scene});
 
 	renderer = new THREE.WebGLRenderer({
     depth: true,
