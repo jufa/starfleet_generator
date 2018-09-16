@@ -9,13 +9,10 @@ import Neck from './neck.js';
 import Pylon from './pylon.js';
 
 export default class Builder {
-  constructor() {
+  constructor(window) {
+    this.window = window;
     this.SKY_COLOUR = 0x111133;
     this.CLEAR_COLOUR = 0xffffff;
-
-    // var container, stats;
-    // var camera, controls, scene, renderer;
-    // var 
 
     const controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -82,10 +79,6 @@ export default class Builder {
     
     var ship = new THREE.Group(); 
     ship.name = 'ship'
-
-    // axes helper
-    var axesHelper = new THREE.AxesHelper( 10 );
-    ship.add( axesHelper );
 
     //materials
     var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x666666, emissive: 0x222233, side: THREE.DoubleSide, flatShading: true } );
@@ -157,6 +150,7 @@ export default class Builder {
   }
 
   init() {
+    this.window.addEventListener( 'resize', this.handleWindowResize.bind(this), false );
     this.clock = new THREE.Clock();
     this.container = document.getElementById( 'container' );
 
@@ -173,27 +167,26 @@ export default class Builder {
     // lights
     this.addLights(this.scene);
 
+    // renderer
     this.renderer = new THREE.WebGLRenderer({
       depth: true,
       alpha: true,
       transparency: THREE.OrderIndependentTransperancy,
       antialias: true
     });
-    this.renderer.autoClear = false; // we need to renderers - one for aurora, one for FG since aurora have bo depth test (https://stackoverflow.com/questions/12666570)
     this.renderer.setClearColor( this.CLEAR_COLOUR );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     
     this.container.innerHTML = "";
     this.container.appendChild( this.renderer.domElement );
-    // window.addEventListener( 'resize', onWindowResize, false );
+
   }
 
-  onWindowResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
+  handleWindowResize() {
+    this.camera.aspect = this.window.innerWidth / this.window.innerHeight;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize( window.innerWidth, window.innerHeight );
-    this.controls.handleResize();
+    this.renderer.setSize( this.window.innerWidth, this.window.innerHeight );
   }
 
   render() {
@@ -225,7 +218,7 @@ export default class Builder {
   }
 } // class
 
-var ship = new Builder();
+var ship = new Builder(window);
 
 function animate() {
   requestAnimationFrame( animate );
