@@ -7,14 +7,17 @@ import Engineering from './engineering.js';
 import Primary from './primary.js';
 import Neck from './neck.js';
 import Pylon from './pylon.js';
+import ships from './ships.js';
+
 
 export default class Builder {
   constructor(window) {
+    this.predefinedShips = ships;
     this.window = window;
     this.SKY_COLOUR = 0x111133;
     this.CLEAR_COLOUR = 0xffffff;
 
-    const controlConfiguration = {
+    this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
       // refer to variable in code as controlParams.folderName_paramName
       nacelle: {
@@ -53,9 +56,11 @@ export default class Builder {
       }
     };
     this.controlParams = {};
+    this.currentShip = {}; // storage of currently selected predefined ship params independent of control parmas
 
     this.init();
-    this.initControls(controlConfiguration, this.controlParams);
+    this.initControls();
+    this.setPredefinedShip(this.predefinedShips[0].name);
   }
 
   addLights(scene) {
@@ -198,21 +203,48 @@ export default class Builder {
     this.renderer.render( this.scene, this.camera );
     this.renderer.clearDepth();
   }
+  
+  paramDump() {
+    let pretty = JSON.stringify(this.controlParams, null, 2)
+    console.log(pretty);
+  }
 
-  initControls(config, params){
+  setPredefinedShip(shipName) {
+    let newParams = this.predefinedShips.find(function (ship) { return ship.name == shipName; });
+    for (var param in newParams) {
+      this.controlParams[param] = newParams[param];
+    }
+  }
+
+  initControls(){
     var gui = new dat.GUI( { autoPlace: true, width: 400 } );
-    for (var folder in config) {
+
+    // export button:
+    gui.add({ export_ship: this.paramDump.bind(this) }, 'export_ship');
+
+    // predefined ships:
+    this.currentShip.name = '';
+    let shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) );
+
+    shipSelector.onChange(
+      function(newShipName) {
+        this.setPredefinedShip(newShipName);
+      }.bind(this)
+    );
+    
+    // params:
+    for (var folder in this.controlConfiguration) {
       var controls = gui.addFolder(folder);
-      let paramsInFolder = config[folder];
+      let paramsInFolder = this.controlConfiguration[folder];
       for (var key in paramsInFolder) {
-        params[folder + '_' + key] = paramsInFolder[key][0];
+        this.controlParams[folder + '_' + key] = paramsInFolder[key][0];
         controls.add(
-          params, 
+          this.controlParams, 
           folder + '_' + key, 
           paramsInFolder[key][1],
           paramsInFolder[key][2],
           paramsInFolder[key][3]
-        )
+        ).listen()
       }
     }
   }
