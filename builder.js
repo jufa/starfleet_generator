@@ -223,8 +223,8 @@ export default class Builder {
     gui.add({ export_ship: this.paramDump.bind(this) }, 'export_ship');
 
     // predefined ships:
-    this.currentShip.name = '';
-    let shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) );
+    this.currentShip.name = this.predefinedShips[0].name;
+    let shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) ).listen();
 
     shipSelector.onChange(
       function(newShipName) {
