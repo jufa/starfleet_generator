@@ -26,19 +26,20 @@ export default class Neck {
     var engineeringFore = engineeringAft + engineeringLength;
     var engineeringForeCenter = engineering.group.position.z;
 
-    primaryFore *= (1.0 - 2.0 * primaryForeOffset);
-    primaryAft *= (1.0 - 2.0 * primaryAftOffset);
+    primaryFore -= primaryLength * primaryForeOffset;
+    primaryAft += primaryLength * primaryAftOffset;
+
     engineeringFore -= engineeringLength * engineeringForeOffset;
     engineeringAft += engineeringLength * engineeringAftOffset;
 
     var vertices = new Float32Array( [
       0.0, primaryFore, primaryCenter, //center top of saucer, needs to be center middle
-      0.0, engineeringFore, engineeringForeCenter,
-      0.0, engineeringAft, engineeringForeCenter,
-
       0.0, primaryAft, primaryCenter,
+      0.0, engineeringFore, engineeringForeCenter,
+
       0.0, engineeringAft, engineeringForeCenter,
-      0.0, primaryFore, primaryCenter
+      0.0, engineeringFore, engineeringForeCenter,
+      0.0, primaryAft, primaryCenter
     ] );
 
     // itemSize = 3 because there are 3 values (components) per vertex
