@@ -30,7 +30,7 @@ export default class Engineering {
       )
     );
 
-    var geometry = new THREE.LatheGeometry(points);
+    var geometry = new THREE.LatheGeometry(points, 20);
     geometry.scale(widthRatio, 1.0, 1.0);
 
     geometry.computeBoundingBox();

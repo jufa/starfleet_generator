@@ -13,7 +13,7 @@ export default class Primary {
     var geometry = new THREE.BufferGeometry();
 
     var points = [];
-    var saucerPoints = 12;
+    var saucerPoints = 9;
     for ( var i = 0; i <= saucerPoints; i ++ ) {
       // points.push( new THREE.Vector2( Math.sin( ( i ) / Math.PI * 0.8 + 0.1) * radius, ( i * thickness ) ) );
       points.push(

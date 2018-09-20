@@ -52,6 +52,33 @@
       "primary_radius": 12,
       "primary_thickness": 4,
       "primary_widthRatio": 1
+    },
+    {
+      "nacelle_y": 19.3,
+      "nacelle_x": 3.4,
+      "nacelle_z": -5.8,
+      "nacelle_length": 19.8,
+      "nacelle_radius": 1.25,
+      "nacelle_widthRatio": 1,
+      "engineering_y": -35.2,
+      "engineering_z": 6.5,
+      "engineering_length": 29.2,
+      "engineering_radius": 1.7,
+      "engineering_widthRatio": 1.6,
+      "pylon_nacelleForeOffset": 0.61,
+      "pylon_nacelleAftOffset": 0.25,
+      "pylon_engineeringForeOffset": 0.4,
+      "pylon_engineeringAftOffset": 0,
+      "neck_primaryForeOffset": 0,
+      "neck_primaryAftOffset": 0,
+      "neck_engineeringForeOffset": 0,
+      "neck_engineeringAftOffset": 0,
+      "primary_y": -2.4,
+      "primary_z": 0.7,
+      "primary_radius": 18.1,
+      "primary_thickness": 4.8,
+      "primary_widthRatio": 0.5,
+      "name": "USS Wangager"
     }
   ]
   export default ships;

@@ -57,6 +57,9 @@ export default class Builder {
     };
     this.controlParams = {};
     this.currentShip = {}; // storage of currently selected predefined ship params independent of control parmas
+    this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
+    this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
+    this.predefinedShipTransitionFrames = 300; // the total number of frames to do the transition animation
 
     this.init();
     this.initControls();
@@ -196,7 +199,10 @@ export default class Builder {
 
   render() {
     var delta = this.clock.getDelta();
-    
+
+    if (this.predefinedShipTransitionFrameCounter >= 0) {
+      this.updatePredifinedShipTransitionAnimation();
+    }
     this.buildShip(this.scene, this.controlParams);
     this.controls.update( delta );
     this.renderer.clear();
@@ -212,7 +218,24 @@ export default class Builder {
   setPredefinedShip(shipName) {
     let newParams = this.predefinedShips.find(function (ship) { return ship.name == shipName; });
     for (var param in newParams) {
-      this.controlParams[param] = newParams[param];
+      // this.startParams[param] = this.controlParams[param];
+      this.targetParams[param] = newParams[param];
+      this.predefinedShipTransitionFrameCounter = this.predefinedShipTransitionFrames;
+    }
+  }
+
+  updatePredifinedShipTransitionAnimation() {
+    this.predefinedShipTransitionFrameCounter--;
+    for (var param in this.targetParams) {
+      let target = this.targetParams[param];
+      let current = this.controlParams[param];
+      let delta = 0.0;
+      if (this.predefinedShipTransitionFrameCounter <= 0) {
+        delta = (target - current)  
+      } else {
+        delta = (target - current) * 0.05;
+      }
+      this.controlParams[param] = current + delta;
     }
   }
 

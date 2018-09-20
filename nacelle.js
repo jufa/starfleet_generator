@@ -15,7 +15,7 @@ export default class Nacelle {
 
     var points = [];
     // nacelle body
-    var nacellePoints = 10.0;
+    var nacellePoints = 4.0;
     for ( var i = 0; i <= nacellePoints; i ++ ) {
       points.push( 
         new THREE.Vector2( 
@@ -26,7 +26,7 @@ export default class Nacelle {
     }
 
     // bussard
-    var bussardPoints = 20.0;
+    var bussardPoints = 9.0;
     for ( var i = bussardPoints; i >= 0; i-- ) {
       points.push(
         new THREE.Vector2(
@@ -36,7 +36,7 @@ export default class Nacelle {
       );
     }
     
-    var geometry = new THREE.LatheGeometry(points);
+    var geometry = new THREE.LatheGeometry(points, 20);
     geometry.scale(widthRatio, 1.0, 1.0);
 
     // make group
