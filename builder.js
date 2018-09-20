@@ -59,7 +59,8 @@ export default class Builder {
     this.currentShip = {}; // storage of currently selected predefined ship params independent of control parmas
     this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
     this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
-    this.predefinedShipTransitionFrames = 300; // the total number of frames to do the transition animation
+    this.predefinedShipTransitionFrames = 60; // the total number of frames to do the transition animation
+    this.transitionRate = 0.1;
 
     this.init();
     this.initControls();
@@ -179,7 +180,6 @@ export default class Builder {
     this.renderer = new THREE.WebGLRenderer({
       depth: true,
       alpha: true,
-      transparency: THREE.OrderIndependentTransperancy,
       antialias: true
     });
     this.renderer.setClearColor( this.CLEAR_COLOUR );
@@ -201,6 +201,7 @@ export default class Builder {
     var delta = this.clock.getDelta();
 
     if (this.predefinedShipTransitionFrameCounter >= 0) {
+      this.predefinedShipTransitionFrameCounter--;
       this.updatePredifinedShipTransitionAnimation();
     }
     this.buildShip(this.scene, this.controlParams);
@@ -225,15 +226,14 @@ export default class Builder {
   }
 
   updatePredifinedShipTransitionAnimation() {
-    this.predefinedShipTransitionFrameCounter--;
     for (var param in this.targetParams) {
       let target = this.targetParams[param];
       let current = this.controlParams[param];
       let delta = 0.0;
       if (this.predefinedShipTransitionFrameCounter <= 0) {
-        delta = (target - current)  
+        delta = (target - current);
       } else {
-        delta = (target - current) * 0.05;
+        delta = (target - current) * this.transitionRate;
       }
       this.controlParams[param] = current + delta;
     }

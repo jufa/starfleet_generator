@@ -9,38 +9,55 @@ export default class Engineering {
   } = {}) {
     var group = new THREE.Group();
 
-    var geometry = new THREE.BufferGeometry();
-
-    var points = [];
-    var pointCount = 10;
+    var engineeringPoints = [];
+    var engineeringPointCount = 10;
     for ( var i = 0; i <= 10; i ++ ) {
-      points.push( 
+      engineeringPoints.push( 
         new THREE.Vector2(
-          Math.sin( i / pointCount * Math.PI * 0.8) * width,
-          i / pointCount * length
+          Math.sin( i / engineeringPointCount * Math.PI * 0.8) * width,
+          i / engineeringPointCount * length
         )
       );
     }
 
     // deflector
-    points.push(
+    var deflectorPoints = [];
+
+    deflectorPoints.push (
+      engineeringPoints[engineeringPoints.length - 1]
+    );
+
+    deflectorPoints.push (
       new THREE.Vector2(
-        0,
+        0.0,
         length - length / 20.0
       )
     );
 
-    var geometry = new THREE.LatheGeometry(points, 20);
-    geometry.scale(widthRatio, 1.0, 1.0);
+    var engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 20);
+    engineeringGeometry.scale(widthRatio, 1.0, 1.0);
 
-    geometry.computeBoundingBox();
+    engineeringGeometry.computeBoundingBox();
     this.dimensions = {};
-    this.dimensions.x = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-    this.dimensions.y = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-    this.dimensions.z = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+    this.dimensions.x = engineeringGeometry.boundingBox.max.x - engineeringGeometry.boundingBox.min.x;
+    this.dimensions.y = engineeringGeometry.boundingBox.max.y - engineeringGeometry.boundingBox.min.y;
+    this.dimensions.z = engineeringGeometry.boundingBox.max.z - engineeringGeometry.boundingBox.min.z;
 
-    group.add( new THREE.Mesh( geometry, material ) );
-    
+    var deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, 20);
+    deflectorGeometry.scale(widthRatio, 1.0, 1.0);
+
+    group.add( new THREE.Mesh( engineeringGeometry, material ) );
+
+    var deflectorMaterial = new THREE.MeshPhongMaterial( { 
+      shininess: 50,
+      color: 0xFFDF00,
+      emissive: 0x440000,
+      side: THREE.DoubleSide,
+      flatShading: true 
+    } );
+
+    group.add( new THREE.Mesh( deflectorGeometry, deflectorMaterial ) );
+
     this.group = group;
     return this;
   }

@@ -13,41 +13,56 @@ export default class Nacelle {
 
     var geometry = new THREE.BufferGeometry();
 
-    var points = [];
     // nacelle body
-    var nacellePoints = 4.0;
-    for ( var i = 0; i <= nacellePoints; i ++ ) {
-      points.push( 
+    var nacellePoints = [
+      new THREE.Vector2( 0.0, 1.0 )
+    ];
+
+    var nacellePointCount = 5.0;
+    for ( var i = 0; i <= nacellePointCount; i++ ) {
+      nacellePoints.push( 
         new THREE.Vector2( 
-          (Math.sin(i / nacellePoints * Math.PI / 2.0) * 0.7  + 0.3) * width, 
-          i / nacellePoints * length
-        ) 
+          (Math.sin(i / nacellePointCount * Math.PI / 2.0) * 0.7 + 0.3) * width, 
+          i / nacellePointCount * length
+        )
       );
     }
 
     // bussard
-    var bussardPoints = 9.0;
-    for ( var i = bussardPoints; i >= 0; i-- ) {
-      points.push(
+    var bussardPointCount = 9.0;
+    var bussardPoints = []
+    for ( var i = bussardPointCount; i >= 0; i-- ) {
+      bussardPoints.push(
         new THREE.Vector2(
-          Math.pow(i / bussardPoints, 0.4) * width * 0.9,
-          length + (1.0 - i / bussardPoints) * width * 1.5
+          Math.pow(i / bussardPointCount, 0.4) * width * 0.9,
+          length + (1.0 - i / bussardPointCount) * width * 1.5
         )
       );
     }
     
-    var geometry = new THREE.LatheGeometry(points, 20);
-    geometry.scale(widthRatio, 1.0, 1.0);
+    var nacelleGeometry = new THREE.LatheGeometry(nacellePoints, 20);
+    nacelleGeometry.scale(widthRatio, 1.0, 1.0);
+
+    var bussardGeometry = new THREE.LatheGeometry(bussardPoints, 20);
+    bussardGeometry.scale(widthRatio, 1.0, 1.0);
 
     // make group
 
-    geometry.computeBoundingBox();
+    nacelleGeometry.computeBoundingBox();
     this.dimensions = {};
-    this.dimensions.x = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-    this.dimensions.y = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-    this.dimensions.z = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+    this.dimensions.x = nacelleGeometry.boundingBox.max.x - nacelleGeometry.boundingBox.min.x;
+    this.dimensions.y = nacelleGeometry.boundingBox.max.y - nacelleGeometry.boundingBox.min.y;
+    this.dimensions.z = nacelleGeometry.boundingBox.max.z - nacelleGeometry.boundingBox.min.z;
 
-    group.add( new THREE.Mesh( geometry, material ) );
+    var bussardMaterial = new THREE.MeshPhongMaterial({ 
+      shininess: 100, 
+      color: 0x222222,
+      emissive: 0xaa0000,
+      flatShading: true,
+    });
+
+    group.add( new THREE.Mesh( nacelleGeometry, material ) );
+    group.add( new THREE.Mesh( bussardGeometry, bussardMaterial ) );
 
     this.group = group;
     return this;
