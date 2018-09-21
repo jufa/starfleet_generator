@@ -74,7 +74,7 @@ export default class Builder {
     lights[ 2 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
 
     lights[ 0 ].position.set( 100, 100, 0 );
-    lights[ 1 ].position.set( 100, 100, 100 );
+    lights[ 1 ].position.set( -100, 100, 0 );
     lights[ 2 ].position.set( - 100, - 100, - 100 );
 
     scene.add( lights[ 0 ] );
@@ -92,7 +92,7 @@ export default class Builder {
     ship.name = 'ship'
 
     //materials
-    var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x666666, emissive: 0x333344, side: THREE.DoubleSide, flatShading: true } );
+    var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x666666, emissive: 0x333344, side: THREE.DoubleSide, flatShading: false } );
     
     var primary = new Primary({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio, material: mainMaterial});
     primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);

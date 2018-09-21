@@ -60,7 +60,7 @@ export default class Engineering {
       color: 0xFFDF00,
       emissive: 0x440000,
       side: THREE.DoubleSide,
-      flatShading: true 
+      flatShading: false 
     } );
 
     group.add( new THREE.Mesh( deflectorGeometry, deflectorMaterial ) );

@@ -44,7 +44,7 @@ export default class Neck {
 
     // itemSize = 3 because there are 3 values (components) per vertex
     profileGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-
+    profileGeometry.computeVertexNormals(); //needed for material shading
     group.add( new THREE.Mesh( profileGeometry, material ) );
     
     return group;

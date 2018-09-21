@@ -56,9 +56,9 @@ export default class Nacelle {
 
     var bussardMaterial = new THREE.MeshPhongMaterial({ 
       shininess: 100, 
-      color: 0x222222,
-      emissive: 0xaa0000,
-      flatShading: true,
+      color: 0x000055,
+      emissive: 0xff0000,
+      flatShading: false,
     });
 
     group.add( new THREE.Mesh( nacelleGeometry, material ) );
