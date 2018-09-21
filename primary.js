@@ -1,4 +1,4 @@
-var THREE = require('three');
+import * as THREE from 'three';
 
 export default class Primary {
   constructor({

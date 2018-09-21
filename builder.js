@@ -1,7 +1,7 @@
-var THREE = require('three');
-var dat = require('./dat.gui.min.js');
-require('./orbit_controls.js');
-
+import * as THREE from 'three';
+import OrbitControls from 'orbit-controls-es6';
+import * as dat from 'dat.gui';
+import Stars from './stars.js';
 import Nacelle from './nacelle.js';
 import Engineering from './engineering.js';
 import Primary from './primary.js';
@@ -9,31 +9,31 @@ import Neck from './neck.js';
 import Pylon from './pylon.js';
 import ships from './ships.js';
 
-
 export default class Builder {
   constructor(window) {
     this.predefinedShips = ships;
     this.window = window;
-    this.SKY_COLOUR = 0x111133;
+    this.SKY_COLOUR = 0x111116;
     this.CLEAR_COLOUR = 0xffffff;
+    this.dirty = true;
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
       // refer to variable in code as controlParams.folderName_paramName
       nacelle: {
-        y: [40, -30, 50, 0.1],
-        x: [2.5, -30, 50, 0.1],
-        z: [-3.5, -30, 50, 0.1],
-        length: [12, -30, 50, 0.1],
+        y: [40, -30, 50, 0.01],
+        x: [2.5, -30, 50, 0.01],
+        z: [-3.5, -30, 50, 0.01],
+        length: [12, -30, 50, 0.01],
         radius: [1, 0.2, 12, 0.01],
-        widthRatio: [1, 0.1, 10, 0.1]
+        widthRatio: [1, 0.1, 10, 0.01]
       },
       engineering: {
-        y: [-25, -60, 60, 0.1],
-        z: [6, -30, 50, 0.1],
-        length: [10, 1, 50, 0.1],
-        radius: [1, 0, 10, 0.1],
-        widthRatio: [1, 0.1, 10, 0.1]
+        y: [-25, -60, 60, 0.01],
+        z: [6, -30, 50, 0.01],
+        length: [10, 1, 50, 0.01],
+        radius: [1, 0, 10, 0.01],
+        widthRatio: [1, 0.1, 10, 0.01]
       },
       pylon: {
         nacelleForeOffset: [0.3, 0, 1, 0.01],
@@ -48,18 +48,18 @@ export default class Builder {
         engineeringAftOffset: [0.3, 0, 1, 0.01]
       },
       primary: {
-        y: [-10, -30, 50, 0.1],
-        z: [0.5, -30, 50, 0.1],
-        radius: [12, 1, 30, 0.1],
-        thickness: [4, 1, 10, 0.1],
-        widthRatio: [1, 0, 10, 0.1]
+        y: [-10, -30, 50, 0.01],
+        z: [0.5, -30, 50, 0.01],
+        radius: [12, 1, 30, 0.01],
+        thickness: [4, 1, 10, 0.01],
+        widthRatio: [1, 0, 10, 0.01]
       }
     };
     this.controlParams = {};
     this.currentShip = {}; // storage of currently selected predefined ship params independent of control parmas
     this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
     this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
-    this.predefinedShipTransitionFrames = 60; // the total number of frames to do the transition animation
+    this.predefinedShipTransitionFrames = 200; // the total number of frames to do the transition animation
     this.transitionRate = 0.1;
 
     this.init();
@@ -80,6 +80,8 @@ export default class Builder {
     scene.add( lights[ 0 ] );
     scene.add( lights[ 1 ] );
     scene.add( lights[ 2 ] );
+
+    new Stars({scene: scene});
   }
 
   buildShip(scene, controlParams) {
@@ -90,7 +92,7 @@ export default class Builder {
     ship.name = 'ship'
 
     //materials
-    var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x666666, emissive: 0x222233, side: THREE.DoubleSide, flatShading: true } );
+    var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x666666, emissive: 0x333344, side: THREE.DoubleSide, flatShading: true } );
     
     var primary = new Primary({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio, material: mainMaterial});
     primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
@@ -166,7 +168,7 @@ export default class Builder {
     // camera & controls
     this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1600000 );
     this.camera.position.z = 40;
-    this.controls = new THREE.OrbitControls( this.camera, this.container );
+    this.controls = new OrbitControls( this.camera, this.container );
     this.controls.lookSpeed = 0.3;
 
     // scenes
@@ -198,17 +200,17 @@ export default class Builder {
   }
 
   render() {
-    var delta = this.clock.getDelta();
-
     if (this.predefinedShipTransitionFrameCounter >= 0) {
       this.predefinedShipTransitionFrameCounter--;
       this.updatePredifinedShipTransitionAnimation();
     }
-    this.buildShip(this.scene, this.controlParams);
-    this.controls.update( delta );
-    this.renderer.clear();
+    // only build the ship if something has changed in the params
+    if (this.dirty) {
+      this.buildShip(this.scene, this.controlParams);
+      this.dirty = false;
+    }
+    this.controls.update( shipBuilder.clock.getDelta() );
     this.renderer.render( this.scene, this.camera );
-    this.renderer.clearDepth();
   }
   
   paramDump() {
@@ -237,6 +239,7 @@ export default class Builder {
       }
       this.controlParams[param] = current + delta;
     }
+    this.dirty = true;
   }
 
   initControls(){
@@ -247,7 +250,7 @@ export default class Builder {
 
     // predefined ships:
     this.currentShip.name = this.predefinedShips[0].name;
-    let shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) ).listen();
+    let shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) )
 
     shipSelector.onChange(
       function(newShipName) {
@@ -267,16 +270,16 @@ export default class Builder {
           paramsInFolder[key][1],
           paramsInFolder[key][2],
           paramsInFolder[key][3]
-        ).listen()
+        ).onChange(function(){ this.dirty = true }.bind(this))
       }
     }
   }
 } // class
 
-var ship = new Builder(window);
+var shipBuilder = new Builder(window);
 
 function animate() {
   requestAnimationFrame( animate );
-  ship.render();
+  shipBuilder.render();
 }
 animate();

@@ -1,4 +1,4 @@
-var THREE = require('three');
+import * as THREE from 'three';
 
 export default class Engineering {
   constructor({
@@ -29,8 +29,15 @@ export default class Engineering {
 
     deflectorPoints.push (
       new THREE.Vector2(
-        0.0,
+        0.2,
         length - length / 20.0
+      )
+    );
+
+    deflectorPoints.push (
+      new THREE.Vector2(
+        0.0,
+        length + length / 20.0
       )
     );
 
