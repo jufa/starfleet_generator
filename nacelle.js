@@ -4,7 +4,7 @@ export default class Nacelle {
   constructor({
     length = 1.0,
     width = 1.8,
-    widthRatio = 1.3,
+    widthRatio = 1.0,
     material
   } = {}) {
     var group = new THREE.Group();
@@ -35,7 +35,7 @@ export default class Nacelle {
       bussardPoints.push(
         new THREE.Vector2(
           Math.pow(i / bussardPointCount, 0.4) * width * 0.9,
-          length + (1.0 - i / bussardPointCount) * width * 1.5
+          length + (1.0 - i / bussardPointCount) * width * 1.0
         )
       );
     }
@@ -56,8 +56,8 @@ export default class Nacelle {
 
     var bussardMaterial = new THREE.MeshPhongMaterial({ 
       shininess: 100, 
-      color: 0x000055,
-      emissive: 0xff0000,
+      color: 0x330033,
+      emissive: 0xdd0000,
       flatShading: false,
     });
 

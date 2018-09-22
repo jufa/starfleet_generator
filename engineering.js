@@ -23,22 +23,15 @@ export default class Engineering {
     // deflector
     var deflectorPoints = [];
 
+    let deflectorOuterEdge = new THREE.Vector2().copy(engineeringPoints[engineeringPoints.length - 1]);
+    deflectorPoints.push(deflectorOuterEdge);
+
     deflectorPoints.push (
-      engineeringPoints[engineeringPoints.length - 1]
+      new THREE.Vector2( 0.2, length - length * 0.04 )
     );
 
     deflectorPoints.push (
-      new THREE.Vector2(
-        0.2,
-        length - length / 20.0
-      )
-    );
-
-    deflectorPoints.push (
-      new THREE.Vector2(
-        0.0,
-        length + length / 20.0
-      )
+      new THREE.Vector2( 0.0, length + length * 0.03 )
     );
 
     var engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 20);
@@ -56,9 +49,9 @@ export default class Engineering {
     group.add( new THREE.Mesh( engineeringGeometry, material ) );
 
     var deflectorMaterial = new THREE.MeshPhongMaterial( { 
-      shininess: 50,
+      shininess: 100,
       color: 0xFFDF00,
-      emissive: 0x440000,
+      emissive: 0x662222,
       side: THREE.DoubleSide,
       flatShading: false 
     } );

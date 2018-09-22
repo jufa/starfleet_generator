@@ -92,7 +92,7 @@ export default class Builder {
     ship.name = 'ship'
 
     //materials
-    var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x666666, emissive: 0x333344, side: THREE.DoubleSide, flatShading: false } );
+    var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x444455, side: THREE.DoubleSide, flatShading: false } );
     
     var primary = new Primary({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio, material: mainMaterial});
     primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
@@ -181,7 +181,6 @@ export default class Builder {
     // renderer
     this.renderer = new THREE.WebGLRenderer({
       depth: true,
-      alpha: true,
       antialias: true
     });
     this.renderer.setClearColor( this.CLEAR_COLOUR );

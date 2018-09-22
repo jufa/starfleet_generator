@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 const COLORS = [
-  0xffffff,
+  0xff00ff,
   0x7777ff,
   0x3a3aff,
   0x1a1aff
@@ -31,7 +31,7 @@ export default class Stars {
     }
     var stars;
     var starsMaterials = [
-      new THREE.PointsMaterial( { color: COLORS[0], size: 4, sizeAttenuation: false } ),
+      new THREE.PointsMaterial( { color: COLORS[0], size: 2, sizeAttenuation: false } ),
       new THREE.PointsMaterial( { color: COLORS[0], size: 1, sizeAttenuation: false } ),
       new THREE.PointsMaterial( { color: COLORS[1], size: 2, sizeAttenuation: false } ),
       new THREE.PointsMaterial( { color: COLORS[2], size: 2, sizeAttenuation: false } ),

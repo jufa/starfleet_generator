@@ -10,23 +10,24 @@ export default class Primary {
     
     var group = new THREE.Group();
 
+    // main saucer
     var geometry = new THREE.BufferGeometry();
 
     var points = [];
-    var saucerPoints = 9;
-    for ( var i = 0; i <= saucerPoints; i ++ ) {
-      // points.push( new THREE.Vector2( Math.sin( ( i ) / Math.PI * 0.8 + 0.1) * radius, ( i * thickness ) ) );
+    const saucerPointCount = 9;
+    for ( var i = 0; i <= saucerPointCount; i ++ ) {
       points.push(
         new THREE.Vector2( 
-          Math.sin( i / saucerPoints * Math.PI ) * radius,
-          i / saucerPoints * thickness
+          Math.sin( i / saucerPointCount * Math.PI ) * radius,
+          i / saucerPointCount * thickness
         ) 
       );
     }
 
-    var geometry = new THREE.LatheGeometry(points, 32);
+    const foreExclusionAngle = 0.0;
+    var geometry = new THREE.LatheGeometry(points, 64, Math.PI + foreExclusionAngle, 2.0 * ( Math.PI - foreExclusionAngle) );
     geometry.scale(widthRatio, 1.0, 1.0);
-    
+
     geometry.computeBoundingBox();
     this.dimensions = {};
     this.dimensions.x = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
