@@ -108,6 +108,7 @@
       "primary_widthRatio": 1.3
     },
     {
+      "name": "NX Warpington",
       "nacelle_y": 26.5,
       "nacelle_x": 5.47,
       "nacelle_z": 0.2,
@@ -131,16 +132,16 @@
       "primary_z": 0.5,
       "primary_radius": 12,
       "primary_thickness": 4,
-      "primary_widthRatio": 1,
-      "name": "NX Warpington" 
+      "primary_widthRatio": 1
     },
     {
+      "name": "USS Celcius",
       "nacelle_y": 10.2,
       "nacelle_x": 0,
       "nacelle_z": -6.64,
       "nacelle_length": 28.62,
       "nacelle_radius": 1.71,
-      "nacelle_widthRatio": 0.1,
+      "nacelle_widthRatio": 1.0,
       "engineering_y": -37.58,
       "engineering_z": -1.9,
       "engineering_length": 23.05,
@@ -158,8 +159,7 @@
       "primary_z": 0.5,
       "primary_radius": 14.81,
       "primary_thickness": 4,
-      "primary_widthRatio": 1,
-      "name": "USS Celcius"
+      "primary_widthRatio": 1.0
     },
     {
       "name": "Sparrow of Prey",
