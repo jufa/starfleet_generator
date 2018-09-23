@@ -59,8 +59,8 @@ export default class Builder {
     this.currentShip = {}; // storage of currently selected predefined ship params independent of control parmas
     this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
     this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
-    this.predefinedShipTransitionFrames = 200; // the total number of frames to do the transition animation
-    this.transitionRate = 0.1;
+    this.predefinedShipTransitionFrames = 50; // the total number of frames to do the transition animation
+    this.transitionRate = 0.15;
 
     this.init();
     this.initControls();
