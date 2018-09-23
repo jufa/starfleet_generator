@@ -1,17 +1,26 @@
 import * as THREE from 'three';
+import HullComponent from './hull_component.js';
 
-export default class Primary {
-  constructor({
-    thickness = 4.0,
-    radius = 2.0,
-    widthRatio = 1.3,
-    material
-  } = {}) {
-    
-    var group = new THREE.Group();
+export default class Primary extends HullComponent{
+  constructor({ material }) {
+    super();
+    this.material = material;
+    this.group = new THREE.Group();
+    this.group.rotateX( Math.PI / 2.0); 
+    this.geometry = {};
+    this.mesh = {}
+    this.dimensions = {};
 
-    // main saucer
-    var geometry = new THREE.BufferGeometry();
+    return this;
+  }
+
+  update({
+    thickness,
+    radius,
+    widthRatio
+  }) {
+
+    this.clear();
 
     var points = [];
     const saucerPointCount = 9;
@@ -25,22 +34,28 @@ export default class Primary {
     }
 
     const foreExclusionAngle = 0.0;
-    var geometry = new THREE.LatheGeometry(points, 64, Math.PI + foreExclusionAngle, 2.0 * ( Math.PI - foreExclusionAngle) );
-    geometry.scale(widthRatio, 1.0, 1.0);
+    this.geometry = new THREE.LatheGeometry(points, 64, Math.PI + foreExclusionAngle, 2.0 * ( Math.PI - foreExclusionAngle) );
+    this.geometry.scale(widthRatio, 1.0, 1.0);
+    this.computeBoundingBox(this.geometry);
 
-    geometry.computeBoundingBox();
-    this.dimensions = {};
-    this.dimensions.x = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-    this.dimensions.y = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-    this.dimensions.z = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+    this.mesh = new THREE.Mesh( this.geometry, this.material );
 
-    var meshMaterial = material;
+    this.group.add( this.mesh );       
+  }
 
-    group.add( new THREE.Mesh( geometry, meshMaterial ) );
+  computeBoundingBox(measuredGeom) {
+    measuredGeom.computeBoundingBox();
+    this.dimensions.x = measuredGeom.boundingBox.max.x - measuredGeom.boundingBox.min.x;
+    this.dimensions.y = measuredGeom.boundingBox.max.y - measuredGeom.boundingBox.min.y;
+    this.dimensions.z = measuredGeom.boundingBox.max.z - measuredGeom.boundingBox.min.z;
+  }
 
-    group.rotateX( Math.PI / 2.0);
-    
-    this.group = group;
-    return this;
+  clear(){
+    if (this.geometry['dispose']) {
+      this.geometry.dispose();
+      for (var i = this.group.children.length - 1; i >= 0; i--) {
+        this.group.remove(this.group.children[i]);
+      }
+    }
   }
 }

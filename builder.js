@@ -16,6 +16,10 @@ export default class Builder {
     this.SKY_COLOUR = 0x111116;
     this.CLEAR_COLOUR = 0xffffff;
     this.dirty = true;
+    this.components = [];
+
+    //materials
+    this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x444455, side: THREE.DoubleSide, flatShading: false } );
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -64,10 +68,11 @@ export default class Builder {
 
     this.init();
     this.initControls();
+    this.build();
     this.setPredefinedShip(this.predefinedShips[0].name);
   }
 
-  addLights(scene) {
+  addLights() {
     var lights = [];
     lights[ 0 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
     lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
@@ -77,26 +82,69 @@ export default class Builder {
     lights[ 1 ].position.set( -100, 100, 0 );
     lights[ 2 ].position.set( - 100, - 100, - 100 );
 
-    scene.add( lights[ 0 ] );
-    scene.add( lights[ 1 ] );
-    scene.add( lights[ 2 ] );
+    this.scene.add( lights[ 0 ] );
+    this.scene.add( lights[ 1 ] );
+    this.scene.add( lights[ 2 ] );
 
-    new Stars({scene: scene});
+    new Stars({scene: this.scene});
   }
 
-  buildShip(scene, controlParams) {
-    var prevShip = scene.getObjectByName('ship');
-    scene.remove( prevShip );
-    
-    var ship = new THREE.Group(); 
-    ship.name = 'ship'
+  /**
+   * 
+   * buildShip
+   * 
+   * initially creat components
+   * 
+   */
 
-    //materials
-    var mainMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x444455, side: THREE.DoubleSide, flatShading: false } );
+  build() {
+    this.ship = new THREE.Group(); 
+    this.ship.name = 'ship';
+
+    this.primary = new Primary({ material: this.hullMaterial });
+    this.ship.add(this.primary.group);
+
+    this.nacellePort = new Nacelle({ material: this.hullMaterial});
+    this.ship.add(this.nacellePort.group);
+
+    this.nacelleStarboard = new Nacelle({ material: this.hullMaterial });
+    this.ship.add(this.nacelleStarboard.group);
+
+    this.engineering = new Engineering({ material: this.hullMaterial });
+    this.ship.add(this.engineering.group);
+
+    this.neck = new Neck({ 
+      primary: this.primary,
+      engineering: this.engineering,
+      material: this.hullMaterial 
+    });
+    this.ship.add(this.neck.group);
+
+    this.portUpperPylon = new Pylon({
+      nacelle: this.nacellePort,
+      engineering: this.engineering,
+      material: this.hullMaterial 
+    });
+    this.ship.add(this.portUpperPylon.group);
+
+    this.starboardUpperPylon = new Pylon({
+      nacelle: this.nacelleStarboard,
+      engineering: this.engineering,
+      material: this.hullMaterial 
+    });
+    this.ship.add(this.starboardUpperPylon.group);
+
+    this.ship.rotateX(Math.PI * 0.5);
+    this.ship.translateY(10.0);
+
+    this.scene.add(this.ship);
+  }
+
+  update(){
+    let controlParams = this.controlParams;
     
-    var primary = new Primary({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio, material: mainMaterial});
-    primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
-    ship.add(primary.group);
+    this.primary.update({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio });
+    this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
 
     var separation = controlParams.nacelle_x * 2.0;
     var aft = controlParams.nacelle_y;
@@ -104,60 +152,39 @@ export default class Builder {
     var length = controlParams.nacelle_length;
     var width = controlParams.nacelle_radius;
 
-    var nacellePort= new Nacelle({length: length, width: width, material: mainMaterial});
-    nacellePort.group.position.set(separation, -aft-length, -height);
-    ship.add(nacellePort.group);
+    this.nacellePort.update({length: length, width: width});
+    this.nacellePort.group.position.set(separation, -aft-length, -height);
 
-    var nacelleStarboard = new Nacelle({length: length, width: width, material: mainMaterial});
-    nacelleStarboard.group.position.set(-separation, -aft-length, -height);
-    ship.add(nacelleStarboard.group);
+    this.nacelleStarboard.update({length: length, width: width });
+    this.nacelleStarboard.group.position.set(-separation, -aft-length, -height);
 
-    var engineering = new Engineering({
+    this.engineering.update ({
       length: controlParams.engineering_length, 
       width: controlParams.engineering_radius, 
-      widthRatio: controlParams.engineering_widthRatio, 
-      material: mainMaterial
+      widthRatio: controlParams.engineering_widthRatio
     });
-    engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
-    ship.add(engineering.group);
+    this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
 
-    var neck = new Neck({
-      primary: primary,
-      engineering: engineering,
+    this.neck.update({
       primaryForeOffset: controlParams.neck_primaryForeOffset,
       primaryAftOffset: controlParams.neck_primaryAftOffset,
       engineeringForeOffset: controlParams.neck_engineeringForeOffset,
-      engineeringAftOffset:controlParams.neck_engineeringAftOffset,
-      material: mainMaterial
+      engineeringAftOffset:controlParams.neck_engineeringAftOffset
     });
-    ship.add(neck);
 
-    var portUpperPylon = new Pylon({
-      nacelle: nacellePort,
-      engineering: engineering,
+    this.portUpperPylon.update({
       nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
-      engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
-      material: mainMaterial
+      engineeringAftOffset: controlParams.pylon_engineeringAftOffset
     });
-    ship.add(portUpperPylon);
 
-    var starboardUpperPylon = new Pylon({
-      nacelle: nacelleStarboard,
-      engineering: engineering,
+    this.starboardUpperPylon.update({
       nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
-      engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
-      material: mainMaterial
+      engineeringAftOffset: controlParams.pylon_engineeringAftOffset
     });
-    ship.add(starboardUpperPylon);
-
-    ship.rotateX(Math.PI * 0.5);
-    ship.translateY(10.0);
-
-    scene.add(ship);
   }
 
   init() {
@@ -203,9 +230,9 @@ export default class Builder {
       this.predefinedShipTransitionFrameCounter--;
       this.updatePredifinedShipTransitionAnimation();
     }
-    // only build the ship if something has changed in the params
+    // only update the ship if something has changed in the params
     if (this.dirty) {
-      this.buildShip(this.scene, this.controlParams);
+      this.update();
       this.dirty = false;
     }
     this.controls.update( shipBuilder.clock.getDelta() );

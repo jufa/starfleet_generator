@@ -189,7 +189,7 @@
       "primary_widthRatio": 0.36,
     },
     {
-      "name": "RSI Cloaked Caranary",
+      "name": "RSI Cloaked Canary",
       "nacelle_y": -5.47,
       "nacelle_x": 12.33,
       "nacelle_z": 1.78,

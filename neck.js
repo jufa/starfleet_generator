@@ -1,30 +1,45 @@
 import * as THREE from 'three';
+import HullComponent from './hull_component.js';
 
-export default class Neck {
-  constructor({
-    primaryForeOffset = 0.3, // distance away from fore edge of primary hull 1.0 = Full aft
-    primaryAftOffset = 0.1, // distance away from aft edge of primary hull 1.0 = Full fore
-    engineeringForeOffset = 0.2, // distance away from fore edge of engineering hull 1.0 = Full aft
-    engineeringAftOffset = 0.2, // distance away from aft edge of engineering hull 1.0 = Full fore
-    primary,
-    engineering,
-    material
-  } = {}) {
-    var group = new THREE.Group();
-    var profileGeometry = new THREE.BufferGeometry();
+export default class Neck extends HullComponent {
+  constructor({ material, primary, engineering }) {
+    super();
+    this.material = material;
+    this.group = new THREE.Group();
+    this.profileGeometry = {};
+    this.mesh = {};
+    this.primary = primary;
+    this.engineering = engineering;
+
+    return this;
+  }
+
+  update({
+    primaryForeOffset, // distance away from fore edge of primary hull 1.0 = Full aft
+    primaryAftOffset, // distance away from aft edge of primary hull 1.0 = Full fore
+    engineeringForeOffset, // distance away from fore edge of engineering hull 1.0 = Full aft
+    engineeringAftOffset, // distance away from aft edge of engineering hull 1.0 = Full fore
+  }) {
+
+    this.clear();
+
+    this.profileGeometry = new THREE.BufferGeometry();
+
+    let primary = this.primary;
+    let engineering = this.engineering;
     
-    var primaryLength = primary.dimensions.z;
-    var engineeringLength = engineering.dimensions.y;
-    var primaryThickness = primary.dimensions.y;
-    var primaryCenterForeAft = primary.group.position.y;
-    var primaryCenterTop = primary.group.position.z;
-    var primaryCenter = primaryCenterTop + primaryThickness * 0.5;
+    let primaryLength = primary.dimensions.z;
+    let engineeringLength = engineering.dimensions.y;
+    let primaryThickness = primary.dimensions.y;
+    let primaryCenterForeAft = primary.group.position.y;
+    let primaryCenterTop = primary.group.position.z;
+    let primaryCenter = primaryCenterTop + primaryThickness * 0.5;
 
-    var primaryFore = primaryCenterForeAft + primaryLength * 0.5;
-    var primaryAft = primaryCenterForeAft - primaryLength * 0.5;
-    var engineeringAft = engineering.group.position.y;
-    var engineeringFore = engineeringAft + engineeringLength;
-    var engineeringForeCenter = engineering.group.position.z;
+    let primaryFore = primaryCenterForeAft + primaryLength * 0.5;
+    let primaryAft = primaryCenterForeAft - primaryLength * 0.5;
+    let engineeringAft = engineering.group.position.y;
+    let engineeringFore = engineeringAft + engineeringLength;
+    let engineeringForeCenter = engineering.group.position.z;
 
     primaryFore -= primaryLength * primaryForeOffset;
     primaryAft += primaryLength * primaryAftOffset;
@@ -43,10 +58,18 @@ export default class Neck {
     ] );
 
     // itemSize = 3 because there are 3 values (components) per vertex
-    profileGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    profileGeometry.computeVertexNormals(); //needed for material shading
-    group.add( new THREE.Mesh( profileGeometry, material ) );
-    
-    return group;
+    this.profileGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    this.profileGeometry.computeVertexNormals(); //needed for material shading
+    this.mesh = new THREE.Mesh( this.profileGeometry, this.material );
+    this.group.add( this.mesh );
+  }
+
+  clear(){
+    if (this.profileGeometry['dispose']) {
+      this.profileGeometry.dispose();
+      for (var i = this.group.children.length - 1; i >= 0; i--) {
+        this.group.remove(this.group.children[i]);
+      }
+    }
   }
 }

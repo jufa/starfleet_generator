@@ -1,35 +1,50 @@
 import * as THREE from 'three';
+import HullComponent from './hull_component.js';
 
-export default class Pylon {
-  constructor({
-    nacelleForeOffset = 0.4, // distance away from fore edge of nacelle hull 1.0 = Full aft
-    nacelleAftOffset = 0.2, // distance away from aft edge of nacelle hull 1.0 = Full fore
-    engineeringForeOffset = 0.4, // distance away from fore edge of engineering hull 1.0 = Full aft
-    engineeringAftOffset = 0.1, // distance away from aft edge of engineering hull 1.0 = Full fore
-    nacelle,
-    engineering,
-    material
-  } = {}) {
-    var group = new THREE.Group();
-    var profileGeometry = new THREE.BufferGeometry();
-    
-    var nacelleLength = nacelle.dimensions.y;
-    var engineeringLength = engineering.dimensions.y;
+export default class Pylon extends HullComponent {
+  constructor({ nacelle, engineering, material }) {
+    super();
+    this.material = material;
+    this.group = new THREE.Group();
+    this.profileGeometry = {};
+    this.mesh = {};
+    this.nacelle = nacelle;
+    this.engineering = engineering;
 
-    var nacelleThickness = nacelle.dimensions.z;
-    var nacelleCenterTop = nacelle.group.position.z;
-    var nacelleCenterX = nacelle.group.position.x
-    var nacelleCenterY = nacelle.group.position.y;
-    var nacelleCenterZ = nacelle.group.position.z; // nacelleCenterTop + nacelleThickness * 0.5;
+    return this;
+  }
 
-    var nacelleFore = nacelleCenterY + nacelleLength;
-    var nacelleAft = nacelleCenterY;
+  update({
+    nacelleForeOffset, // distance away from fore edge of nacelle hull 1.0 = Full aft
+    nacelleAftOffset, // distance away from aft edge of nacelle hull 1.0 = Full fore
+    engineeringForeOffset, // distance away from fore edge of engineering hull 1.0 = Full aft
+    engineeringAftOffset // distance away from aft edge of engineering hull 1.0 = Full fore})
+  }){
 
-    var engineeringAft = engineering.group.position.y;
-    var engineeringFore = engineeringAft + engineeringLength;
-    var engineeringCenterX = engineering.group.position.x;
-    var engineeringCenterY = engineering.group.position.y;
-    var engineeringCenterZ = engineering.group.position.z;
+    this.clear();
+
+    this.profileGeometry = new THREE.BufferGeometry();
+
+    let nacelle = this.nacelle;
+    let engineering = this.engineering;
+
+    let nacelleLength = nacelle.dimensions.y;
+    let engineeringLength = engineering.dimensions.y;
+
+    let nacelleThickness = nacelle.dimensions.z;
+    let nacelleCenterTop = nacelle.group.position.z;
+    let nacelleCenterX = nacelle.group.position.x
+    let nacelleCenterY = nacelle.group.position.y;
+    let nacelleCenterZ = nacelle.group.position.z; // nacelleCenterTop + nacelleThickness * 0.5;
+
+    let nacelleFore = nacelleCenterY + nacelleLength;
+    let nacelleAft = nacelleCenterY;
+
+    let engineeringAft = engineering.group.position.y;
+    let engineeringFore = engineeringAft + engineeringLength;
+    let engineeringCenterX = engineering.group.position.x;
+    let engineeringCenterY = engineering.group.position.y;
+    let engineeringCenterZ = engineering.group.position.z;
 
     nacelleFore -= nacelleLength * nacelleForeOffset;
     nacelleAft += nacelleLength * nacelleAftOffset;
@@ -48,10 +63,18 @@ export default class Pylon {
     ] );
 
     // itemSize = 3 because there are 3 values (components) per vertex
-    profileGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    profileGeometry.computeVertexNormals(); //needed for material shading
-    group.add( new THREE.Mesh( profileGeometry, material ) );
-    
-    return group;
+    this.profileGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    this.profileGeometry.computeVertexNormals(); //needed for material shading
+    this.mesh = new THREE.Mesh( this.profileGeometry, this.material );
+    this.group.add( this.mesh );
+  }
+  
+  clear(){
+    if (this.profileGeometry['dispose']) {
+      this.profileGeometry.dispose();
+      for (var i = this.group.children.length - 1; i >= 0; i--) {
+        this.group.remove(this.group.children[i]);
+      }
+    }
   }
 }

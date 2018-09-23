@@ -1,64 +1,117 @@
 import * as THREE from 'three';
+import HullComponent from './hull_component.js';
 
-export default class Engineering {
-  constructor({
-    length = 1.0,
-    width = 50.0,
-    widthRatio = 1.0,
-    material
-  } = {}) {
-    var group = new THREE.Group();
-
-    var engineeringPoints = [];
-    var engineeringPointCount = 10;
-    for ( var i = 0; i <= 10; i ++ ) {
-      engineeringPoints.push( 
-        new THREE.Vector2(
-          Math.sin( i / engineeringPointCount * Math.PI * 0.8) * width,
-          i / engineeringPointCount * length
-        )
-      );
-    }
-
-    // deflector
-    var deflectorPoints = [];
-
-    let deflectorOuterEdge = new THREE.Vector2().copy(engineeringPoints[engineeringPoints.length - 1]);
-    deflectorPoints.push(deflectorOuterEdge);
-
-    deflectorPoints.push (
-      new THREE.Vector2( 0.2, length - length * 0.04 )
-    );
-
-    deflectorPoints.push (
-      new THREE.Vector2( 0.0, length + length * 0.03 )
-    );
-
-    var engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 20);
-    engineeringGeometry.scale(widthRatio, 1.0, 1.0);
-
-    engineeringGeometry.computeBoundingBox();
-    this.dimensions = {};
-    this.dimensions.x = engineeringGeometry.boundingBox.max.x - engineeringGeometry.boundingBox.min.x;
-    this.dimensions.y = engineeringGeometry.boundingBox.max.y - engineeringGeometry.boundingBox.min.y;
-    this.dimensions.z = engineeringGeometry.boundingBox.max.z - engineeringGeometry.boundingBox.min.z;
-
-    var deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, 20);
-    deflectorGeometry.scale(widthRatio, 1.0, 1.0);
-
-    group.add( new THREE.Mesh( engineeringGeometry, material ) );
-
-    var deflectorMaterial = new THREE.MeshPhongMaterial( { 
+export default class Engineering extends HullComponent {
+  constructor({ material }) {
+    super();
+    
+    // materials
+    this.material = material;
+    this.deflectorMaterial = new THREE.MeshPhongMaterial( { 
       shininess: 100,
       color: 0xFFDF00,
       emissive: 0x662222,
       side: THREE.DoubleSide,
       flatShading: false 
     } );
+    this.group = new THREE.Group();
+    this.dimensions = {};
+    
+    this.engineeringGeometry = {};
+    this.deflectorGeometry = {};
 
-    group.add( new THREE.Mesh( deflectorGeometry, deflectorMaterial ) );
+    this.engineeringMesh = {};
+    this.deflectorMesh = {};
 
-    this.group = group;
+    //dimensions
+    this.dimensions = {};
     return this;
+  }
+
+  update({
+    length = 1.0,
+    width = 50.0,
+    widthRatio = 1.0
+  }) {
+
+    this.clear();
+
+    // params
+    this.length = length;
+    this.width = width;
+    this.widthRatio = widthRatio;
+
+    // engineering hull
+    var engineeringPoints = [];
+    var engineeringPointCount = 10;
+    for ( var i = 0; i <= 10; i ++ ) {
+      engineeringPoints.push( 
+        new THREE.Vector2(
+          Math.sin( i / engineeringPointCount * Math.PI * 0.8) * this.width,
+          i / engineeringPointCount * this.length
+        )
+      );
+    }
+
+    // deflector array
+    var deflectorPoints = [];
+
+    let deflectorOuterEdge = new THREE.Vector2().copy(engineeringPoints[engineeringPoints.length - 1]);
+    deflectorPoints.push(deflectorOuterEdge);
+
+    deflectorPoints.push (
+      new THREE.Vector2( 0.2, this.length - this.length * 0.04 )
+    );
+
+    deflectorPoints.push (
+      new THREE.Vector2( 0.0, this.length + this.length * 0.03 )
+    );
+
+    this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 20);
+    this.engineeringGeometry.scale(this.widthRatio, 1.0, 1.0);
+
+    this.deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, 20);
+    this.deflectorGeometry.scale(this.widthRatio, 1.0, 1.0);
+
+    this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, this.material );
+    this.deflectoMesh = new THREE.Mesh( this.deflectorGeometry, this.deflectorMaterial );
+
+    this.group.add( this.engineeringMesh );
+    this.group.add( this.deflectoMesh );
+
+    this.computeBoundingBox(this.engineeringGeometry);
+  }
+
+  /**
+   * computeBoundingBox
+   * 
+   * the dimensions object contains the bounding box for the component, 
+   * used to determin its dimensions vs other ships' components in a ship builder
+   * 
+   */
+
+  computeBoundingBox(measuredGeom) {
+    measuredGeom.computeBoundingBox();
+    this.dimensions.x = measuredGeom.boundingBox.max.x - measuredGeom.boundingBox.min.x;
+    this.dimensions.y = measuredGeom.boundingBox.max.y - measuredGeom.boundingBox.min.y;
+    this.dimensions.z = measuredGeom.boundingBox.max.z - measuredGeom.boundingBox.min.z;
+  }
+
+  /**
+   * 
+   * clear
+   * 
+   * properly dispose of references, free up GPU memory for the component
+   * 
+   */
+
+  clear(){
+    if (this.deflectorGeometry['dispose']) {
+      this.deflectorGeometry.dispose();
+      this.engineeringGeometry.dispose();
+      for (var i = this.group.children.length - 1; i >= 0; i--) {
+        this.group.remove(this.group.children[i]);
+      }
+    }
   }
 }

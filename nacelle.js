@@ -1,18 +1,33 @@
 import * as THREE from 'three';
+import HullComponent from './hull_component.js';
 
-export default class Nacelle {
-  constructor({
-    length = 1.0,
-    width = 1.8,
-    widthRatio = 1.0,
-    material
-  } = {}) {
-    var group = new THREE.Group();
+export default class Nacelle extends HullComponent {
+  constructor({ material }) {
+    super();
+    
+    this.material = material;
+    this.group = new THREE.Group();
+    this.dimensions = {};
+    
+    this.nacelleGeometry = {};
+    this.bussardGeometry = {};
 
-    // nacelle
+    this.nacelleMesh = {};
+    this.bussardMesh = {};
 
-    var geometry = new THREE.BufferGeometry();
+    this.bussardMaterial = new THREE.MeshPhongMaterial({ 
+      shininess: 100, 
+      color: 0x330033,
+      emissive: 0xdd0000,
+      flatShading: false,
+    });
+    return this;
+  }
 
+  update({ length, width, widthRatio = 1.0 }) {
+
+    this.clear();
+    
     // nacelle body
     var nacellePoints = [
       new THREE.Vector2( 0.0, 1.0 )
@@ -40,31 +55,35 @@ export default class Nacelle {
       );
     }
     
-    var nacelleGeometry = new THREE.LatheGeometry(nacellePoints, 20);
-    nacelleGeometry.scale(widthRatio, 1.0, 1.0);
+    this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, 20);
+    this.nacelleGeometry.scale(widthRatio, 1.0, 1.0);
 
-    var bussardGeometry = new THREE.LatheGeometry(bussardPoints, 20);
-    bussardGeometry.scale(widthRatio, 1.0, 1.0);
+    this.bussardGeometry = new THREE.LatheGeometry(bussardPoints, 20);
+    this.bussardGeometry.scale(widthRatio, 1.0, 1.0);
 
-    // make group
+    this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, this.material );
+    this.bussardMesh = new THREE.Mesh( this.bussardGeometry, this.bussardMaterial );
 
-    nacelleGeometry.computeBoundingBox();
-    this.dimensions = {};
-    this.dimensions.x = nacelleGeometry.boundingBox.max.x - nacelleGeometry.boundingBox.min.x;
-    this.dimensions.y = nacelleGeometry.boundingBox.max.y - nacelleGeometry.boundingBox.min.y;
-    this.dimensions.z = nacelleGeometry.boundingBox.max.z - nacelleGeometry.boundingBox.min.z;
+    this.group.add( this.nacelleMesh );
+    this.group.add( this.bussardMesh );
 
-    var bussardMaterial = new THREE.MeshPhongMaterial({ 
-      shininess: 100, 
-      color: 0x330033,
-      emissive: 0xdd0000,
-      flatShading: false,
-    });
+    this.computeBoundingBox(this.nacelleGeometry);
+  }
 
-    group.add( new THREE.Mesh( nacelleGeometry, material ) );
-    group.add( new THREE.Mesh( bussardGeometry, bussardMaterial ) );
+  computeBoundingBox(measuredGeom){
+    measuredGeom.computeBoundingBox();  
+    this.dimensions.x = measuredGeom.boundingBox.max.x - measuredGeom.boundingBox.min.x;
+    this.dimensions.y = measuredGeom.boundingBox.max.y - measuredGeom.boundingBox.min.y;
+    this.dimensions.z = measuredGeom.boundingBox.max.z - measuredGeom.boundingBox.min.z;
+  }
 
-    this.group = group;
-    return this;
+  clear(){
+    if (this.nacelleGeometry['dispose']) {
+      this.nacelleGeometry.dispose();
+      this.bussardGeometry.dispose();
+      for (var i = this.group.children.length - 1; i >= 0; i--) {
+        this.group.remove(this.group.children[i]);
+      }
+    }
   }
 }
