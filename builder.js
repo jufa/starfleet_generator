@@ -19,7 +19,7 @@ export default class Builder {
     this.components = [];
 
     //materials
-    this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x444455, side: THREE.DoubleSide, flatShading: false } );
+    this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -28,7 +28,7 @@ export default class Builder {
         y: [40, -30, 50, 0.01],
         x: [2.5, -30, 50, 0.01],
         z: [-3.5, -30, 50, 0.01],
-        length: [12, -30, 50, 0.01],
+        length: [12, 1, 50, 0.01],
         radius: [1, 0.2, 12, 0.01],
         widthRatio: [1, 0.1, 10, 0.01]
       },
@@ -146,16 +146,17 @@ export default class Builder {
     this.primary.update({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
 
-    var separation = controlParams.nacelle_x * 2.0;
-    var aft = controlParams.nacelle_y;
-    var height = controlParams.nacelle_z;
-    var length = controlParams.nacelle_length;
-    var width = controlParams.nacelle_radius;
+    let separation = controlParams.nacelle_x * 2.0;
+    let aft = controlParams.nacelle_y;
+    let height = controlParams.nacelle_z;
+    let length = controlParams.nacelle_length;
+    let width = controlParams.nacelle_radius;
+    let widthRatio = controlParams.nacelle_widthRatio;
 
-    this.nacellePort.update({length: length, width: width});
+    this.nacellePort.update({length: length, width: width, widthRatio: widthRatio});
     this.nacellePort.group.position.set(separation, -aft-length, -height);
 
-    this.nacelleStarboard.update({length: length, width: width });
+    this.nacelleStarboard.update({length: length, width: width, widthRatio: widthRatio });
     this.nacelleStarboard.group.position.set(-separation, -aft-length, -height);
 
     this.engineering.update ({

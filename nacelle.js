@@ -4,7 +4,7 @@ import HullComponent from './hull_component.js';
 export default class Nacelle extends HullComponent {
   constructor({ material }) {
     super();
-    
+
     this.material = material;
     this.group = new THREE.Group();
     this.dimensions = {};
@@ -24,7 +24,7 @@ export default class Nacelle extends HullComponent {
     return this;
   }
 
-  update({ length, width, widthRatio = 1.0 }) {
+  update({ length, width, widthRatio }) {
 
     this.clear();
     
