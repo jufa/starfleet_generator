@@ -4,7 +4,7 @@ import HullComponent from './hull_component.js';
 export default class Engineering extends HullComponent {
   constructor({ material }) {
     super();
-    
+
     // materials
     this.material = material;
     this.deflectorMaterial = new THREE.MeshPhongMaterial( { 
@@ -31,7 +31,8 @@ export default class Engineering extends HullComponent {
   update({
     length = 1.0,
     width = 50.0,
-    widthRatio = 1.0
+    widthRatio = 1.0,
+    skew = 0.0
   }) {
 
     this.clear();
@@ -40,6 +41,7 @@ export default class Engineering extends HullComponent {
     this.length = length;
     this.width = width;
     this.widthRatio = widthRatio;
+    this.skew = skew;
 
     // engineering hull
     var engineeringPoints = [];
@@ -72,6 +74,16 @@ export default class Engineering extends HullComponent {
 
     this.deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, 20);
     this.deflectorGeometry.scale(this.widthRatio, 1.0, 1.0);
+
+    const matrix = new THREE.Matrix4();
+    
+    const Szy = this.skew;
+    matrix.set(   1,     0,    0,  0,
+                  0,     1,  Szy,  0,
+                  0,     0,   1,   0,
+                  0,     0,   0,   1  );
+    this.deflectorGeometry.applyMatrix( matrix );
+    this.engineeringGeometry.applyMatrix( matrix );
 
     this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, this.material );
     this.deflectoMesh = new THREE.Mesh( this.deflectorGeometry, this.deflectorMaterial );

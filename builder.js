@@ -44,7 +44,8 @@ export default class Builder {
         z: [6, -30, 50, 0.01],
         length: [10, 1, 50, 0.01],
         radius: [1, 0, 10, 0.01],
-        widthRatio: [1, 0.1, 10, 0.01]
+        widthRatio: [1, 0.1, 10, 0.01],
+        skew: [0, -5, 5, 0.01],
       },
       pylon: {
         nacelleForeOffset: [0.3, 0, 1, 0.01],
@@ -75,13 +76,13 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    lights[ 0 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
-    lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
+    lights[ 0 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
+    lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.5, 0 );
     lights[ 2 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
 
-    lights[ 0 ].position.set( 100, 100, 0 );
-    lights[ 1 ].position.set( -100, 100, 0 );
-    lights[ 2 ].position.set( - 100, - 100, - 100 );
+    lights[ 0 ].position.set( 200, 200, 0 );
+    lights[ 1 ].position.set( -200, 100, 0 );
+    lights[ 2 ].position.set( - 200, - 200, - 200 );
 
     this.scene.add( lights[ 0 ] );
     this.scene.add( lights[ 1 ] );
@@ -163,7 +164,8 @@ export default class Builder {
     this.engineering.update ({
       length: controlParams.engineering_length, 
       width: controlParams.engineering_radius, 
-      widthRatio: controlParams.engineering_widthRatio
+      widthRatio: controlParams.engineering_widthRatio,
+      skew: controlParams.engineering_skew
     });
     this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
 
