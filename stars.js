@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 const COLORS = [
-  0xff00ff,
+  0xffffff,
   0x7777ff,
   0x3a3aff,
   0x1a1aff
@@ -12,8 +12,8 @@ export default class Stars {
   constructor({
     scene
   }){
-    var i, r = 150.0, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
-    for ( i = 0; i < 100; i ++ ) {
+    var i, r = 450.0, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
+    for ( i = 0; i < 200; i ++ ) {
       var vertex = new THREE.Vector3();
       vertex.x = Math.random() * 2 - 1;
       vertex.y = Math.random() * 2 - 1;

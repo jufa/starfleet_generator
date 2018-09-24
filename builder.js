@@ -17,8 +17,15 @@ export default class Builder {
     this.CLEAR_COLOUR = 0xffffff;
     this.dirty = true;
     this.components = [];
+    this.controlParams = {};
+    this.currentShip = {}; // storage of currently selected predefined ship params independent of control parmas
+    this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
+    this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
+    this.predefinedShipTransitionFrames = 30; // the total number of frames to do the transition animation
+    this.transitionRate = 0.15;
+    this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
 
-    //materials
+    // materials
     this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
 
     this.controlConfiguration = {
@@ -59,12 +66,6 @@ export default class Builder {
         widthRatio: [1, 0, 10, 0.01]
       }
     };
-    this.controlParams = {};
-    this.currentShip = {}; // storage of currently selected predefined ship params independent of control parmas
-    this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
-    this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
-    this.predefinedShipTransitionFrames = 50; // the total number of frames to do the transition animation
-    this.transitionRate = 0.15;
 
     this.init();
     this.initControls();
@@ -246,6 +247,9 @@ export default class Builder {
   }
 
   setPredefinedShip(shipName) {
+    this.transitionStartTime = setTimeout(function(){
+      this.predefinedShipTransitionFrameCounter = 0; //outta time, let's finish animation
+    }.bind(this), this.maxTransitionTime);
     let newParams = this.predefinedShips.find(function (ship) { return ship.name == shipName; });
     for (var param in newParams) {
       // this.startParams[param] = this.controlParams[param];
