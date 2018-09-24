@@ -240,7 +240,34 @@
       "primary_z": 1.58,
       "primary_radius": 13.06,
       "primary_thickness": 3.36,
-      "primary_widthRatio": 1,
+      "primary_widthRatio": 1
+    },
+    {
+      "name": "USS Eaves",
+      "nacelle_y": 9.76,
+      "nacelle_x": 7.71,
+      "nacelle_z": -7.83,
+      "nacelle_length": 35.42,
+      "nacelle_radius": 0.86,
+      "nacelle_widthRatio": 1.97,
+      "engineering_y": -32.06,
+      "engineering_z": 3.07,
+      "engineering_length": 43.35,
+      "engineering_radius": 1.49,
+      "engineering_widthRatio": 3.32,
+      "pylon_nacelleForeOffset": 0.21,
+      "pylon_nacelleAftOffset": 0.58,
+      "pylon_engineeringForeOffset": 0.36,
+      "pylon_engineeringAftOffset": 0.2,
+      "neck_primaryForeOffset": 0.6,
+      "neck_primaryAftOffset": 0.04,
+      "neck_engineeringForeOffset": 0.06,
+      "neck_engineeringAftOffset": 0,
+      "primary_y": -2.14,
+      "primary_z": 1.96,
+      "primary_radius": 13.06,
+      "primary_thickness": 2.44,
+      "primary_widthRatio": 1
     }
   ]
   export default ships;
