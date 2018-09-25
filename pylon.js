@@ -37,6 +37,7 @@ export default class Pylon extends HullComponent {
     let nacelleCenterY = nacelle.group.position.y;
     let nacelleCenterZ = nacelle.group.position.z; // nacelleCenterTop + nacelleThickness * 0.5;
 
+
     let nacelleFore = nacelleCenterY + nacelleLength;
     let nacelleAft = nacelleCenterY;
 
@@ -46,6 +47,8 @@ export default class Pylon extends HullComponent {
     let engineeringCenterY = engineering.group.position.y;
     let engineeringCenterZ = engineering.group.position.z;
 
+    let pylonThickness = nacelleThickness * 0.2;
+
     nacelleFore -= nacelleLength * nacelleForeOffset;
     nacelleAft += nacelleLength * nacelleAftOffset;
 
@@ -53,18 +56,47 @@ export default class Pylon extends HullComponent {
     engineeringAft += engineeringLength * engineeringAftOffset;
 
     var vertices = new Float32Array( [
+      // face
       nacelleCenterX, nacelleFore, nacelleCenterZ,
       nacelleCenterX, nacelleAft, nacelleCenterZ,
       engineeringCenterX, engineeringFore, engineeringCenterZ,
 
       engineeringCenterX, engineeringAft, engineeringCenterZ,
       engineeringCenterX, engineeringFore, engineeringCenterZ,
+      nacelleCenterX, nacelleAft, nacelleCenterZ,
+
+      // face
+      nacelleCenterX, nacelleFore, nacelleCenterZ + pylonThickness,
+      nacelleCenterX, nacelleAft, nacelleCenterZ + pylonThickness,
+      engineeringCenterX, engineeringFore, engineeringCenterZ + pylonThickness,
+
+      engineeringCenterX, engineeringAft, engineeringCenterZ + pylonThickness,
+      engineeringCenterX, engineeringFore, engineeringCenterZ + pylonThickness,
+      nacelleCenterX, nacelleAft, nacelleCenterZ + pylonThickness,
+
+      // leading edge
+      nacelleCenterX, nacelleFore, nacelleCenterZ + pylonThickness,
+      nacelleCenterX, nacelleFore, nacelleCenterZ,
+      engineeringCenterX, engineeringFore, engineeringCenterZ + pylonThickness,
+
+      engineeringCenterX, engineeringFore, engineeringCenterZ + pylonThickness,
+      engineeringCenterX, engineeringFore, engineeringCenterZ,
+      nacelleCenterX, nacelleFore, nacelleCenterZ,
+
+      // trailing edge
+      nacelleCenterX, nacelleAft, nacelleCenterZ + pylonThickness,
+      nacelleCenterX, nacelleAft, nacelleCenterZ,
+      engineeringCenterX, engineeringAft, engineeringCenterZ + pylonThickness,
+
+      engineeringCenterX, engineeringAft, engineeringCenterZ + pylonThickness,
+      engineeringCenterX, engineeringAft, engineeringCenterZ,
       nacelleCenterX, nacelleAft, nacelleCenterZ
     ] );
 
     // itemSize = 3 because there are 3 values (components) per vertex
     this.profileGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
     this.profileGeometry.computeVertexNormals(); //needed for material shading
+    this.profileGeometry.computeFaceNormals(); //needed for material shading
     this.mesh = new THREE.Mesh( this.profileGeometry, this.material );
     this.group.add( this.mesh );
   }
