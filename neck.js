@@ -6,7 +6,7 @@ export default class Neck extends HullComponent {
     super();
     this.material = material;
     this.group = new THREE.Group();
-    this.profileGeometry = {};
+    this.geometry = {};
     this.mesh = {};
     this.primary = primary;
     this.engineering = engineering;
@@ -19,11 +19,12 @@ export default class Neck extends HullComponent {
     primaryAftOffset, // distance away from aft edge of primary hull 1.0 = Full fore
     engineeringForeOffset, // distance away from fore edge of engineering hull 1.0 = Full aft
     engineeringAftOffset, // distance away from aft edge of engineering hull 1.0 = Full fore
+    thickness = 0.5,
   }) {
 
     this.clear();
 
-    this.profileGeometry = new THREE.BufferGeometry();
+    this.geometry = new THREE.Geometry();
 
     let primary = this.primary;
     let engineering = this.engineering;
@@ -33,13 +34,13 @@ export default class Neck extends HullComponent {
     let primaryThickness = primary.dimensions.y;
     let primaryCenterForeAft = primary.group.position.y;
     let primaryCenterTop = primary.group.position.z;
-    let primaryCenter = primaryCenterTop + primaryThickness * 0.5;
+    let primaryCenterThickness = primaryCenterTop + primaryThickness * 0.5;
 
     let primaryFore = primaryCenterForeAft + primaryLength * 0.5;
     let primaryAft = primaryCenterForeAft - primaryLength * 0.5;
     let engineeringAft = engineering.group.position.y;
     let engineeringFore = engineeringAft + engineeringLength;
-    let engineeringForeCenter = engineering.group.position.z;
+    let engineeringForeVerticalCenter = engineering.group.position.z;
 
     primaryFore -= primaryLength * primaryForeOffset;
     primaryAft += primaryLength * primaryAftOffset;
@@ -47,26 +48,39 @@ export default class Neck extends HullComponent {
     engineeringFore -= engineeringLength * engineeringForeOffset;
     engineeringAft += engineeringLength * engineeringAftOffset;
 
-    var vertices = new Float32Array( [
-      0.0, primaryFore, primaryCenter, //center top of saucer, needs to be center middle
-      0.0, primaryAft, primaryCenter,
-      0.0, engineeringFore, engineeringForeCenter,
+    this.vertices = [
+      new THREE.Vector3(thickness, primaryFore, primaryCenterThickness),
+      new THREE.Vector3(thickness, primaryAft, primaryCenterThickness),
+      new THREE.Vector3(thickness, engineeringFore, engineeringForeVerticalCenter),
+      new THREE.Vector3(thickness, engineeringAft, engineeringForeVerticalCenter),
+      new THREE.Vector3(-thickness, primaryFore, primaryCenterThickness),
+      new THREE.Vector3(-thickness, primaryAft, primaryCenterThickness),
+      new THREE.Vector3(-thickness, engineeringFore, engineeringForeVerticalCenter),
+      new THREE.Vector3(-thickness, engineeringAft, engineeringForeVerticalCenter)
+    ];
 
-      0.0, engineeringAft, engineeringForeCenter,
-      0.0, engineeringFore, engineeringForeCenter,
-      0.0, primaryAft, primaryCenter
-    ] );
+    this.geometry.vertices = this.vertices; 
 
-    // itemSize = 3 because there are 3 values (components) per vertex
-    this.profileGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    this.profileGeometry.computeVertexNormals(); //needed for material shading
-    this.mesh = new THREE.Mesh( this.profileGeometry, this.material );
+    // need 8 triangles:
+    this.geometry.faces = [
+      new THREE.Face3(0,1,2),
+      new THREE.Face3(2,1,3),
+      new THREE.Face3(5,3,1),
+      new THREE.Face3(3,5,7),
+      new THREE.Face3(6,7,5),
+      new THREE.Face3(4,6,5),
+      new THREE.Face3(6,4,0),
+      new THREE.Face3(6,0,2)
+    ]
+        
+    this.geometry.computeVertexNormals(); // needed for material shading
+    this.mesh = new THREE.Mesh( this.geometry, this.material );
     this.group.add( this.mesh );
   }
 
   clear(){
-    if (this.profileGeometry['dispose']) {
-      this.profileGeometry.dispose();
+    if (this.geometry['dispose']) {
+      this.geometry.dispose();
       for (var i = this.group.children.length - 1; i >= 0; i--) {
         this.group.remove(this.group.children[i]);
       }

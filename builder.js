@@ -26,7 +26,7 @@ export default class Builder {
     this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
 
     // materials
-    this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
+    this.hullMaterial = new THREE.MeshStandardMaterial( { metalness: 0.3, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -297,13 +297,15 @@ export default class Builder {
       let paramsInFolder = this.controlConfiguration[folder];
       for (var key in paramsInFolder) {
         this.controlParams[folder + '_' + key] = paramsInFolder[key][0];
-        controls.add(
+        let ref = controls.add(
           this.controlParams, 
           folder + '_' + key, 
           paramsInFolder[key][1],
           paramsInFolder[key][2],
           paramsInFolder[key][3]
-        ).onChange(function(){ this.dirty = true }.bind(this))
+        );
+        ref.onChange(function(){ this.dirty = true }.bind(this));
+        ref.listen();
       }
     }
   }

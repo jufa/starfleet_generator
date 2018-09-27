@@ -306,6 +306,34 @@
       "primary_radius": 13.06,
       "primary_thickness": 3.02,
       "primary_widthRatio": 1
+    },
+    {
+      "name": "USS Insolent",
+      "nacelle_y": 18.95,
+      "nacelle_x": 3.59,
+      "nacelle_z": -2.62,
+      "nacelle_length": 7.58,
+      "nacelle_radius": 1.01,
+      "nacelle_widthRatio": 2.93,
+      "engineering_y": -31.15,
+      "engineering_z": 2.07,
+      "engineering_length": 22.08,
+      "engineering_radius": 1.21,
+      "engineering_widthRatio": 2.99,
+      "engineering_skew": -0.83,
+      "pylon_nacelleForeOffset": 0.21,
+      "pylon_nacelleAftOffset": 0.45,
+      "pylon_engineeringForeOffset": 0.56,
+      "pylon_engineeringAftOffset": 0.19,
+      "neck_primaryForeOffset": 0.39,
+      "neck_primaryAftOffset": 0.15,
+      "neck_engineeringForeOffset": 0.36,
+      "neck_engineeringAftOffset": 0.08,
+      "primary_y": -21.37,
+      "primary_z": 0.5,
+      "primary_radius": 7.94,
+      "primary_thickness": 3.27,
+      "primary_widthRatio": 1
     }
   ]
   export default ships;

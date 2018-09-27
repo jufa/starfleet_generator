@@ -6,7 +6,7 @@ export default class Pylon extends HullComponent {
     super();
     this.material = material;
     this.group = new THREE.Group();
-    this.profileGeometry = {};
+    this.geometry = {};
     this.mesh = {};
     this.nacelle = nacelle;
     this.engineering = engineering;
@@ -23,7 +23,7 @@ export default class Pylon extends HullComponent {
 
     this.clear();
 
-    this.profileGeometry = new THREE.BufferGeometry();
+    this.geometry = new THREE.Geometry();
 
     let nacelle = this.nacelle;
     let engineering = this.engineering;
@@ -55,55 +55,40 @@ export default class Pylon extends HullComponent {
     engineeringFore -= engineeringLength * engineeringForeOffset;
     engineeringAft += engineeringLength * engineeringAftOffset;
 
-    var vertices = new Float32Array( [
-      // face
-      nacelleCenterX, nacelleFore, nacelleCenterZ,
-      nacelleCenterX, nacelleAft, nacelleCenterZ,
-      engineeringCenterX, engineeringFore, engineeringCenterZ,
+    this.vertices = [
+      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ + pylonThickness),
+      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ + pylonThickness),
+      new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ + pylonThickness),
+      new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ + pylonThickness),
+      
+      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ),
+      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ),
+      new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ),
+      new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ),
+    ];
 
-      engineeringCenterX, engineeringAft, engineeringCenterZ,
-      engineeringCenterX, engineeringFore, engineeringCenterZ,
-      nacelleCenterX, nacelleAft, nacelleCenterZ,
+    this.geometry.vertices = this.vertices; 
 
-      // face
-      nacelleCenterX, nacelleFore, nacelleCenterZ + pylonThickness,
-      nacelleCenterX, nacelleAft, nacelleCenterZ + pylonThickness,
-      engineeringCenterX, engineeringFore, engineeringCenterZ + pylonThickness,
-
-      engineeringCenterX, engineeringAft, engineeringCenterZ + pylonThickness,
-      engineeringCenterX, engineeringFore, engineeringCenterZ + pylonThickness,
-      nacelleCenterX, nacelleAft, nacelleCenterZ + pylonThickness,
-
-      // leading edge
-      nacelleCenterX, nacelleFore, nacelleCenterZ + pylonThickness,
-      nacelleCenterX, nacelleFore, nacelleCenterZ,
-      engineeringCenterX, engineeringFore, engineeringCenterZ + pylonThickness,
-
-      engineeringCenterX, engineeringFore, engineeringCenterZ + pylonThickness,
-      engineeringCenterX, engineeringFore, engineeringCenterZ,
-      nacelleCenterX, nacelleFore, nacelleCenterZ,
-
-      // trailing edge
-      nacelleCenterX, nacelleAft, nacelleCenterZ + pylonThickness,
-      nacelleCenterX, nacelleAft, nacelleCenterZ,
-      engineeringCenterX, engineeringAft, engineeringCenterZ + pylonThickness,
-
-      engineeringCenterX, engineeringAft, engineeringCenterZ + pylonThickness,
-      engineeringCenterX, engineeringAft, engineeringCenterZ,
-      nacelleCenterX, nacelleAft, nacelleCenterZ
-    ] );
-
-    // itemSize = 3 because there are 3 values (components) per vertex
-    this.profileGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    this.profileGeometry.computeVertexNormals(); //needed for material shading
-    this.profileGeometry.computeFaceNormals(); //needed for material shading
-    this.mesh = new THREE.Mesh( this.profileGeometry, this.material );
+    // need 8 triangles:
+    this.geometry.faces = [
+      new THREE.Face3(0,1,2),
+      new THREE.Face3(2,1,3),
+      new THREE.Face3(5,3,1),
+      new THREE.Face3(3,5,7),
+      new THREE.Face3(6,7,5),
+      new THREE.Face3(4,6,5),
+      new THREE.Face3(6,4,0),
+      new THREE.Face3(6,0,2)
+    ]
+    
+    this.geometry.computeVertexNormals(); //needed for material shading
+    this.mesh = new THREE.Mesh( this.geometry, this.material );
     this.group.add( this.mesh );
   }
   
   clear(){
-    if (this.profileGeometry['dispose']) {
-      this.profileGeometry.dispose();
+    if (this.geometry['dispose']) {
+      this.geometry.dispose();
       for (var i = this.group.children.length - 1; i >= 0; i--) {
         this.group.remove(this.group.children[i]);
       }
