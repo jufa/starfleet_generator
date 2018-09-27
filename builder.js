@@ -26,7 +26,7 @@ export default class Builder {
     this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
 
     // materials
-    this.hullMaterial = new THREE.MeshStandardMaterial( { metalness: 0.3, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
+    this.hullMaterial = new THREE.MeshStandardMaterial( { metalness: 0, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -51,13 +51,17 @@ export default class Builder {
         nacelleForeOffset: [0.3, 0, 1, 0.01],
         nacelleAftOffset: [0.3, 0, 1, 0.01],
         engineeringForeOffset: [0.3, 0, 1, 0.01],
-        engineeringAftOffset: [0.3, 0, 1, 0.01]
+        engineeringAftOffset: [0.3, 0, 1, 0.01],
+        nacelleThickness: [0.15, 0.01, 5, 0.01],
+        engineeringThickness: [0.15, 0.01, 5, 0.01],
       },
       neck: {
         primaryForeOffset: [0.3, 0, 1, 0.01],
         primaryAftOffset: [0.3, 0, 1, 0.01],
         engineeringForeOffset: [0.3, 0, 1, 0.01],
-        engineeringAftOffset: [0.3, 0, 1, 0.01]
+        engineeringAftOffset: [0.3, 0, 1, 0.01],
+        primaryThickness: [0.15, 0.01, 5, 0.01],
+        engineeringThickness: [0.15, 0.01, 5, 0.01],
       },
       primary: {
         y: [-10, -30, 50, 0.01],
@@ -173,21 +177,27 @@ export default class Builder {
       primaryForeOffset: controlParams.neck_primaryForeOffset,
       primaryAftOffset: controlParams.neck_primaryAftOffset,
       engineeringForeOffset: controlParams.neck_engineeringForeOffset,
-      engineeringAftOffset:controlParams.neck_engineeringAftOffset
+      engineeringAftOffset :controlParams.neck_engineeringAftOffset,
+      primaryThickness: controlParams.neck_primaryThickness,
+      engineeringThickness: controlParams.neck_engineeringThickness,
     });
 
     this.portUpperPylon.update({
       nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
-      engineeringAftOffset: controlParams.pylon_engineeringAftOffset
+      engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
+      nacelleThickness: controlParams.pylon_nacelleThickness,
+      engineeringThickness: controlParams.pylon_engineeringThickness,
     });
 
     this.starboardUpperPylon.update({
       nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
-      engineeringAftOffset: controlParams.pylon_engineeringAftOffset
+      engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
+      nacelleThickness: controlParams.pylon_nacelleThickness,
+      engineeringThickness: controlParams.pylon_engineeringThickness,
     });
   }
 

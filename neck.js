@@ -17,9 +17,10 @@ export default class Neck extends HullComponent {
   update({
     primaryForeOffset, // distance away from fore edge of primary hull 1.0 = Full aft
     primaryAftOffset, // distance away from aft edge of primary hull 1.0 = Full fore
+    primaryThickness = 0.1,
     engineeringForeOffset, // distance away from fore edge of engineering hull 1.0 = Full aft
     engineeringAftOffset, // distance away from aft edge of engineering hull 1.0 = Full fore
-    thickness = 0.5,
+    engineeringThickness = 0.1,
   }) {
 
     this.clear();
@@ -31,10 +32,9 @@ export default class Neck extends HullComponent {
     
     let primaryLength = primary.dimensions.z;
     let engineeringLength = engineering.dimensions.y;
-    let primaryThickness = primary.dimensions.y;
     let primaryCenterForeAft = primary.group.position.y;
     let primaryCenterTop = primary.group.position.z;
-    let primaryCenterThickness = primaryCenterTop + primaryThickness * 0.5;
+    let primaryCenterThickness = primaryCenterTop + primary.dimensions.y * 0.5;
 
     let primaryFore = primaryCenterForeAft + primaryLength * 0.5;
     let primaryAft = primaryCenterForeAft - primaryLength * 0.5;
@@ -49,14 +49,14 @@ export default class Neck extends HullComponent {
     engineeringAft += engineeringLength * engineeringAftOffset;
 
     this.vertices = [
-      new THREE.Vector3(thickness, primaryFore, primaryCenterThickness),
-      new THREE.Vector3(thickness, primaryAft, primaryCenterThickness),
-      new THREE.Vector3(thickness, engineeringFore, engineeringForeVerticalCenter),
-      new THREE.Vector3(thickness, engineeringAft, engineeringForeVerticalCenter),
-      new THREE.Vector3(-thickness, primaryFore, primaryCenterThickness),
-      new THREE.Vector3(-thickness, primaryAft, primaryCenterThickness),
-      new THREE.Vector3(-thickness, engineeringFore, engineeringForeVerticalCenter),
-      new THREE.Vector3(-thickness, engineeringAft, engineeringForeVerticalCenter)
+      new THREE.Vector3(primaryThickness, primaryFore, primaryCenterThickness),
+      new THREE.Vector3(primaryThickness, primaryAft, primaryCenterThickness),
+      new THREE.Vector3(engineeringThickness, engineeringFore, engineeringForeVerticalCenter),
+      new THREE.Vector3(engineeringThickness, engineeringAft, engineeringForeVerticalCenter),
+      new THREE.Vector3(-primaryThickness, primaryFore, primaryCenterThickness),
+      new THREE.Vector3(-primaryThickness, primaryAft, primaryCenterThickness),
+      new THREE.Vector3(-engineeringThickness, engineeringFore, engineeringForeVerticalCenter),
+      new THREE.Vector3(-engineeringThickness, engineeringAft, engineeringForeVerticalCenter)
     ];
 
     this.geometry.vertices = this.vertices; 
