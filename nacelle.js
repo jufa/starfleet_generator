@@ -24,7 +24,7 @@ export default class Nacelle extends HullComponent {
     return this;
   }
 
-  update({ length, width, widthRatio }) {
+  update({ length, width, widthRatio, rotation=0 }) {
 
     this.clear();
     
@@ -57,9 +57,11 @@ export default class Nacelle extends HullComponent {
     
     this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, 20);
     this.nacelleGeometry.scale(widthRatio, 1.0, 1.0);
+    this.nacelleGeometry.rotateY(rotation);
 
     this.bussardGeometry = new THREE.LatheGeometry(bussardPoints, 20);
     this.bussardGeometry.scale(widthRatio, 1.0, 1.0);
+    this.bussardGeometry.rotateY(rotation);
 
     this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, this.material );
     this.bussardMesh = new THREE.Mesh( this.bussardGeometry, this.bussardMaterial );

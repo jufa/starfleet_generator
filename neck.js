@@ -17,10 +17,9 @@ export default class Neck extends HullComponent {
   update({
     primaryForeOffset, // distance away from fore edge of primary hull 1.0 = Full aft
     primaryAftOffset, // distance away from aft edge of primary hull 1.0 = Full fore
-    primaryThickness = 0.1,
     engineeringForeOffset, // distance away from fore edge of engineering hull 1.0 = Full aft
     engineeringAftOffset, // distance away from aft edge of engineering hull 1.0 = Full fore
-    engineeringThickness = 0.1,
+    thickness,
   }) {
 
     this.clear();
@@ -49,14 +48,14 @@ export default class Neck extends HullComponent {
     engineeringAft += engineeringLength * engineeringAftOffset;
 
     this.vertices = [
-      new THREE.Vector3(primaryThickness, primaryFore, primaryCenterThickness),
-      new THREE.Vector3(primaryThickness, primaryAft, primaryCenterThickness),
-      new THREE.Vector3(engineeringThickness, engineeringFore, engineeringForeVerticalCenter),
-      new THREE.Vector3(engineeringThickness, engineeringAft, engineeringForeVerticalCenter),
-      new THREE.Vector3(-primaryThickness, primaryFore, primaryCenterThickness),
-      new THREE.Vector3(-primaryThickness, primaryAft, primaryCenterThickness),
-      new THREE.Vector3(-engineeringThickness, engineeringFore, engineeringForeVerticalCenter),
-      new THREE.Vector3(-engineeringThickness, engineeringAft, engineeringForeVerticalCenter)
+      new THREE.Vector3(thickness, primaryFore, primaryCenterThickness),
+      new THREE.Vector3(thickness, primaryAft, primaryCenterThickness),
+      new THREE.Vector3(thickness, engineeringFore, engineeringForeVerticalCenter),
+      new THREE.Vector3(thickness, engineeringAft, engineeringForeVerticalCenter),
+      new THREE.Vector3(-thickness, primaryFore, primaryCenterThickness),
+      new THREE.Vector3(-thickness, primaryAft, primaryCenterThickness),
+      new THREE.Vector3(-thickness, engineeringFore, engineeringForeVerticalCenter),
+      new THREE.Vector3(-thickness, engineeringAft, engineeringForeVerticalCenter)
     ];
 
     this.geometry.vertices = this.vertices; 

@@ -44,12 +44,12 @@ export default class Engineering extends HullComponent {
     this.skew = skew;
 
     // engineering hull
-    var engineeringPoints = [];
+    var engineeringPoints = [new THREE.Vector2(0, 0)];
     var engineeringPointCount = 10;
     for ( var i = 0; i <= 10; i ++ ) {
       engineeringPoints.push( 
         new THREE.Vector2(
-          Math.sin( i / engineeringPointCount * Math.PI * 0.8) * this.width,
+          Math.sin( i / engineeringPointCount * Math.PI * 0.65 + 0.35) * this.width,
           i / engineeringPointCount * this.length
         )
       );

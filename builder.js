@@ -26,7 +26,7 @@ export default class Builder {
     this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
 
     // materials
-    this.hullMaterial = new THREE.MeshStandardMaterial( { metalness: 0, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
+    this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -37,7 +37,8 @@ export default class Builder {
         z: [-3.5, -30, 50, 0.01],
         length: [12, 1, 50, 0.01],
         radius: [1, 0.2, 12, 0.01],
-        widthRatio: [1, 0.1, 10, 0.01]
+        widthRatio: [1, 0.1, 10, 0.01],
+        rotation: [0, -Math.PI / 4, Math.PI / 4, 0.01],
       },
       engineering: {
         y: [-25, -60, 60, 0.01],
@@ -52,16 +53,14 @@ export default class Builder {
         nacelleAftOffset: [0.3, 0, 1, 0.01],
         engineeringForeOffset: [0.3, 0, 1, 0.01],
         engineeringAftOffset: [0.3, 0, 1, 0.01],
-        nacelleThickness: [0.15, 0.01, 5, 0.01],
-        engineeringThickness: [0.15, 0.01, 5, 0.01],
+        thickness: [0.15, 0.01, 5, 0.01],
       },
       neck: {
         primaryForeOffset: [0.3, 0, 1, 0.01],
         primaryAftOffset: [0.3, 0, 1, 0.01],
         engineeringForeOffset: [0.3, 0, 1, 0.01],
         engineeringAftOffset: [0.3, 0, 1, 0.01],
-        primaryThickness: [0.15, 0.01, 5, 0.01],
-        engineeringThickness: [0.15, 0.01, 5, 0.01],
+        thickness: [0.15, 0.01, 5, 0.01],
       },
       primary: {
         y: [-10, -30, 50, 0.01],
@@ -158,11 +157,12 @@ export default class Builder {
     let length = controlParams.nacelle_length;
     let width = controlParams.nacelle_radius;
     let widthRatio = controlParams.nacelle_widthRatio;
+    let rotation = controlParams.nacelle_rotation;
 
-    this.nacellePort.update({length: length, width: width, widthRatio: widthRatio});
+    this.nacellePort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation});
     this.nacellePort.group.position.set(separation, -aft-length, -height);
 
-    this.nacelleStarboard.update({length: length, width: width, widthRatio: widthRatio });
+    this.nacelleStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation });
     this.nacelleStarboard.group.position.set(-separation, -aft-length, -height);
 
     this.engineering.update ({
@@ -178,8 +178,7 @@ export default class Builder {
       primaryAftOffset: controlParams.neck_primaryAftOffset,
       engineeringForeOffset: controlParams.neck_engineeringForeOffset,
       engineeringAftOffset :controlParams.neck_engineeringAftOffset,
-      primaryThickness: controlParams.neck_primaryThickness,
-      engineeringThickness: controlParams.neck_engineeringThickness,
+      thickness: controlParams.neck_thickness,
     });
 
     this.portUpperPylon.update({
@@ -187,8 +186,7 @@ export default class Builder {
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
       engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
-      nacelleThickness: controlParams.pylon_nacelleThickness,
-      engineeringThickness: controlParams.pylon_engineeringThickness,
+      thickness: controlParams.pylon_thickness,
     });
 
     this.starboardUpperPylon.update({
@@ -196,8 +194,7 @@ export default class Builder {
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
       engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
-      nacelleThickness: controlParams.pylon_nacelleThickness,
-      engineeringThickness: controlParams.pylon_engineeringThickness,
+      thickness: controlParams.pylon_thickness,
     });
   }
 

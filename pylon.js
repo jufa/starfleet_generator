@@ -17,10 +17,9 @@ export default class Pylon extends HullComponent {
   update({
     nacelleForeOffset, // distance away from fore edge of nacelle hull 1.0 = Full aft
     nacelleAftOffset, // distance away from aft edge of nacelle hull 1.0 = Full fore
-    nacelleThickness = 0.1,
     engineeringForeOffset, // distance away from fore edge of engineering hull 1.0 = Full aft
     engineeringAftOffset, // distance away from aft edge of engineering hull 1.0 = Full fore})
-    engineeringThickness = 0.1
+    thickness
   }){
 
     this.clear();
@@ -36,7 +35,7 @@ export default class Pylon extends HullComponent {
     let nacelleCenterTop = nacelle.group.position.z;
     let nacelleCenterX = nacelle.group.position.x
     let nacelleCenterY = nacelle.group.position.y;
-    let nacelleCenterZ = nacelle.group.position.z; // nacelleCenterTop + nacelleThickness * 0.5;
+    let nacelleCenterZ = nacelle.group.position.z; // nacelleCenterTop + thickness * 0.5;
 
 
     let nacelleFore = nacelleCenterY + nacelleLength;
@@ -55,15 +54,15 @@ export default class Pylon extends HullComponent {
     engineeringAft += engineeringLength * engineeringAftOffset;
 
     this.vertices = [
-      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ + nacelleThickness),
-      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ + nacelleThickness),
-      new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ + engineeringThickness),
-      new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ + engineeringThickness),
+      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ + thickness),
+      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ + thickness),
+      new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ + thickness),
+      new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ + thickness),
       
-      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ - nacelleThickness),
-      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ - nacelleThickness),
-      new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ - engineeringThickness),
-      new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ - engineeringThickness),
+      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ - thickness),
+      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ - thickness),
+      new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ - thickness),
+      new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ - thickness),
     ];
 
     this.geometry.vertices = this.vertices; 
