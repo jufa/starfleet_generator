@@ -38,7 +38,16 @@ export default class Builder {
         length: [12, 1, 50, 0.01],
         radius: [1, 0.2, 12, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
-        rotation: [0, -Math.PI / 4, Math.PI / 4, 0.01],
+        rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
+      },
+      nacelleLower: {
+        y: [40, -30, 50, 0.01],
+        x: [2.5, -30, 50, 0.01],
+        z: [-3.5, -30, 50, 0.01],
+        length: [12, 1, 50, 0.01],
+        radius: [1, 0.2, 12, 0.01],
+        widthRatio: [1, 0.1, 10, 0.01],
+        rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
       },
       engineering: {
         y: [-25, -60, 60, 0.01],
@@ -109,11 +118,17 @@ export default class Builder {
     this.primary = new Primary({ material: this.hullMaterial });
     this.ship.add(this.primary.group);
 
-    this.nacellePort = new Nacelle({ material: this.hullMaterial});
-    this.ship.add(this.nacellePort.group);
+    this.nacelleUpperPort = new Nacelle({ material: this.hullMaterial});
+    this.ship.add(this.nacelleUpperPort.group);
 
-    this.nacelleStarboard = new Nacelle({ material: this.hullMaterial });
-    this.ship.add(this.nacelleStarboard.group);
+    this.nacelleUpperStarboard = new Nacelle({ material: this.hullMaterial });
+    this.ship.add(this.nacelleUpperStarboard.group);
+
+    this.nacelleLowerPort = new Nacelle({ material: this.hullMaterial});
+    this.ship.add(this.nacelleLowerPort.group);
+
+    this.nacelleLowerStarboard = new Nacelle({ material: this.hullMaterial });
+    this.ship.add(this.nacelleLowerStarboard.group);
 
     this.engineering = new Engineering({ material: this.hullMaterial });
     this.ship.add(this.engineering.group);
@@ -126,18 +141,32 @@ export default class Builder {
     this.ship.add(this.neck.group);
 
     this.portUpperPylon = new Pylon({
-      nacelle: this.nacellePort,
+      nacelle: this.nacelleUpperPort,
       engineering: this.engineering,
       material: this.hullMaterial 
     });
     this.ship.add(this.portUpperPylon.group);
 
     this.starboardUpperPylon = new Pylon({
-      nacelle: this.nacelleStarboard,
+      nacelle: this.nacelleUpperStarboard,
       engineering: this.engineering,
       material: this.hullMaterial 
     });
     this.ship.add(this.starboardUpperPylon.group);
+
+    this.portLowerPylon = new Pylon({
+      nacelle: this.nacelleLowerPort,
+      engineering: this.engineering,
+      material: this.hullMaterial 
+    });
+    this.ship.add(this.portLowerPylon.group);
+
+    this.starboardLowerPylon = new Pylon({
+      nacelle: this.nacelleLowerStarboard,
+      engineering: this.engineering,
+      material: this.hullMaterial 
+    });
+    this.ship.add(this.starboardLowerPylon.group);
 
     this.ship.rotateX(Math.PI * 0.5);
     this.ship.translateY(10.0);
@@ -159,27 +188,29 @@ export default class Builder {
     let widthRatio = controlParams.nacelle_widthRatio;
     let rotation = controlParams.nacelle_rotation;
 
-    this.nacellePort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation});
-    this.nacellePort.group.position.set(separation, -aft-length, -height);
+    let separation2 = controlParams.nacelleLower_x * 2.0;
+    let aft2 = controlParams.nacelleLower_y;
+    let height2 = controlParams.nacelleLower_z;
+    let length2 = controlParams.nacelleLower_length;
+    let width2 = controlParams.nacelleLower_radius;
+    let widthRatio2 = controlParams.nacelleLower_widthRatio;
+    let rotation2 = controlParams.nacelleLower_rotation;
 
-    this.nacelleStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation });
-    this.nacelleStarboard.group.position.set(-separation, -aft-length, -height);
+    this.nacelleUpperPort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation});
+    this.nacelleUpperPort.group.position.set(separation, -aft-length, -height);
 
-    this.engineering.update ({
-      length: controlParams.engineering_length, 
-      width: controlParams.engineering_radius, 
-      widthRatio: controlParams.engineering_widthRatio,
-      skew: controlParams.engineering_skew
-    });
-    this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
+    this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation });
+    this.nacelleUpperStarboard.group.position.set(-separation, -aft-length, -height);
 
-    this.neck.update({
-      primaryForeOffset: controlParams.neck_primaryForeOffset,
-      primaryAftOffset: controlParams.neck_primaryAftOffset,
-      engineeringForeOffset: controlParams.neck_engineeringForeOffset,
-      engineeringAftOffset :controlParams.neck_engineeringAftOffset,
-      thickness: controlParams.neck_thickness,
-    });
+    if (controlParams.nacelle_lowerToggle) {
+      this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});
+      this.nacelleLowerPort.group.position.set(separation2, -aft2-length2, height2);
+      this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
+      this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
+    } else {
+      this.nacelleLowerPort.clear();
+      this.nacelleLowerStarboard.clear();
+    }
 
     this.portUpperPylon.update({
       nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
@@ -195,6 +226,43 @@ export default class Builder {
       engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
       engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
       thickness: controlParams.pylon_thickness,
+    });
+
+    if (controlParams.nacelle_lowerToggle) {
+      this.portLowerPylon.update({
+        nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
+        nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
+        engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
+        engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
+        thickness: controlParams.pylon_thickness,
+      });
+
+      this.starboardLowerPylon.update({
+        nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
+        nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
+        engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
+        engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
+        thickness: controlParams.pylon_thickness,
+      });
+    } else {
+      this.portLowerPylon.clear();
+      this.starboardLowerPylon.clear();
+    }
+
+    this.engineering.update ({
+      length: controlParams.engineering_length, 
+      width: controlParams.engineering_radius, 
+      widthRatio: controlParams.engineering_widthRatio,
+      skew: controlParams.engineering_skew
+    });
+    this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
+
+    this.neck.update({
+      primaryForeOffset: controlParams.neck_primaryForeOffset,
+      primaryAftOffset: controlParams.neck_primaryAftOffset,
+      engineeringForeOffset: controlParams.neck_engineeringForeOffset,
+      engineeringAftOffset :controlParams.neck_engineeringAftOffset,
+      thickness: controlParams.neck_thickness,
     });
   }
 
@@ -253,6 +321,11 @@ export default class Builder {
   paramDump() {
     let pretty = JSON.stringify(this.controlParams, null, 2)
     console.log(pretty);
+    navigator.permissions.query({name: "clipboard-write"}).then(result => {
+      if (result.state == "granted" || result.state == "prompt") {
+        navigator.clipboard.writeText(pretty);
+      }
+    });
   }
 
   setPredefinedShip(shipName) {
@@ -260,10 +333,13 @@ export default class Builder {
       this.predefinedShipTransitionFrameCounter = 0; //outta time, let's finish animation
     }.bind(this), this.maxTransitionTime);
     let newParams = this.predefinedShips.find(function (ship) { return ship.name == shipName; });
+    this.predefinedShipTransitionFrameCounter = this.predefinedShipTransitionFrames;
     for (var param in newParams) {
-      // this.startParams[param] = this.controlParams[param];
-      this.targetParams[param] = newParams[param];
-      this.predefinedShipTransitionFrameCounter = this.predefinedShipTransitionFrames;
+      if (typeof newParams[param] === "number") {
+        this.targetParams[param] = newParams[param];
+      } else {
+        this.controlParams[param] = newParams[param];
+      }
     }
   }
 
@@ -286,11 +362,22 @@ export default class Builder {
     var gui = new dat.GUI( { autoPlace: true, width: 400 } );
 
     // export button:
-    gui.add({ export_ship: this.paramDump.bind(this) }, 'export_ship');
+    gui.add({ copy_ship_params: this.paramDump.bind(this) }, 'copy_ship_params');
 
     // predefined ships:
     this.currentShip.name = this.predefinedShips[0].name;
     let shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) )
+
+    shipSelector.onChange(
+      function(newShipName) {
+        this.setPredefinedShip(newShipName);
+      }.bind(this)
+    );
+
+    this.controlParams.nacelle_lowerToggle = false;
+    let nacelleLowerToggle = gui.add( this.controlParams, 'nacelle_lowerToggle', false );
+    nacelleLowerToggle.onChange(function(){ this.dirty = true; }.bind(this));
+    nacelleLowerToggle.listen();
 
     shipSelector.onChange(
       function(newShipName) {
