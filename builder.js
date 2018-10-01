@@ -330,6 +330,7 @@ export default class Builder {
   paramDump() {
     let pretty = JSON.stringify(this.controlParams, null, 2)
     console.log(pretty);
+    alert("params output to console (and clipboard for supported browsers)");
     navigator.permissions.query({name: "clipboard-write"}).then(result => {
       if (result.state == "granted" || result.state == "prompt") {
         navigator.clipboard.writeText(pretty);
