@@ -64,6 +64,13 @@ export default class Builder {
         engineeringAftOffset: [0.3, 0, 1, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
+      pylonLower: {
+        nacelleForeOffset: [0.3, 0, 1, 0.01],
+        nacelleAftOffset: [0.3, 0, 1, 0.01],
+        engineeringForeOffset: [0.3, 0, 1, 0.01],
+        engineeringAftOffset: [0.3, 0, 1, 0.01],
+        thickness: [0.15, 0.01, 5, 0.01],
+      },
       neck: {
         primaryForeOffset: [0.3, 0, 1, 0.01],
         primaryAftOffset: [0.3, 0, 1, 0.01],
@@ -177,6 +184,7 @@ export default class Builder {
   update(){
     let controlParams = this.controlParams;
     
+    this.primary.group.visible = this.controlParams.primary_toggle;
     this.primary.update({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
 
@@ -196,22 +204,15 @@ export default class Builder {
     let widthRatio2 = controlParams.nacelleLower_widthRatio;
     let rotation2 = controlParams.nacelleLower_rotation;
 
+    this.nacelleUpperPort.group.visible = this.controlParams.nacelle_toggle;
     this.nacelleUpperPort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation});
     this.nacelleUpperPort.group.position.set(separation, -aft-length, -height);
 
+    this.nacelleUpperStarboard.group.visible = this.controlParams.nacelle_toggle;
     this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation });
     this.nacelleUpperStarboard.group.position.set(-separation, -aft-length, -height);
 
-    if (controlParams.nacelle_lowerToggle) {
-      this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});
-      this.nacelleLowerPort.group.position.set(separation2, -aft2-length2, height2);
-      this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
-      this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
-    } else {
-      this.nacelleLowerPort.clear();
-      this.nacelleLowerStarboard.clear();
-    }
-
+    this.portUpperPylon.group.visible = this.controlParams.pylon_toggle;
     this.portUpperPylon.update({
       nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
@@ -220,6 +221,7 @@ export default class Builder {
       thickness: controlParams.pylon_thickness,
     });
 
+    this.starboardUpperPylon.group.visible = this.controlParams.pylon_toggle;
     this.starboardUpperPylon.update({
       nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
@@ -228,27 +230,33 @@ export default class Builder {
       thickness: controlParams.pylon_thickness,
     });
 
-    if (controlParams.nacelle_lowerToggle) {
-      this.portLowerPylon.update({
-        nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
-        nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
-        engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
-        engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
-        thickness: controlParams.pylon_thickness,
-      });
+    this.nacelleLowerPort.group.visible = this.controlParams.nacelleLower_toggle;
+    this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});
+    this.nacelleLowerPort.group.position.set(separation2, -aft2-length2, height2);
+  
+    this.nacelleLowerStarboard.group.visible = this.controlParams.nacelleLower_toggle;
+    this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
+    this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
 
-      this.starboardLowerPylon.update({
-        nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
-        nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
-        engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
-        engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
-        thickness: controlParams.pylon_thickness,
-      });
-    } else {
-      this.portLowerPylon.clear();
-      this.starboardLowerPylon.clear();
-    }
+    this.portLowerPylon.group.visible = this.controlParams.pylonLower_toggle;
+    this.portLowerPylon.update({
+      nacelleForeOffset: controlParams.pylonLower_nacelleForeOffset,
+      nacelleAftOffset: controlParams.pylonLower_nacelleAftOffset,
+      engineeringForeOffset: controlParams.pylonLower_engineeringForeOffset,
+      engineeringAftOffset: controlParams.pylonLower_engineeringAftOffset,
+      thickness: controlParams.pylonLower_thickness,
+    });
 
+    this.starboardLowerPylon.group.visible = this.controlParams.pylonLower_toggle;
+    this.starboardLowerPylon.update({
+      nacelleForeOffset: controlParams.pylonLower_nacelleForeOffset,
+      nacelleAftOffset: controlParams.pylonLower_nacelleAftOffset,
+      engineeringForeOffset: controlParams.pylonLower_engineeringForeOffset,
+      engineeringAftOffset: controlParams.pylonLower_engineeringAftOffset,
+      thickness: controlParams.pylonLower_thickness,
+    });
+    
+    this.engineering.group.visible = this.controlParams.engineering_toggle;
     this.engineering.update ({
       length: controlParams.engineering_length, 
       width: controlParams.engineering_radius, 
@@ -257,6 +265,7 @@ export default class Builder {
     });
     this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
 
+    this.neck.group.visible = this.controlParams.neck_toggle;
     this.neck.update({
       primaryForeOffset: controlParams.neck_primaryForeOffset,
       primaryAftOffset: controlParams.neck_primaryAftOffset,
@@ -374,21 +383,28 @@ export default class Builder {
       }.bind(this)
     );
 
-    this.controlParams.nacelle_lowerToggle = false;
-    let nacelleLowerToggle = gui.add( this.controlParams, 'nacelle_lowerToggle', false );
-    nacelleLowerToggle.onChange(function(){ this.dirty = true; }.bind(this));
-    nacelleLowerToggle.listen();
-
     shipSelector.onChange(
       function(newShipName) {
         this.setPredefinedShip(newShipName);
       }.bind(this)
     );
-    
+
     // params:
+    const that = this;
     for (var folder in this.controlConfiguration) {
       var controls = gui.addFolder(folder);
       let paramsInFolder = this.controlConfiguration[folder];
+      // add a checkbox per folder
+      const toggle_name = folder + '_toggle'; 
+      this.controlParams[toggle_name] = true;
+
+      let toggle = controls.add( this.controlParams, toggle_name, true );
+      toggle.onChange( function(value) { 
+        toggle.object[toggle.property] = value;
+        this.dirty = true;
+      }.bind(this));
+      toggle.listen();
+
       for (var key in paramsInFolder) {
         this.controlParams[folder + '_' + key] = paramsInFolder[key][0];
         let ref = controls.add(
