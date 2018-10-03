@@ -73,7 +73,7 @@ export default class Neck extends HullComponent {
     ]
         
     this.geometry.computeVertexNormals(); // needed for material shading
-    this.mesh = new THREE.Mesh( this.geometry, this.material );
+    this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
     this.group.add( this.mesh );
   }
 

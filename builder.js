@@ -123,62 +123,66 @@ export default class Builder {
     this.ship.name = 'ship';
 
     this.primary = new Primary({ material: this.hullMaterial });
-    this.ship.add(this.primary.group);
+    this.mount(this.ship, this.primary.group);
 
     this.nacelleUpperPort = new Nacelle({ material: this.hullMaterial});
-    this.ship.add(this.nacelleUpperPort.group);
+    this.mount(this.ship, this.nacelleUpperPort.group);
 
     this.nacelleUpperStarboard = new Nacelle({ material: this.hullMaterial });
-    this.ship.add(this.nacelleUpperStarboard.group);
+    this.mount(this.ship, this.nacelleUpperStarboard.group);
 
     this.nacelleLowerPort = new Nacelle({ material: this.hullMaterial});
-    this.ship.add(this.nacelleLowerPort.group);
+    this.mount(this.ship, this.nacelleLowerPort.group);
 
     this.nacelleLowerStarboard = new Nacelle({ material: this.hullMaterial });
-    this.ship.add(this.nacelleLowerStarboard.group);
+    this.mount(this.ship, this.nacelleLowerStarboard.group);
 
     this.engineering = new Engineering({ material: this.hullMaterial });
-    this.ship.add(this.engineering.group);
+    this.mount(this.ship, this.engineering.group);
 
     this.neck = new Neck({ 
       primary: this.primary,
       engineering: this.engineering,
       material: this.hullMaterial 
     });
-    this.ship.add(this.neck.group);
+    this.mount(this.ship, this.neck.group);
 
     this.portUpperPylon = new Pylon({
       nacelle: this.nacelleUpperPort,
       engineering: this.engineering,
       material: this.hullMaterial 
     });
-    this.ship.add(this.portUpperPylon.group);
+    this.mount(this.ship, this.portUpperPylon.group);
 
     this.starboardUpperPylon = new Pylon({
       nacelle: this.nacelleUpperStarboard,
       engineering: this.engineering,
       material: this.hullMaterial 
     });
-    this.ship.add(this.starboardUpperPylon.group);
+    this.mount(this.ship, this.starboardUpperPylon.group);
 
     this.portLowerPylon = new Pylon({
       nacelle: this.nacelleLowerPort,
       engineering: this.engineering,
       material: this.hullMaterial 
     });
-    this.ship.add(this.portLowerPylon.group);
+    this.mount(this.ship, this.portLowerPylon.group);
 
     this.starboardLowerPylon = new Pylon({
       nacelle: this.nacelleLowerStarboard,
       engineering: this.engineering,
       material: this.hullMaterial 
     });
-    this.ship.add(this.starboardLowerPylon.group);
+    this.mount(this.ship, this.starboardLowerPylon.group);
 
     this.ship.rotateX(Math.PI * 0.5);
     this.ship.translateY(10.0);
 
     this.scene.add(this.ship);
+  }
+
+  mount(combined, part) {
+    combined.add(part);
   }
 
   update(){

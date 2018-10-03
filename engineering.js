@@ -85,7 +85,7 @@ export default class Engineering extends HullComponent {
     this.deflectorGeometry.applyMatrix( matrix );
     this.engineeringGeometry.applyMatrix( matrix );
 
-    this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, this.material );
+    this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, this.material.clone() );
     this.deflectoMesh = new THREE.Mesh( this.deflectorGeometry, this.deflectorMaterial );
 
     this.group.add( this.engineeringMesh );

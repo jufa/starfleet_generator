@@ -38,7 +38,7 @@ export default class Primary extends HullComponent{
     this.geometry.scale(widthRatio, 1.0, 1.0);
     this.computeBoundingBox(this.geometry);
 
-    this.mesh = new THREE.Mesh( this.geometry, this.material );
+    this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
 
     this.group.add( this.mesh );       
   }

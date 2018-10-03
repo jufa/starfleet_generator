@@ -63,7 +63,7 @@ export default class Nacelle extends HullComponent {
     this.bussardGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardGeometry.rotateY(rotation);
 
-    this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, this.material );
+    this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, this.material.clone() );
     this.bussardMesh = new THREE.Mesh( this.bussardGeometry, this.bussardMaterial );
 
     this.group.add( this.nacelleMesh );
