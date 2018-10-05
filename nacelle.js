@@ -8,17 +8,17 @@ export default class Nacelle extends HullComponent {
     this.material = material;
     this.group = new THREE.Group();
     this.dimensions = {};
-    
+
     this.nacelleGeometry = {};
     this.bussardGeometry = {};
 
     this.nacelleMesh = {};
     this.bussardMesh = {};
 
-    this.bussardMaterial = new THREE.MeshPhongMaterial({ 
-      shininess: 100, 
-      color: 0x330033,
-      emissive: 0xdd0000,
+    this.bussardMaterial = new THREE.MeshPhongMaterial({
+      shininess: 100,
+      color: 0x551100,
+      emissive: 0x330000,
       flatShading: false,
     });
     return this;
@@ -27,7 +27,7 @@ export default class Nacelle extends HullComponent {
   update({ length, width, widthRatio, rotation=0 }) {
 
     this.clear();
-    
+
     // nacelle body
     var nacellePoints = [
       new THREE.Vector2( 0.0, 0.0 )
@@ -35,9 +35,9 @@ export default class Nacelle extends HullComponent {
 
     var nacellePointCount = 5.0;
     for ( var i = 0; i <= nacellePointCount; i++ ) {
-      nacellePoints.push( 
-        new THREE.Vector2( 
-          (Math.sin(i / nacellePointCount * Math.PI / 2.0) * 0.7 + 0.3) * width, 
+      nacellePoints.push(
+        new THREE.Vector2(
+          (Math.sin(i / nacellePointCount * Math.PI / 2.0) * 0.5 + 0.5) * width,
           i / nacellePointCount * length
         )
       );
@@ -54,7 +54,7 @@ export default class Nacelle extends HullComponent {
         )
       );
     }
-    
+
     this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, 20);
     this.nacelleGeometry.scale(widthRatio, 1.0, 1.0);
     this.nacelleGeometry.rotateY(rotation);
@@ -73,7 +73,7 @@ export default class Nacelle extends HullComponent {
   }
 
   computeBoundingBox(measuredGeom){
-    measuredGeom.computeBoundingBox();  
+    measuredGeom.computeBoundingBox();
     this.dimensions.x = measuredGeom.boundingBox.max.x - measuredGeom.boundingBox.min.x;
     this.dimensions.y = measuredGeom.boundingBox.max.y - measuredGeom.boundingBox.min.y;
     this.dimensions.z = measuredGeom.boundingBox.max.z - measuredGeom.boundingBox.min.z;
