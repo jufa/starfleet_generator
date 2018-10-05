@@ -54,18 +54,18 @@ export default class Pylon extends HullComponent {
     engineeringAft += engineeringLength * engineeringAftOffset;
 
     this.vertices = [
-      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ + thickness),
-      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ + thickness),
+      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ + thickness), //
+      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ + thickness), //
       new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ + thickness),
       new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ + thickness),
-      
-      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ - thickness),
+
+      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ - thickness), //
       new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ - thickness),
       new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ - thickness),
       new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ - thickness),
     ];
 
-    this.geometry.vertices = this.vertices; 
+    this.geometry.vertices = this.vertices;
 
     // need 8 triangles:
     this.geometry.faces = [
@@ -76,14 +76,16 @@ export default class Pylon extends HullComponent {
       new THREE.Face3(6,7,5),
       new THREE.Face3(4,6,5),
       new THREE.Face3(6,4,0),
-      new THREE.Face3(6,0,2)
+      new THREE.Face3(6,0,2),
+      new THREE.Face3(0,4,1),
+      new THREE.Face3(4,5,1),
     ]
-    
+
     this.geometry.computeVertexNormals(); //needed for material shading
     this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
     this.group.add( this.mesh );
   }
-  
+
   clear(){
     if (this.geometry['dispose']) {
       this.geometry.dispose();
