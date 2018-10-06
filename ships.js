@@ -445,7 +445,7 @@
       "pylon_engineeringAftOffset": 0.2,
       "pylon_thickness": 0.45,
       "pylonLower_toggle": false,
-      "neck_toggle": true,
+      "neck_toggle": false,
       "neck_primaryForeOffset": 0.6,
       "neck_primaryAftOffset": 0.04,
       "neck_engineeringForeOffset": 0.06,

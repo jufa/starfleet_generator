@@ -45,13 +45,13 @@ export default class Nacelle extends HullComponent {
 
     // bussard
     var bussardPointCount = 9.0;
-    var bussardPoints = []
+    var bussardPoints = [];
     for ( var i = bussardPointCount; i >= 0; i-- ) {
       bussardPoints.push(
         new THREE.Vector2(
           Math.pow(i / bussardPointCount, 0.4) * width * 0.9,
           length + (1.0 - i / bussardPointCount) * width * 1.0
-        )
+      )
       );
     }
 

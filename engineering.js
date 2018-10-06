@@ -8,7 +8,7 @@ export default class Engineering extends HullComponent {
     // materials
     this.material = material
     this.deflectorMaterial = new THREE.MeshPhongMaterial( {
-      shininess: 50,
+      shininess: 10,
       color: 0xFFDF00,
       emissive: 0x662222,
       side: THREE.DoubleSide,
@@ -58,17 +58,26 @@ export default class Engineering extends HullComponent {
     // deflector array
     var deflectorPoints = [];
 
-    let deflectorOuterEdge = new THREE.Vector2().copy(engineeringPoints[engineeringPoints.length - 1]);
+    const deflectorOuterEdge = new THREE.Vector2().copy(engineeringPoints[engineeringPoints.length - 1]);
     deflectorPoints.push(deflectorOuterEdge);
 
     // dish curve
-    deflectorPoints.push (
-      new THREE.Vector2( 0.1, this.length - this.length * 0.02 )
-    );
+    let c = 0.5;
+    const deflectorPointCount = 5.0;
+    let r;
+    for (let i = 1.0; i <= deflectorPointCount; i++) {
+      r =  i / deflectorPointCount;
+      deflectorPoints.push (
+        new THREE.Vector2( deflectorOuterEdge.x * (1.0 - r), deflectorOuterEdge.y - c * this.width * r * r - 0.1 )
+      );
+    };
 
     // antenna length
+    const lastDishPoint = deflectorPoints[deflectorPoints.length - 1];
+    lastDishPoint.setX(deflectorOuterEdge.x * 0.1);
+
     deflectorPoints.push (
-      new THREE.Vector2( 0.0, this.length + this.length * 0.01 )
+      new THREE.Vector2( 0.0, deflectorOuterEdge.y + 0.6 )
     );
 
     this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 20);

@@ -26,7 +26,7 @@ export default class Builder {
     this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
 
     // materials
-    this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
+    this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x555555, emissive: 0x444455, side: THREE.DoubleSide, flatShading: false } );
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -95,11 +95,11 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    lights[ 0 ] = new THREE.PointLight( 0xffffff, 1.5, 0 );
-    lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.5, 0 );
+    lights[ 0 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
+    lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
 
-    lights[ 0 ].position.set( 100, 100, 0 );
-    lights[ 1 ].position.set( -100, -100, 0 );
+    lights[ 0 ].position.set( 50, 50, 0 );
+    lights[ 1 ].position.set( -50, -50, 0 );
 
     this.scene.add( lights[ 0 ] );
     this.scene.add( lights[ 1 ] );
