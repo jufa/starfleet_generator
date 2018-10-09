@@ -26,7 +26,13 @@ export default class Builder {
     this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
 
     // materials
-    this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 50, color: 0x555555, emissive: 0x444455, side: THREE.DoubleSide, flatShading: false } );
+    this.hullMaterial = new THREE.MeshPhongMaterial({
+      shininess: 50,
+      color: 0x555555,
+      emissive: 0x444455,
+      side: THREE.DoubleSide,
+      flatShading: false
+    });
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}

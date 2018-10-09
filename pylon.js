@@ -53,16 +53,22 @@ export default class Pylon extends HullComponent {
     engineeringFore -= engineeringLength * engineeringForeOffset;
     engineeringAft += engineeringLength * engineeringAftOffset;
 
-    this.vertices = [
-      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ + thickness), //
-      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ + thickness), //
-      new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ + thickness),
-      new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ + thickness),
+    const deltaX = nacelleCenterX - engineeringCenterX;
+    const deltaZ = nacelleCenterZ - engineeringCenterZ;
+    const angle = Math.atan2(deltaZ, deltaX);
+    const thicknessX = thickness * Math.sin(angle);
+    const thicknessZ = thickness * Math.cos(angle);
 
-      new THREE.Vector3(nacelleCenterX, nacelleFore, nacelleCenterZ - thickness), //
-      new THREE.Vector3(nacelleCenterX, nacelleAft, nacelleCenterZ - thickness),
-      new THREE.Vector3(engineeringCenterX, engineeringFore, engineeringCenterZ - thickness),
-      new THREE.Vector3(engineeringCenterX, engineeringAft, engineeringCenterZ - thickness),
+    this.vertices = [
+      new THREE.Vector3(nacelleCenterX - thicknessX, nacelleFore, nacelleCenterZ + thicknessZ),
+      new THREE.Vector3(nacelleCenterX - thicknessX, nacelleAft, nacelleCenterZ + thicknessZ),
+      new THREE.Vector3(engineeringCenterX - thicknessX, engineeringFore, engineeringCenterZ + thicknessZ),
+      new THREE.Vector3(engineeringCenterX - thicknessX, engineeringAft, engineeringCenterZ + thicknessZ),
+
+      new THREE.Vector3(nacelleCenterX + thicknessX, nacelleFore, nacelleCenterZ - thicknessZ),
+      new THREE.Vector3(nacelleCenterX + thicknessX, nacelleAft, nacelleCenterZ - thicknessZ),
+      new THREE.Vector3(engineeringCenterX + thicknessX, engineeringFore, engineeringCenterZ - thicknessZ),
+      new THREE.Vector3(engineeringCenterX + thicknessX, engineeringAft, engineeringCenterZ - thicknessZ),
     ];
 
     this.geometry.vertices = this.vertices;
