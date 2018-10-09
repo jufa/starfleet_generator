@@ -26,7 +26,13 @@ export default class Builder {
     this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
 
     // materials
-    this.hullMaterial = new THREE.MeshPhongMaterial( { shininess: 40, color: 0x555555, emissive: 0x222936, side: THREE.DoubleSide, flatShading: false } );
+    this.hullMaterial = new THREE.MeshPhongMaterial({
+      shininess: 50,
+      color: 0x555555,
+      emissive: 0x444455,
+      side: THREE.DoubleSide,
+      flatShading: false
+    });
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -95,31 +101,28 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    lights[ 0 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
-    lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.5, 0 );
-    lights[ 2 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
+    lights[ 0 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
+    lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
 
-    lights[ 0 ].position.set( 200, 200, 0 );
-    lights[ 1 ].position.set( -200, 100, 0 );
-    lights[ 2 ].position.set( - 200, - 200, - 200 );
+    lights[ 0 ].position.set( 50, 50, 0 );
+    lights[ 1 ].position.set( -50, -50, 0 );
 
     this.scene.add( lights[ 0 ] );
     this.scene.add( lights[ 1 ] );
-    this.scene.add( lights[ 2 ] );
 
     new Stars({scene: this.scene});
   }
 
   /**
-   * 
+   *
    * buildShip
-   * 
+   *
    * initially creat components
-   * 
+   *
    */
 
   build() {
-    this.ship = new THREE.Group(); 
+    this.ship = new THREE.Group();
     this.ship.name = 'ship';
 
     this.primary = new Primary({ material: this.hullMaterial });
@@ -140,38 +143,38 @@ export default class Builder {
     this.engineering = new Engineering({ material: this.hullMaterial });
     this.mount(this.ship, this.engineering.group);
 
-    this.neck = new Neck({ 
+    this.neck = new Neck({
       primary: this.primary,
       engineering: this.engineering,
-      material: this.hullMaterial 
+      material: this.hullMaterial
     });
     this.mount(this.ship, this.neck.group);
 
     this.portUpperPylon = new Pylon({
       nacelle: this.nacelleUpperPort,
       engineering: this.engineering,
-      material: this.hullMaterial 
+      material: this.hullMaterial
     });
     this.mount(this.ship, this.portUpperPylon.group);
 
     this.starboardUpperPylon = new Pylon({
       nacelle: this.nacelleUpperStarboard,
       engineering: this.engineering,
-      material: this.hullMaterial 
+      material: this.hullMaterial
     });
     this.mount(this.ship, this.starboardUpperPylon.group);
 
     this.portLowerPylon = new Pylon({
       nacelle: this.nacelleLowerPort,
       engineering: this.engineering,
-      material: this.hullMaterial 
+      material: this.hullMaterial
     });
     this.mount(this.ship, this.portLowerPylon.group);
 
     this.starboardLowerPylon = new Pylon({
       nacelle: this.nacelleLowerStarboard,
       engineering: this.engineering,
-      material: this.hullMaterial 
+      material: this.hullMaterial
     });
     this.mount(this.ship, this.starboardLowerPylon.group);
 
@@ -187,7 +190,7 @@ export default class Builder {
 
   update(){
     let controlParams = this.controlParams;
-    
+
     this.primary.group.visible = this.controlParams.primary_toggle;
     this.primary.update({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
@@ -237,7 +240,7 @@ export default class Builder {
     this.nacelleLowerPort.group.visible = this.controlParams.nacelleLower_toggle;
     this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});
     this.nacelleLowerPort.group.position.set(separation2, -aft2-length2, height2);
-  
+
     this.nacelleLowerStarboard.group.visible = this.controlParams.nacelleLower_toggle;
     this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
     this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
@@ -259,11 +262,11 @@ export default class Builder {
       engineeringAftOffset: controlParams.pylonLower_engineeringAftOffset,
       thickness: controlParams.pylonLower_thickness,
     });
-    
+
     this.engineering.group.visible = this.controlParams.engineering_toggle;
     this.engineering.update ({
-      length: controlParams.engineering_length, 
-      width: controlParams.engineering_radius, 
+      length: controlParams.engineering_length,
+      width: controlParams.engineering_radius,
       widthRatio: controlParams.engineering_widthRatio,
       skew: controlParams.engineering_skew
     });
@@ -286,7 +289,7 @@ export default class Builder {
 
     // camera & controls
     this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1600000 );
-    this.camera.position.z = 40;
+    this.camera.position.z = 50;
     this.controls = new OrbitControls( this.camera, this.container );
     this.controls.lookSpeed = 0.3;
 
@@ -305,7 +308,7 @@ export default class Builder {
     this.renderer.setClearColor( this.CLEAR_COLOUR );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( window.innerWidth, window.innerHeight );
-    
+
     this.container.innerHTML = "";
     this.container.appendChild( this.renderer.domElement );
 
@@ -330,7 +333,7 @@ export default class Builder {
     this.controls.update( shipBuilder.clock.getDelta() );
     this.renderer.render( this.scene, this.camera );
   }
-  
+
   paramDump() {
     let pretty = JSON.stringify(this.controlParams, null, 2)
     console.log(pretty);
@@ -400,11 +403,11 @@ export default class Builder {
       var controls = gui.addFolder(folder);
       let paramsInFolder = this.controlConfiguration[folder];
       // add a checkbox per folder
-      const toggle_name = folder + '_toggle'; 
+      const toggle_name = folder + '_toggle';
       this.controlParams[toggle_name] = true;
 
       let toggle = controls.add( this.controlParams, toggle_name, true );
-      toggle.onChange( function(value) { 
+      toggle.onChange( function(value) {
         toggle.object[toggle.property] = value;
         this.dirty = true;
       }.bind(this));
@@ -413,8 +416,8 @@ export default class Builder {
       for (var key in paramsInFolder) {
         this.controlParams[folder + '_' + key] = paramsInFolder[key][0];
         let ref = controls.add(
-          this.controlParams, 
-          folder + '_' + key, 
+          this.controlParams,
+          folder + '_' + key,
           paramsInFolder[key][1],
           paramsInFolder[key][2],
           paramsInFolder[key][3]

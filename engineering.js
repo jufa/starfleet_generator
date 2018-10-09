@@ -6,17 +6,17 @@ export default class Engineering extends HullComponent {
     super();
 
     // materials
-    this.material = material;
-    this.deflectorMaterial = new THREE.MeshPhongMaterial( { 
-      shininess: 100,
+    this.material = material
+    this.deflectorMaterial = new THREE.MeshPhongMaterial( {
+      shininess: 10,
       color: 0xFFDF00,
       emissive: 0x662222,
       side: THREE.DoubleSide,
-      flatShading: false 
+      flatShading: false
     } );
     this.group = new THREE.Group();
     this.dimensions = {};
-    
+
     this.engineeringGeometry = {};
     this.deflectorGeometry = {};
 
@@ -47,7 +47,7 @@ export default class Engineering extends HullComponent {
     var engineeringPoints = [new THREE.Vector2(0, 0)];
     var engineeringPointCount = 10;
     for ( var i = 0; i <= 10; i ++ ) {
-      engineeringPoints.push( 
+      engineeringPoints.push(
         new THREE.Vector2(
           Math.sin( i / engineeringPointCount * Math.PI * 0.65 + 0.35) * this.width,
           i / engineeringPointCount * this.length
@@ -58,15 +58,26 @@ export default class Engineering extends HullComponent {
     // deflector array
     var deflectorPoints = [];
 
-    let deflectorOuterEdge = new THREE.Vector2().copy(engineeringPoints[engineeringPoints.length - 1]);
+    const deflectorOuterEdge = new THREE.Vector2().copy(engineeringPoints[engineeringPoints.length - 1]);
     deflectorPoints.push(deflectorOuterEdge);
 
-    deflectorPoints.push (
-      new THREE.Vector2( 0.2, this.length - this.length * 0.04 )
-    );
+    // dish curve
+    let c = 0.5;
+    const deflectorPointCount = 5.0;
+    let r;
+    for (let i = 1.0; i <= deflectorPointCount; i++) {
+      r =  i / deflectorPointCount;
+      deflectorPoints.push (
+        new THREE.Vector2( deflectorOuterEdge.x * (1.0 - r), deflectorOuterEdge.y - c * this.width * r * r - 0.1 )
+      );
+    };
+
+    // antenna length
+    const lastDishPoint = deflectorPoints[deflectorPoints.length - 1];
+    lastDishPoint.setX(deflectorOuterEdge.x * 0.1);
 
     deflectorPoints.push (
-      new THREE.Vector2( 0.0, this.length + this.length * 0.03 )
+      new THREE.Vector2( 0.0, deflectorOuterEdge.y + 0.6 )
     );
 
     this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 20);
@@ -76,7 +87,7 @@ export default class Engineering extends HullComponent {
     this.deflectorGeometry.scale(this.widthRatio, 1.0, 1.0);
 
     const matrix = new THREE.Matrix4();
-    
+
     const Szy = this.skew;
     matrix.set(   1,     0,    0,  0,
                   0,     1,  Szy,  0,
@@ -96,10 +107,10 @@ export default class Engineering extends HullComponent {
 
   /**
    * computeBoundingBox
-   * 
-   * the dimensions object contains the bounding box for the component, 
+   *
+   * the dimensions object contains the bounding box for the component,
    * used to determin its dimensions vs other ships' components in a ship builder
-   * 
+   *
    */
 
   computeBoundingBox(measuredGeom) {
@@ -110,11 +121,11 @@ export default class Engineering extends HullComponent {
   }
 
   /**
-   * 
+   *
    * clear
-   * 
+   *
    * properly dispose of references, free up GPU memory for the component
-   * 
+   *
    */
 
   clear(){
