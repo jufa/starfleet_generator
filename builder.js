@@ -117,7 +117,7 @@ export default class Builder {
    *
    * buildShip
    *
-   * initially creat components
+   * initially create components
    *
    */
 
