@@ -303,7 +303,8 @@ export default class Builder {
     // renderer
     this.renderer = new THREE.WebGLRenderer({
       depth: true,
-      antialias: true
+      antialias: true,
+      preserveDrawingBuffer: true // for screenshotting
     });
     this.renderer.setClearColor( this.CLEAR_COLOUR );
     this.renderer.setPixelRatio( window.devicePixelRatio );
@@ -345,6 +346,14 @@ export default class Builder {
     });
   }
 
+  takeScreenshot() {
+    const timeDateStamp = Date.now();
+    var a = document.createElement('a');
+    a.href = this.renderer.domElement.toDataURL().replace("image/png", "image/octet-stream");
+    a.download = `${this.currentShip.name} ${timeDateStamp}.png`
+    a.click();
+  }
+
   setPredefinedShip(shipName) {
     this.transitionStartTime = setTimeout(function(){
       this.predefinedShipTransitionFrameCounter = 0; //outta time, let's finish animation
@@ -377,6 +386,9 @@ export default class Builder {
 
   initControls(){
     var gui = new dat.GUI( { autoPlace: true, width: 400 } );
+
+    // screenshot button:
+    gui.add({ screenshot: this.takeScreenshot.bind(this) }, 'screenshot');
 
     // export button:
     gui.add({ copy_ship_params: this.paramDump.bind(this) }, 'copy_ship_params');
