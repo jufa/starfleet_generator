@@ -28,10 +28,11 @@ export default class Builder {
     // materials
     this.hullMaterial = new THREE.MeshPhongMaterial({
       shininess: 50,
-      color: 0x555555,
+      color: 0x88888f,
       emissive: 0x444455,
       side: THREE.DoubleSide,
-      flatShading: false
+      flatShading: false,
+      wireframe: false,
     });
 
     this.controlConfiguration = {
