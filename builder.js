@@ -24,6 +24,7 @@ export default class Builder {
     this.predefinedShipTransitionFrames = 30; // the total number of frames to do the transition animation
     this.transitionRate = 0.15;
     this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
+    this.scaleIncrement = 0.1;
 
     // materials
     this.hullMaterial = new THREE.MeshPhongMaterial({
@@ -385,14 +386,40 @@ export default class Builder {
     this.dirty = true;
   }
 
+  rescale(dir) {
+    var scaledParams = Object.assign({}, this.controlParams);
+    for (var param in scaledParams) {
+      if ( typeof this.controlParams[param] === "number" && 
+            param.toLowerCase().indexOf('ratio') < 0 && 
+            param.toLowerCase().indexOf('offset') < 0 ) 
+      {
+        scaledParams[param] *= ( 1.0 + dir * this.scaleIncrement);
+      }
+    }
+    this.controlParams = Object.assign(this.controlParams, scaledParams);
+    this.dirty = true;
+  }
+
+  scalableParam(param){
+    string = param.toLowerCase();
+    return string.indexOf('ratio') < 0 && string.indexOf('offset') < 0;
+  }
+
   initControls(){
     var gui = new dat.GUI( { autoPlace: true, width: 400 } );
 
+    // utils folder
+    var utilsFolder = gui.addFolder('utils');
+
     // screenshot button:
-    gui.add({ screenshot: this.takeScreenshot.bind(this) }, 'screenshot');
+    utilsFolder.add({ screenshot: this.takeScreenshot.bind(this) }, 'screenshot');
 
     // export button:
-    gui.add({ copy_ship_params: this.paramDump.bind(this) }, 'copy_ship_params');
+    utilsFolder.add({ copy_ship_params: this.paramDump.bind(this) }, 'copy_ship_params');
+
+    // rescale button:
+    utilsFolder.add({ scale_up: this.rescale.bind(this, 1) }, 'scale_up');
+    utilsFolder.add({ scale_down: this.rescale.bind(this, -1) }, 'scale_down');
 
     // predefined ships:
     this.currentShip.name = this.predefinedShips[0].name;
