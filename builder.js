@@ -193,6 +193,8 @@ export default class Builder {
   update(){
     let controlParams = this.controlParams;
 
+    // nodes
+
     this.primary.group.visible = this.controlParams.primary_toggle;
     this.primary.update({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
@@ -221,6 +223,26 @@ export default class Builder {
     this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation });
     this.nacelleUpperStarboard.group.position.set(-separation, -aft-length, -height);
 
+    
+    this.nacelleLowerPort.group.visible = this.controlParams.nacelleLower_toggle;
+    this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});
+    this.nacelleLowerPort.group.position.set(separation2, -aft2-length2, height2);
+
+    this.nacelleLowerStarboard.group.visible = this.controlParams.nacelleLower_toggle;
+    this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
+    this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
+
+    this.engineering.group.visible = this.controlParams.engineering_toggle;
+    this.engineering.update ({
+      length: controlParams.engineering_length,
+      width: controlParams.engineering_radius,
+      widthRatio: controlParams.engineering_widthRatio,
+      skew: controlParams.engineering_skew
+    });
+    this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
+
+    // edges
+
     this.portUpperPylon.group.visible = this.controlParams.pylon_toggle;
     this.portUpperPylon.update({
       nacelleForeOffset: controlParams.pylon_nacelleForeOffset,
@@ -239,14 +261,6 @@ export default class Builder {
       thickness: controlParams.pylon_thickness,
     });
 
-    this.nacelleLowerPort.group.visible = this.controlParams.nacelleLower_toggle;
-    this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});
-    this.nacelleLowerPort.group.position.set(separation2, -aft2-length2, height2);
-
-    this.nacelleLowerStarboard.group.visible = this.controlParams.nacelleLower_toggle;
-    this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
-    this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
-
     this.portLowerPylon.group.visible = this.controlParams.pylonLower_toggle;
     this.portLowerPylon.update({
       nacelleForeOffset: controlParams.pylonLower_nacelleForeOffset,
@@ -264,15 +278,6 @@ export default class Builder {
       engineeringAftOffset: controlParams.pylonLower_engineeringAftOffset,
       thickness: controlParams.pylonLower_thickness,
     });
-
-    this.engineering.group.visible = this.controlParams.engineering_toggle;
-    this.engineering.update ({
-      length: controlParams.engineering_length,
-      width: controlParams.engineering_radius,
-      widthRatio: controlParams.engineering_widthRatio,
-      skew: controlParams.engineering_skew
-    });
-    this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
 
     this.neck.group.visible = this.controlParams.neck_toggle;
     this.neck.update({
@@ -338,7 +343,13 @@ export default class Builder {
   }
 
   paramDump() {
-    let pretty = JSON.stringify(this.controlParams, null, 2)
+    var roundedParams = Object.assign({}, this.controlParams);
+    for (var param in roundedParams) {
+      if ( typeof roundedParams[param] === "number" ) {
+        roundedParams[param] = parseFloat( parseFloat(roundedParams[param]).toFixed(2) );
+      }
+    }
+    let pretty = JSON.stringify(roundedParams, null, 2)
     console.log(pretty);
     alert("params output to console (and clipboard for supported browsers)");
     navigator.permissions.query({name: "clipboard-write"}).then(result => {
@@ -387,22 +398,19 @@ export default class Builder {
   }
 
   rescale(dir) {
-    var scaledParams = Object.assign({}, this.controlParams);
-    for (var param in scaledParams) {
+    for (var param in this.controlParams) {
       if ( typeof this.controlParams[param] === "number" && 
-            param.toLowerCase().indexOf('ratio') < 0 && 
-            param.toLowerCase().indexOf('offset') < 0 ) 
+            this.paramNameOmits(param, ['ratio', 'offset', 'skew']))
       {
-        scaledParams[param] *= ( 1.0 + dir * this.scaleIncrement);
+        this.controlParams[param] *= ( ( 1.0 + dir * this.scaleIncrement) );
       }
     }
-    this.controlParams = Object.assign(this.controlParams, scaledParams);
     this.dirty = true;
   }
 
-  scalableParam(param){
-    string = param.toLowerCase();
-    return string.indexOf('ratio') < 0 && string.indexOf('offset') < 0;
+  paramNameOmits(param, mustOmit){
+    var p = param.toLowerCase();
+    return mustOmit.every((str) => p.indexOf(str) < 0);
   }
 
   initControls(){
