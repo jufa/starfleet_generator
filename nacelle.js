@@ -17,10 +17,29 @@ export default class Nacelle extends HullComponent {
 
     this.bussardMaterial = new THREE.MeshPhongMaterial({
       shininess: 100,
-      color: 0x551100,
-      emissive: 0x330000,
+      color: 0xff3300,
+      emissive: 0x660000,
+      opacity: 0.75,
+      transparent: true,
       flatShading: false,
     });
+
+    this.bussardInnerMaterial = new THREE.MeshPhongMaterial({
+      shininess: 100,
+      color: 0xffffff,
+      emissive: 0x000000,
+      transparent: false,
+      flatShading: true,
+    });
+
+    this.collarMaterial = new THREE.MeshPhongMaterial({
+      shininess: 25,
+      color: 0x111122,
+      emissive: 0x111122,
+      flatShading: false,
+      side: THREE.DoubleSide,
+    });
+
     return this;
   }
 
@@ -34,26 +53,57 @@ export default class Nacelle extends HullComponent {
     ];
 
     var nacellePointCount = 5.0;
-    for ( var i = 0; i <= nacellePointCount; i++ ) {
+    var r = 0.0;
+    
+    for ( var i = 0; i <= nacellePointCount; i++ ) {  
+      r = (Math.sin(i / nacellePointCount * Math.PI / 2.0) * 0.5 + 0.5) * width * 1.0;
       nacellePoints.push(
         new THREE.Vector2(
-          (Math.sin(i / nacellePointCount * Math.PI / 2.0) * 0.5 + 0.5) * width,
+          r,
           i / nacellePointCount * length
         )
       );
     }
 
     // bussard
-    var bussardPointCount = 9.0;
+    var bussardPointCount = 16.0;
     var bussardPoints = [];
     for ( var i = bussardPointCount; i >= 0; i-- ) {
       bussardPoints.push(
         new THREE.Vector2(
-          Math.pow(i / bussardPointCount, 0.4) * width * 0.9,
-          length + (1.0 - i / bussardPointCount) * width * 1.0
-      )
+          Math.pow(i / bussardPointCount, 0.4) * width * 0.96,
+          length + (1.0 - i / bussardPointCount) * width * 1.7
+        )
       );
     }
+
+    // bussard inner
+    var bussardInnerPoints = [];
+    for ( var i = bussardPointCount; i >= 0; i-- ) {
+      bussardInnerPoints.push(
+        new THREE.Vector2(
+          Math.pow(i / bussardPointCount, 0.4) * width * 0.86,
+          length + (1.0 - i / bussardPointCount) * width * 1.3
+        )
+      );
+    }
+    
+    // collar
+    var collarPointCount = 2.0;
+    var collarPoints = [];
+    collarPoints.push(
+      new THREE.Vector2(
+        width * 1.05,
+        length * 0.95
+      )
+    )
+
+    collarPoints.push(
+      new THREE.Vector2(
+        width * 1.05,
+        length * 0.96
+      )
+    )
 
     this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, 20);
     this.nacelleGeometry.scale(widthRatio, 1.0, 1.0);
@@ -63,11 +113,23 @@ export default class Nacelle extends HullComponent {
     this.bussardGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardGeometry.rotateY(rotation);
 
+    this.bussardInnerGeometry = new THREE.LatheGeometry(bussardInnerPoints, 12);
+    this.bussardInnerGeometry.scale(widthRatio, 1.0, 1.0);
+    this.bussardInnerGeometry.rotateY(rotation);
+
+    this.collarGeometry = new THREE.LatheGeometry(collarPoints, 20);
+    this.collarGeometry.scale(widthRatio, 1.0, 1.0);
+    this.collarGeometry.rotateY(rotation);
+
     this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, this.material.clone() );
     this.bussardMesh = new THREE.Mesh( this.bussardGeometry, this.bussardMaterial );
+    this.bussardInnerMesh = new THREE.Mesh( this.bussardInnerGeometry, this.bussardInnerMaterial );
+    this.collarMesh = new THREE.Mesh( this.collarGeometry, this.collarMaterial );
 
     this.group.add( this.nacelleMesh );
     this.group.add( this.bussardMesh );
+    this.group.add( this.bussardInnerMesh );
+    this.group.add( this.collarMesh );
 
     this.computeBoundingBox(this.nacelleGeometry);
   }

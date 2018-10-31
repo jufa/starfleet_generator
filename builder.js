@@ -28,8 +28,8 @@ export default class Builder {
 
     // materials
     this.hullMaterial = new THREE.MeshPhongMaterial({
-      shininess: 50,
-      color: 0x88888f,
+      shininess: 30,
+      color: 0x66666f,
       emissive: 0x444455,
       side: THREE.DoubleSide,
       flatShading: false,
@@ -103,7 +103,7 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    lights[ 0 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
+    lights[ 0 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
     lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
 
     lights[ 0 ].position.set( 50, 50, 0 );
