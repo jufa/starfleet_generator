@@ -26,9 +26,10 @@
     "dat.gui": "^0.7.3",
     "orbit-controls-es6": "^1.0.12",
     "stats.js": "^0.17.0",
-    "three": "^0.96.0"
+    "three": "^0.98.0"
   },
   "devDependencies": {
+    "cached-path-relative": "^1.0.2",
     "clean-webpack-plugin": "^0.1.19",
     "html-webpack-plugin": "^3.2.0",
     "webpack": "^4.25.1",
