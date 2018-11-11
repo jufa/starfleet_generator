@@ -293,6 +293,7 @@ export default class Builder {
     this.window.addEventListener( 'resize', this.handleWindowResize.bind(this), false );
     this.clock = new THREE.Clock();
     this.container = document.getElementById( 'container' );
+    this.shipNameLabel = document.getElementById( 'ship-name' );
 
     // camera & controls
     this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1600000 );
@@ -368,10 +369,15 @@ export default class Builder {
   }
 
   setPredefinedShip(shipName) {
+    this.shipNameLabel.innerHTML = shipName;
+    if(this.transitionStartTime) {
+      window.clearTimeout(this.transitionStartTime);
+    }
     this.transitionStartTime = setTimeout(function(){
       this.predefinedShipTransitionFrameCounter = 0; //outta time, let's finish animation
     }.bind(this), this.maxTransitionTime);
-    let newParams = this.predefinedShips.find(function (ship) { return ship.name == shipName; });
+    let newParams = this.shipParams(shipName);
+    this.currentShip = newParams;
     this.predefinedShipTransitionFrameCounter = this.predefinedShipTransitionFrames;
     for (var param in newParams) {
       if (typeof newParams[param] === "number") {
@@ -380,6 +386,29 @@ export default class Builder {
         this.controlParams[param] = newParams[param];
       }
     }
+  }
+
+  nextPredefinedShip() {
+    let index = this.currentShipIndex();
+    index = (index + 1) % this.predefinedShips.length;
+    this.shipSelector.setValue(this.predefinedShips[index].name);
+  }
+
+  prevPredefinedShip() {
+    let index = this.currentShipIndex();
+    index -= 1;
+    if (index < 0) {
+      index += this.predefinedShips.length;
+    }
+    this.shipSelector.setValue(this.predefinedShips[index].name);
+  }
+
+  currentShipIndex() {
+    return this.predefinedShips.map( function(ship){ return ship.name; } ).indexOf(this.currentShip.name);
+  }
+
+  shipParams(shipName) {
+    return this.predefinedShips.find(function (ship) { return ship.name == shipName; });
   }
 
   updatePredifinedShipTransitionAnimation() {
@@ -414,7 +443,14 @@ export default class Builder {
   }
 
   initControls(){
-    var gui = new dat.GUI( { autoPlace: true, width: 400 } );
+    // non datgui controls:
+    var btnNext = document.getElementById('next');
+    var btnPrev = document.getElementById('prev');
+    btnNext.addEventListener('click', function(){ this.nextPredefinedShip() }.bind(this));
+    btnPrev.addEventListener('click', function(){ this.prevPredefinedShip() }.bind(this));
+
+    var gui = new dat.GUI( { autoPlace: true, width: 300 } );
+    gui.close();
 
     // utils folder
     var utilsFolder = gui.addFolder('utils');
@@ -431,15 +467,9 @@ export default class Builder {
 
     // predefined ships:
     this.currentShip.name = this.predefinedShips[0].name;
-    let shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) )
+    this.shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) )
 
-    shipSelector.onChange(
-      function(newShipName) {
-        this.setPredefinedShip(newShipName);
-      }.bind(this)
-    );
-
-    shipSelector.onChange(
+    this.shipSelector.onChange(
       function(newShipName) {
         this.setPredefinedShip(newShipName);
       }.bind(this)

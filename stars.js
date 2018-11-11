@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 const COLORS = [
   0xffffff,
-  0x7777ff,
-  0x3a3aff,
-  0x1a1aff
+  0x777777,
+  0x3a3a3a,
+  0x1a1a66,
 ]
 
 export default class Stars {
