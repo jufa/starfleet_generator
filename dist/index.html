@@ -54,10 +54,11 @@
         position: relative;
         float: left;
         text-decoration: none;
+        text-decoration-style: dotted;
         color: #ddd;
       }
       a:hover {
-        background-color: #222;
+        text-decoration: underline;
       }
       a:active {
         background-color: #444;
@@ -76,12 +77,12 @@
 <body>
   <div id="container"></div>
   <div id="nav">
-    <a href="#" id="prev" class="button-nav">◀ prev ship</a>
-    <a href="#" id="next" class="button-nav">next ship ▶</a>
+    <a href="#" id="prev" class="button-nav">&lt; prev ship</a>
+    <a href="#" id="next" class="button-nav">next ship &gt;</a>
   </div>
   <div id="ship-name"></div>
   <div id="credits">
-    <a href="https://github.com/jufa/starfleet_generator">Starship procedural generator demo. (Source)</a>
+    <a href="https://github.com/jufa/starfleet_generator">Starship generator (source on github)</a>
   </div>
 <script type="text/javascript" src="bundle.js"></script></body>
 </html>
