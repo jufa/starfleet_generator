@@ -22,7 +22,7 @@ export default class Builder {
     this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
     this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
     this.predefinedShipTransitionFrames = 30; // the total number of frames to do the transition animation
-    this.transitionRate = 0.15;
+    this.transitionRate = 0.25;
     this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
 
