@@ -27,13 +27,34 @@ export default class Builder {
     this.scaleIncrement = 0.1;
 
     // materials
+    var tex = new THREE.TextureLoader().load( "saucer.png");
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set( 2, 2 );
+
     this.hullMaterial = new THREE.MeshPhongMaterial({
-      shininess: 30,
-      color: 0x66666f,
-      emissive: 0x444455,
+      shininess: 80,
+      color: 0xeeeeef,
+      emissive: 0x222233,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
+      map: tex,
+    });
+
+    var texNeck = new THREE.TextureLoader().load( "neck.png");
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set( 1, 1 );
+    
+    this.neckMaterial = new THREE.MeshPhongMaterial({
+      shininess: 80,
+      color: 0xeeeeef,
+      emissive: 0x222233,
+      side: THREE.DoubleSide,
+      flatShading: false,
+      wireframe: false,
+      map: texNeck,
     });
 
     this.controlConfiguration = {
@@ -104,13 +125,16 @@ export default class Builder {
   addLights() {
     var lights = [];
     lights[ 0 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
-    lights[ 1 ] = new THREE.PointLight( 0xffffff, 1.0, 0 );
+    lights[ 1 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
+    lights[ 2 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
 
     lights[ 0 ].position.set( 50, 50, 0 );
     lights[ 1 ].position.set( -50, -50, 0 );
+    lights[ 2 ].position.set( 0, 0, 100 );
 
     this.scene.add( lights[ 0 ] );
     this.scene.add( lights[ 1 ] );
+    this.scene.add( lights[ 2 ] );
 
     new Stars({scene: this.scene});
   }
@@ -148,35 +172,35 @@ export default class Builder {
     this.neck = new Neck({
       primary: this.primary,
       engineering: this.engineering,
-      material: this.hullMaterial
+      material: this.neckMaterial
     });
     this.mount(this.ship, this.neck.group);
 
     this.portUpperPylon = new Pylon({
       nacelle: this.nacelleUpperPort,
       engineering: this.engineering,
-      material: this.hullMaterial
+      material: this.neckMaterial
     });
     this.mount(this.ship, this.portUpperPylon.group);
 
     this.starboardUpperPylon = new Pylon({
       nacelle: this.nacelleUpperStarboard,
       engineering: this.engineering,
-      material: this.hullMaterial
+      material: this.neckMaterial
     });
     this.mount(this.ship, this.starboardUpperPylon.group);
 
     this.portLowerPylon = new Pylon({
       nacelle: this.nacelleLowerPort,
       engineering: this.engineering,
-      material: this.hullMaterial
+      material: this.neckMaterial
     });
     this.mount(this.ship, this.portLowerPylon.group);
 
     this.starboardLowerPylon = new Pylon({
       nacelle: this.nacelleLowerStarboard,
       engineering: this.engineering,
-      material: this.hullMaterial
+      material: this.neckMaterial
     });
     this.mount(this.ship, this.starboardLowerPylon.group);
 
@@ -222,7 +246,6 @@ export default class Builder {
     this.nacelleUpperStarboard.group.visible = this.controlParams.nacelle_toggle;
     this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation });
     this.nacelleUpperStarboard.group.position.set(-separation, -aft-length, -height);
-
     
     this.nacelleLowerPort.group.visible = this.controlParams.nacelleLower_toggle;
     this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});

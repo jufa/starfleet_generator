@@ -23,7 +23,7 @@ export default class Primary extends HullComponent{
     this.clear();
 
     var points = [];
-    const saucerPointCount = 9;
+    const saucerPointCount = 20;
     for ( var i = 0; i <= saucerPointCount; i ++ ) {
       points.push(
         new THREE.Vector2( 

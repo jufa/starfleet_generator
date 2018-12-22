@@ -5,6 +5,11 @@ export default class Engineering extends HullComponent {
   constructor({ material }) {
     super();
 
+    var tex = new THREE.TextureLoader().load( "dish.png");
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set( 3, 1 );
+
     // materials
     this.material = material
     this.deflectorMaterial = new THREE.MeshPhongMaterial( {
@@ -12,7 +17,8 @@ export default class Engineering extends HullComponent {
       color: 0xFFDF00,
       emissive: 0x662222,
       side: THREE.DoubleSide,
-      flatShading: false
+      flatShading: false,
+      map: tex,
     } );
     this.group = new THREE.Group();
     this.dimensions = {};
