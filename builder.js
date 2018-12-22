@@ -43,9 +43,9 @@ export default class Builder {
     });
 
     var texNeck = new THREE.TextureLoader().load( "neck.png");
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set( 1, 1 );
+    texNeck.wrapS = THREE.RepeatWrapping;
+    texNeck.wrapT = THREE.RepeatWrapping;
+    texNeck.repeat.set( 1, 1 );
     
     this.neckMaterial = new THREE.MeshPhongMaterial({
       shininess: 80,
@@ -55,6 +55,21 @@ export default class Builder {
       flatShading: false,
       wireframe: false,
       map: texNeck,
+    });
+
+    var texNacelle = new THREE.TextureLoader().load( "nacelle.png");
+    texNacelle.wrapS = THREE.RepeatWrapping;
+    texNacelle.wrapT = THREE.RepeatWrapping;
+    texNacelle.repeat.set( 2, 1 );
+    
+    this.nacelleMaterial = new THREE.MeshPhongMaterial({
+      shininess: 80,
+      color: 0xeeeeef,
+      emissive: 0x222233,
+      side: THREE.DoubleSide,
+      flatShading: false,
+      wireframe: false,
+      map: texNacelle,
     });
 
     this.controlConfiguration = {
@@ -154,16 +169,16 @@ export default class Builder {
     this.primary = new Primary({ material: this.hullMaterial });
     this.mount(this.ship, this.primary.group);
 
-    this.nacelleUpperPort = new Nacelle({ material: this.hullMaterial});
+    this.nacelleUpperPort = new Nacelle({ material: this.nacelleMaterial});
     this.mount(this.ship, this.nacelleUpperPort.group);
 
-    this.nacelleUpperStarboard = new Nacelle({ material: this.hullMaterial });
+    this.nacelleUpperStarboard = new Nacelle({ material: this.nacelleMaterial });
     this.mount(this.ship, this.nacelleUpperStarboard.group);
 
-    this.nacelleLowerPort = new Nacelle({ material: this.hullMaterial});
+    this.nacelleLowerPort = new Nacelle({ material: this.nacelleMaterial});
     this.mount(this.ship, this.nacelleLowerPort.group);
 
-    this.nacelleLowerStarboard = new Nacelle({ material: this.hullMaterial });
+    this.nacelleLowerStarboard = new Nacelle({ material: this.nacelleMaterial });
     this.mount(this.ship, this.nacelleLowerStarboard.group);
 
     this.engineering = new Engineering({ material: this.hullMaterial });
