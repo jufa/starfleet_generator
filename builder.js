@@ -28,18 +28,40 @@ export default class Builder {
 
     // materials
     var tex = new THREE.TextureLoader().load( "saucer.png");
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
+    tex.wrapS = THREE.MirroredRepeatWrapping;
+    tex.wrapT = THREE.MirroredRepeatWrapping;
     tex.repeat.set( 2, 2 );
+
+    var texSaucerEm = new THREE.TextureLoader().load( "saucer_em.png");
+    texSaucerEm.wrapS = THREE.MirroredRepeatWrapping;
+    texSaucerEm.wrapT = THREE.MirroredRepeatWrapping;
+    texSaucerEm.repeat.set( 2, 1 );
 
     this.hullMaterial = new THREE.MeshPhongMaterial({
       shininess: 80,
       color: 0xeeeeef,
-      emissive: 0x222233,
+      emissive: 0x999999,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: tex,
+      emissiveMap: texSaucerEm,
+    });
+
+    var texEng = new THREE.TextureLoader().load( "engineering.png");
+    texEng.wrapS = THREE.MirroredRepeatWrapping;
+    texEng.wrapT = THREE.MirroredRepeatWrapping;
+    texEng.repeat.set( 2, 1 );
+    texEng.wra
+
+    this.engMaterial = new THREE.MeshPhongMaterial({
+      shininess: 80,
+      color: 0xeeeeef,
+      emissive: 0x000000,
+      side: THREE.DoubleSide,
+      flatShading: false,
+      wireframe: false,
+      map: texEng,
     });
 
     var texNeck = new THREE.TextureLoader().load( "neck.png");
@@ -50,7 +72,7 @@ export default class Builder {
     this.neckMaterial = new THREE.MeshPhongMaterial({
       shininess: 80,
       color: 0xeeeeef,
-      emissive: 0x222233,
+      emissive: 0x000000,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
@@ -62,14 +84,20 @@ export default class Builder {
     texNacelle.wrapT = THREE.RepeatWrapping;
     texNacelle.repeat.set( 2, 1 );
     
+    var texNacelleEm = new THREE.TextureLoader().load( "nacelle_em.png");
+    texNacelleEm.wrapS = THREE.RepeatWrapping;
+    texNacelleEm.wrapT = THREE.RepeatWrapping;
+    texNacelleEm.repeat.set( 2, 1 );
+
     this.nacelleMaterial = new THREE.MeshPhongMaterial({
       shininess: 80,
       color: 0xeeeeef,
-      emissive: 0x222233,
+      emissive: 0x999999,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: texNacelle,
+      emissiveMap: texNacelleEm,
     });
 
     this.controlConfiguration = {
@@ -181,7 +209,7 @@ export default class Builder {
     this.nacelleLowerStarboard = new Nacelle({ material: this.nacelleMaterial });
     this.mount(this.ship, this.nacelleLowerStarboard.group);
 
-    this.engineering = new Engineering({ material: this.hullMaterial });
+    this.engineering = new Engineering({ material: this.engMaterial });
     this.mount(this.ship, this.engineering.group);
 
     this.neck = new Neck({

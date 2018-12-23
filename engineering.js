@@ -8,14 +8,14 @@ export default class Engineering extends HullComponent {
     var tex = new THREE.TextureLoader().load( "dish.png");
     tex.wrapS = THREE.RepeatWrapping;
     tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set( 3, 1 );
+    tex.repeat.set( 8, 1 );
 
     // materials
     this.material = material
     this.deflectorMaterial = new THREE.MeshPhongMaterial( {
-      shininess: 10,
+      shininess: 100,
       color: 0xFFDF00,
-      emissive: 0x662222,
+      emissive: 0x773333,
       side: THREE.DoubleSide,
       flatShading: false,
       map: tex,
