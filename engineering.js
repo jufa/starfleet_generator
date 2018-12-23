@@ -10,15 +10,22 @@ export default class Engineering extends HullComponent {
     tex.wrapT = THREE.RepeatWrapping;
     tex.repeat.set( 8, 1 );
 
+    var texSp = new THREE.TextureLoader().load( "dish_sp.png");
+    texSp.wrapS = THREE.RepeatWrapping;
+    texSp.wrapT = THREE.RepeatWrapping;
+    texSp.repeat.set( 8, 1 );
+
     // materials
     this.material = material
     this.deflectorMaterial = new THREE.MeshPhongMaterial( {
-      shininess: 100,
+      shininess: 50,
       color: 0xFFDF00,
       emissive: 0x773333,
+      specular: 0x556677,
       side: THREE.DoubleSide,
       flatShading: false,
       map: tex,
+      specularMap: texSp,
     } );
     this.group = new THREE.Group();
     this.dimensions = {};

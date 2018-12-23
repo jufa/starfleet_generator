@@ -37,31 +37,44 @@ export default class Builder {
     texSaucerEm.wrapT = THREE.MirroredRepeatWrapping;
     texSaucerEm.repeat.set( 2, 1 );
 
+    var texSaucerSp = new THREE.TextureLoader().load( "saucer_sp.png");
+    texSaucerSp.wrapS = THREE.MirroredRepeatWrapping;
+    texSaucerSp.wrapT = THREE.MirroredRepeatWrapping;
+    texSaucerSp.repeat.set( 2, 1 );
+
     this.hullMaterial = new THREE.MeshPhongMaterial({
-      shininess: 80,
+      shininess: 100,
       color: 0xeeeeef,
       emissive: 0x999999,
+      specular: 0x555566,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: tex,
       emissiveMap: texSaucerEm,
+      specularMap: texSaucerSp,
     });
 
     var texEng = new THREE.TextureLoader().load( "engineering.png");
     texEng.wrapS = THREE.MirroredRepeatWrapping;
     texEng.wrapT = THREE.MirroredRepeatWrapping;
     texEng.repeat.set( 2, 1 );
-    texEng.wra
+
+    var texEngSp = new THREE.TextureLoader().load( "engineering_sp.png");
+    texEng.wrapS = THREE.MirroredRepeatWrapping;
+    texEng.wrapT = THREE.MirroredRepeatWrapping;
+    texEng.repeat.set( 2, 1 );
 
     this.engMaterial = new THREE.MeshPhongMaterial({
-      shininess: 80,
+      shininess: 30,
       color: 0xeeeeef,
       emissive: 0x000000,
+      specular: 0x555566,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: texEng,
+      specularMap: texEngSp,
     });
 
     var texNeck = new THREE.TextureLoader().load( "neck.png");
@@ -69,14 +82,21 @@ export default class Builder {
     texNeck.wrapT = THREE.RepeatWrapping;
     texNeck.repeat.set( 1, 1 );
     
+    var texNeckSp = new THREE.TextureLoader().load( "neck_sp.png");
+    texNeckSp.wrapS = THREE.RepeatWrapping;
+    texNeckSp.wrapT = THREE.RepeatWrapping;
+    texNeckSp.repeat.set( 1, 1 );
+
     this.neckMaterial = new THREE.MeshPhongMaterial({
-      shininess: 80,
+      shininess: 40,
       color: 0xeeeeef,
       emissive: 0x000000,
+      specular: 0x333338,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: texNeck,
+      specularMap: texNeckSp,
     });
 
     var texNacelle = new THREE.TextureLoader().load( "nacelle.png");
@@ -89,15 +109,22 @@ export default class Builder {
     texNacelleEm.wrapT = THREE.RepeatWrapping;
     texNacelleEm.repeat.set( 2, 1 );
 
+    var texNacelleSp = new THREE.TextureLoader().load( "nacelle_sp.png");
+    texNacelleSp.wrapS = THREE.RepeatWrapping;
+    texNacelleSp.wrapT = THREE.RepeatWrapping;
+    texNacelleSp.repeat.set( 2, 1 );
+
     this.nacelleMaterial = new THREE.MeshPhongMaterial({
-      shininess: 80,
+      shininess: 60,
       color: 0xeeeeef,
       emissive: 0x999999,
+      specular: 0x555566,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: texNacelle,
       emissiveMap: texNacelleEm,
+      specularMap: texNacelleSp,
     });
 
     this.controlConfiguration = {
