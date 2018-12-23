@@ -4,6 +4,7 @@ export default class HullComponent {
 
   calculateUVs(geometry){
     var geometry = this.geometry;
+      geometry.computeVertexNormals(); //needed for material shading
       geometry.computeBoundingBox();
 
       var max = geometry.boundingBox.max,
@@ -12,7 +13,6 @@ export default class HullComponent {
       var range = new THREE.Vector2(max.x - min.x, max.y - min.y);
       var faces = geometry.faces;
           
-      this.geometry.computeVertexNormals(); // needed for material shading
       geometry.faceVertexUvs[0] = [];
 
       for (var i = 0; i < faces.length ; i++) {

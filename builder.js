@@ -13,7 +13,7 @@ export default class Builder {
   constructor(window) {
     this.predefinedShips = ships;
     this.window = window;
-    this.SKY_COLOUR = 0x111116;
+    this.SKY_COLOUR = 0x000000;
     this.CLEAR_COLOUR = 0xffffff;
     this.dirty = true;
     this.components = [];
@@ -45,7 +45,7 @@ export default class Builder {
     this.hullMaterial = new THREE.MeshPhongMaterial({
       shininess: 100,
       color: 0xeeeeef,
-      emissive: 0x999999,
+      emissive: 0xeeeeff,
       specular: 0x555566,
       side: THREE.DoubleSide,
       flatShading: false,
@@ -78,14 +78,14 @@ export default class Builder {
     });
 
     var texNeck = new THREE.TextureLoader().load( "neck.png");
-    texNeck.wrapS = THREE.RepeatWrapping;
-    texNeck.wrapT = THREE.RepeatWrapping;
-    texNeck.repeat.set( 1, 1 );
+    texNeck.wrapS = THREE.MirroredRepeatWrapping;
+    texNeck.wrapT = THREE.MirroredRepeatWrapping;
+    texNeck.repeat.set( 3, 1 );
     
     var texNeckSp = new THREE.TextureLoader().load( "neck_sp.png");
-    texNeckSp.wrapS = THREE.RepeatWrapping;
-    texNeckSp.wrapT = THREE.RepeatWrapping;
-    texNeckSp.repeat.set( 1, 1 );
+    texNeckSp.wrapS = THREE.MirroredRepeatWrapping;
+    texNeckSp.wrapT = THREE.MirroredRepeatWrapping;
+    texNeckSp.repeat.set( 3, 1 );
 
     this.neckMaterial = new THREE.MeshPhongMaterial({
       shininess: 40,
@@ -117,7 +117,7 @@ export default class Builder {
     this.nacelleMaterial = new THREE.MeshPhongMaterial({
       shininess: 60,
       color: 0xeeeeef,
-      emissive: 0x999999,
+      emissive: 0xddddff,
       specular: 0x555566,
       side: THREE.DoubleSide,
       flatShading: false,

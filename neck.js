@@ -47,13 +47,16 @@ export default class Neck extends HullComponent {
     engineeringFore -= engineeringLength * engineeringForeOffset;
     engineeringAft += engineeringLength * engineeringAftOffset;
 
+    const thicknessRatio = 1.5;
+
     this.vertices = [
-      new THREE.Vector3(thickness, primaryFore, primaryCenterThickness),
-      new THREE.Vector3(thickness, primaryAft, primaryCenterThickness),
+      new THREE.Vector3(thickness * thicknessRatio, primaryFore, primaryCenterThickness),
+      new THREE.Vector3(thickness * thicknessRatio, primaryAft, primaryCenterThickness),
       new THREE.Vector3(thickness, engineeringFore, engineeringForeVerticalCenter),
       new THREE.Vector3(thickness, engineeringAft, engineeringForeVerticalCenter),
-      new THREE.Vector3(-thickness, primaryFore, primaryCenterThickness),
-      new THREE.Vector3(-thickness, primaryAft, primaryCenterThickness),
+
+      new THREE.Vector3(-thickness * thicknessRatio, primaryFore, primaryCenterThickness),
+      new THREE.Vector3(-thickness * thicknessRatio, primaryAft, primaryCenterThickness),
       new THREE.Vector3(-thickness, engineeringFore, engineeringForeVerticalCenter),
       new THREE.Vector3(-thickness, engineeringAft, engineeringForeVerticalCenter)
     ];
@@ -66,10 +69,14 @@ export default class Neck extends HullComponent {
       new THREE.Face3(2,1,3),
       new THREE.Face3(5,3,1),
       new THREE.Face3(3,5,7),
+
       new THREE.Face3(6,7,5),
       new THREE.Face3(4,6,5),
       new THREE.Face3(6,4,0),
-      new THREE.Face3(6,0,2)
+      new THREE.Face3(6,0,2),
+      
+      new THREE.Face3(0,4,1),
+      new THREE.Face3(4,5,1),
     ]
 
     this.calculateUVs(this.geometry);
