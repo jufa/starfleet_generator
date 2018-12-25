@@ -5,4 +5,5 @@ a certain universe's starships have a common graph-like structure of nodes and e
 ## Demo
 [jufaintermedia.com/demos/starfleet-generator](http://jufaintermedia.com/demos/starfleet-generator/)
 
-![image](https://user-images.githubusercontent.com/11051507/46705207-84805480-cbfc-11e8-97aa-981f8773c8a2.png)
+![image](https://user-images.githubusercontent.com/3287519/50410596-f9106b80-07c7-11e9-986c-1c06b52bb252.png)
+
