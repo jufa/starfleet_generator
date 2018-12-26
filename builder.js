@@ -387,6 +387,8 @@ export default class Builder {
     this.clock = new THREE.Clock();
     this.container = document.getElementById( 'container' );
     this.shipNameLabel = document.getElementById( 'ship-name' );
+    this.btnNext = document.getElementById('next');
+    this.btnPrev = document.getElementById('prev');
 
     // camera & controls
     this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1600000 );
@@ -537,10 +539,8 @@ export default class Builder {
 
   initControls(){
     // non datgui controls:
-    var btnNext = document.getElementById('next');
-    var btnPrev = document.getElementById('prev');
-    btnNext.addEventListener('click', function(){ this.nextPredefinedShip() }.bind(this));
-    btnPrev.addEventListener('click', function(){ this.prevPredefinedShip() }.bind(this));
+    this.btnNext.addEventListener('click', function(){ this.nextPredefinedShip() }.bind(this));
+    this.btnPrev.addEventListener('click', function(){ this.prevPredefinedShip() }.bind(this));
 
     var gui = new dat.GUI( { autoPlace: true, width: 300 } );
     gui.close();
