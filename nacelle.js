@@ -15,7 +15,7 @@ export default class Nacelle extends HullComponent {
     this.nacelleMesh = {};
     this.bussardMesh = {};
 
-    var tex = new THREE.TextureLoader().load( "bussard_em.png");
+    var tex = new THREE.TextureLoader().load( "./images/bussard_em.png");
     tex.wrapS = THREE.RepeatWrapping;
     tex.wrapT = THREE.RepeatWrapping;
     tex.repeat.set( 12, 1.5 );

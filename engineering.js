@@ -5,12 +5,12 @@ export default class Engineering extends HullComponent {
   constructor({ material }) {
     super();
 
-    var tex = new THREE.TextureLoader().load( "dish.png");
+    var tex = new THREE.TextureLoader().load( "./images/dish.png");
     tex.wrapS = THREE.RepeatWrapping;
     tex.wrapT = THREE.RepeatWrapping;
     tex.repeat.set( 8, 1 );
 
-    var texSp = new THREE.TextureLoader().load( "dish_sp.png");
+    var texSp = new THREE.TextureLoader().load( "./images/dish_sp.png");
     texSp.wrapS = THREE.RepeatWrapping;
     texSp.wrapT = THREE.RepeatWrapping;
     texSp.repeat.set( 8, 1 );

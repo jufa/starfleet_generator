@@ -27,17 +27,17 @@ export default class Builder {
     this.scaleIncrement = 0.1;
 
     // materials
-    var tex = new THREE.TextureLoader().load( "saucer.png");
+    var tex = new THREE.TextureLoader().load( "./images/saucer.png");
     tex.wrapS = THREE.MirroredRepeatWrapping;
     tex.wrapT = THREE.MirroredRepeatWrapping;
     tex.repeat.set( 2, 2 );
 
-    var texSaucerEm = new THREE.TextureLoader().load( "saucer_em.png");
+    var texSaucerEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
     texSaucerEm.wrapS = THREE.MirroredRepeatWrapping;
     texSaucerEm.wrapT = THREE.MirroredRepeatWrapping;
     texSaucerEm.repeat.set( 2, 1 );
 
-    var texSaucerSp = new THREE.TextureLoader().load( "saucer_sp.png");
+    var texSaucerSp = new THREE.TextureLoader().load( "./images/saucer_sp.png");
     texSaucerSp.wrapS = THREE.MirroredRepeatWrapping;
     texSaucerSp.wrapT = THREE.MirroredRepeatWrapping;
     texSaucerSp.repeat.set( 2, 1 );
@@ -55,15 +55,15 @@ export default class Builder {
       specularMap: texSaucerSp,
     });
 
-    var texEng = new THREE.TextureLoader().load( "engineering.png");
+    var texEng = new THREE.TextureLoader().load( "./images/engineering.png");
     texEng.wrapS = THREE.MirroredRepeatWrapping;
     texEng.wrapT = THREE.MirroredRepeatWrapping;
     texEng.repeat.set( 2, 1 );
 
-    var texEngSp = new THREE.TextureLoader().load( "engineering_sp.png");
-    texEng.wrapS = THREE.MirroredRepeatWrapping;
-    texEng.wrapT = THREE.MirroredRepeatWrapping;
-    texEng.repeat.set( 2, 1 );
+    var texEngSp = new THREE.TextureLoader().load( "./images/engineering_sp.png");
+    texEngSp.wrapS = THREE.MirroredRepeatWrapping;
+    texEngSp.wrapT = THREE.MirroredRepeatWrapping;
+    texEngSp.repeat.set( 2, 1 );
 
     this.engMaterial = new THREE.MeshPhongMaterial({
       shininess: 30,
@@ -77,12 +77,12 @@ export default class Builder {
       specularMap: texEngSp,
     });
 
-    var texNeck = new THREE.TextureLoader().load( "neck.png");
+    var texNeck = new THREE.TextureLoader().load( "./images/neck.png");
     texNeck.wrapS = THREE.MirroredRepeatWrapping;
     texNeck.wrapT = THREE.MirroredRepeatWrapping;
     texNeck.repeat.set( 3, 1 );
     
-    var texNeckSp = new THREE.TextureLoader().load( "neck_sp.png");
+    var texNeckSp = new THREE.TextureLoader().load( "./images/neck_sp.png");
     texNeckSp.wrapS = THREE.MirroredRepeatWrapping;
     texNeckSp.wrapT = THREE.MirroredRepeatWrapping;
     texNeckSp.repeat.set( 3, 1 );
@@ -99,17 +99,17 @@ export default class Builder {
       specularMap: texNeckSp,
     });
 
-    var texNacelle = new THREE.TextureLoader().load( "nacelle.png");
+    var texNacelle = new THREE.TextureLoader().load( "./images/nacelle.png");
     texNacelle.wrapS = THREE.RepeatWrapping;
     texNacelle.wrapT = THREE.RepeatWrapping;
     texNacelle.repeat.set( 2, 1 );
     
-    var texNacelleEm = new THREE.TextureLoader().load( "nacelle_em.png");
+    var texNacelleEm = new THREE.TextureLoader().load( "./images/nacelle_em.png");
     texNacelleEm.wrapS = THREE.RepeatWrapping;
     texNacelleEm.wrapT = THREE.RepeatWrapping;
     texNacelleEm.repeat.set( 2, 1 );
 
-    var texNacelleSp = new THREE.TextureLoader().load( "nacelle_sp.png");
+    var texNacelleSp = new THREE.TextureLoader().load( "./images/nacelle_sp.png");
     texNacelleSp.wrapS = THREE.RepeatWrapping;
     texNacelleSp.wrapT = THREE.RepeatWrapping;
     texNacelleSp.repeat.set( 2, 1 );
