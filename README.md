@@ -3,7 +3,7 @@
 a certain universe's starships have a common graph-like structure of nodes and edges, so why not parameterize these and allow them to be changed/tuned?
 
 ## Demo
-[jufaintermedia.com/demos/starfleet-generator](http://jufaintermedia.com/demos/starfleet-generator/)
+[jufaintermedia.com/demos/starfleet-generator](http://starshipgenerator.netlify.app)
 
 ![image](https://user-images.githubusercontent.com/3287519/50410596-f9106b80-07c7-11e9-986c-1c06b52bb252.png)
 
