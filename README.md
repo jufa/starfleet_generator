@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4b2cfbe4-2f08-46a8-a066-12703eacb4d8/deploy-status)](https://app.netlify.com/sites/starshipgenerator/deploys)
+
 # Starfleet Generator
 
 a certain universe's starships have a common graph-like structure of nodes and edges, so why not parameterize these and allow them to be changed/tuned?

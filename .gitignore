@@ -9,8 +9,8 @@ yarn.lock
 pnpm-lock.yaml
 
 # Build output
-dist/
 build/
+dist/
 
 # Webpack cache
 .cache/
