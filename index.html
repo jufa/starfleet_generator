@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Starship Generator</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Teko:wght@300..700&display=swap');
       body {
         margin: 0;
         padding: 0;
         color: #ddd;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Teko', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 26px;
       }
       #container {
         width: 100%;
@@ -23,11 +25,11 @@
         height: 30px;
         width: 100%;
         text-align: left;
-        font-size: 12px;
+        font-size: 14px;
         color: #aaa;
       }
       #credits a {
-        text-decoration: dotted;
+        color: #aaa;
       }
       #nav {
         position: absolute;
@@ -68,12 +70,12 @@
 <body>
   <div id="container"></div>
   <div id="nav">
-    <a href="#" id="prev" class="button-nav">&lt; prev ship</a>
-    <a href="#" id="next" class="button-nav">next ship &gt;</a>
+    <a href="#" id="prev" class="button-nav">&#9666;PREV SHIP</a>
+    <a href="#" id="next" class="button-nav">NEXT SHIP&#9656;</a>
   </div>
   <div id="ship-name"></div>
   <div id="credits">
-    <a href="terms.html">Terms of use</a>
+    <p>NOT AFFILIATED WITH ANY THIRD PARTY. <a href="/terms.html">TERMS</a></p>
   </div>
 </body>
 </html>

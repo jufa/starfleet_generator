@@ -464,7 +464,7 @@ export default class Builder {
   }
 
   setPredefinedShip(shipName) {
-    this.shipNameLabel.innerHTML = shipName;
+    this.shipNameLabel.innerHTML = shipName.toUpperCase();
     if(this.transitionStartTime) {
       window.clearTimeout(this.transitionStartTime);
     }
