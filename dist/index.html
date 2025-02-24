@@ -1,0 +1,79 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Starship Generator</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        color: #ddd;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      #container {
+        width: 100%;
+        height: 100%;
+      }
+      #credits {
+        position: fixed;
+        left: 10px;
+        top: 50px;
+        height: 30px;
+        width: 100%;
+        text-align: left;
+        font-size: 12px;
+        color: #aaa;
+      }
+      #credits a {
+        text-decoration: dotted;
+      }
+      #nav {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 50px;
+      }
+      #ship-name {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 50px;
+        text-align: left;
+        padding: 20px 0 0 10px;
+        font-size: 1.5em;
+      }
+      .button-nav {
+        background-color: none;
+        font-size: 1.2em;
+        text-align: center;
+        vertical-align: middle;
+        width: 50%;
+        height: 100%;
+        position: relative;
+        float: left;
+        text-decoration: none;
+        text-decoration-style: dotted;
+        color: #ddd;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      a:active {
+        background-color: #444;
+      }
+    </style>
+</head>
+<body>
+  <div id="container"></div>
+  <div id="nav">
+    <a href="#" id="prev" class="button-nav">&lt; prev ship</a>
+    <a href="#" id="next" class="button-nav">next ship &gt;</a>
+  </div>
+  <div id="ship-name"></div>
+  <div id="credits">
+    <a href="terms.html">Terms of use</a>
+  </div>
+<script type="text/javascript" src="bundle.js"></script></body>
+</html>

@@ -1,8 +1,10 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/4b2cfbe4-2f08-46a8-a066-12703eacb4d8/deploy-status)](https://app.netlify.com/sites/starshipgenerator/deploys)
 
-# Starfleet Generator
+# StarShip Generator
 
-a certain universe's starships have a common graph-like structure of nodes and edges, so why not parameterize these and allow them to be changed/tuned?
+Design starships by manipulating the weights of a common graph-like structure of nodes and edges.
+
+This app and its content content are independent and not affiliated with, endorsed by, or associated with any third-party intellectual property organization, or company. All content is provided for informational and non-commercial purposes only.
 
 ## Demo
 [https://starshipgenerator.com](https://starshipgenerator.com)
