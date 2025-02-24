@@ -76,14 +76,14 @@ export default class Engineering extends HullComponent {
 
     // dish curve
     let c = 0.25;
-    const deflectorPointCount = 5.0;
+    const deflectorPointCount = 12.0;
     let r;
     for (let i = 1.0; i <= deflectorPointCount; i++) {
       r =  i / deflectorPointCount;
       deflectorPoints.push (
         new THREE.Vector2(
           deflectorOuterEdge.x * (1.0 - r), 
-          deflectorOuterEdge.y - c * this.width * r * r - 0.1 
+          deflectorOuterEdge.y - c * this.width * r * r - 0.1
         )
       );
     };

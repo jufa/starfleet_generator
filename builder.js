@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import OrbitControls from 'orbit-controls-es6';
-import * as dat from 'dat.gui';
+// import * as dat from 'dat.gui';
+import * as dat from 'lil-gui';
 import Stars from './stars.js';
 import Nacelle from './nacelle.js';
 import Engineering from './engineering.js';
@@ -195,7 +196,7 @@ export default class Builder {
   addLights() {
     var lights = [];
     lights[ 0 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
-    lights[ 1 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
+    lights[ 1 ] = new THREE.PointLight( 0xffffff, 0.5, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
 
     lights[ 0 ].position.set( 50, 50, 0 );
@@ -389,6 +390,7 @@ export default class Builder {
     this.shipNameLabel = document.getElementById( 'ship-name' );
     this.btnNext = document.getElementById('next');
     this.btnPrev = document.getElementById('prev');
+    this.btnScreenshot = document.getElementById('screenshot');
 
     // camera & controls
     this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1600000 );
@@ -541,6 +543,7 @@ export default class Builder {
     // non datgui controls:
     this.btnNext.addEventListener('click', function(){ this.nextPredefinedShip() }.bind(this));
     this.btnPrev.addEventListener('click', function(){ this.prevPredefinedShip() }.bind(this));
+    this.btnScreenshot.addEventListener('click', function(){ this.takeScreenshot() }.bind(this));
 
     var gui = new dat.GUI( { autoPlace: true, width: 300 } );
     gui.close();

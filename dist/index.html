@@ -21,7 +21,7 @@
       #credits {
         position: fixed;
         left: 10px;
-        top: 50px;
+        top:34px;
         height: 30px;
         width: 100%;
         text-align: left;
@@ -36,14 +36,18 @@
         bottom: 0;
         width: 100%;
         height: 50px;
+        display: flex;
+        justify-content: space-between; /* Even spacing between buttons */
+        width: 100%; /* Container takes 75% of the parent width */
+        margin: 0 auto; /* Center the container */
       }
       #ship-name {
         position: absolute;
         top: 0;
         width: 100%;
-        height: 50px;
+        height: 30px;
         text-align: left;
-        padding: 20px 0 0 10px;
+        padding: 10px 0 0 10px;
         font-size: 1.5em;
       }
       .button-nav {
@@ -58,6 +62,8 @@
         text-decoration: none;
         text-decoration-style: dotted;
         color: #ddd;
+        flex: 1; /* Make buttons take equal space */
+        margin: 0 5px; /* Add small spacing */
       }
       a:hover {
         text-decoration: underline;
@@ -65,12 +71,27 @@
       a:active {
         background-color: #444;
       }
+      .lil-gui, .lil-gui.root {
+        --width: 25% !important;
+        min-width: 300px;
+        max-width: 600px;
+      }
+      .lil-gui, .lil-gui button { 
+        font-size: 16px;
+        font-family: "Teko", sans-serif;
+        font-weight: 200;
+        text-transform: uppercase;
+      }
+      .lil-gui button { 
+        color: aqua;
+      }
     </style>
 </head>
 <body>
   <div id="container"></div>
   <div id="nav">
     <a href="#" id="prev" class="button-nav">&#9666;PREV SHIP</a>
+    <a href="#" id="screenshot" class="button-nav">SCREENSHOT</a>
     <a href="#" id="next" class="button-nav">NEXT SHIP&#9656;</a>
   </div>
   <div id="ship-name"></div>
