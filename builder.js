@@ -26,6 +26,7 @@ export default class Builder {
     this.transitionRate = 0.25;
     this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
+    
 
     // materials
     var tex = new THREE.TextureLoader().load( "./images/saucer.png");
@@ -183,7 +184,8 @@ export default class Builder {
         z: [0.5, -30, 50, 0.01],
         radius: [12, 1, 30, 0.01],
         thickness: [4, 1, 10, 0.01],
-        widthRatio: [1, 0, 10, 0.01]
+        widthRatio: [1, 0, 10, 0.01],
+        pointiness: [0.0, 0, 1, 0.01],
       }
     };
 
@@ -291,7 +293,7 @@ export default class Builder {
     // nodes
 
     this.primary.group.visible = this.controlParams.primary_toggle;
-    this.primary.update({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio });
+    this.primary.update({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio, pointiness: controlParams.primary_pointiness });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
 
     let separation = controlParams.nacelle_x * 2.0;
@@ -539,14 +541,29 @@ export default class Builder {
     return mustOmit.every((str) => p.indexOf(str) < 0);
   }
 
+  handleOpenCloseFolder(changedGUI) {
+    console.log(changedGUI);
+    const cg = changedGUI;
+    // close all other gui folders:
+    for (var folder in this.gui.folders) {
+      if (folder !== cg.name) {
+        this.gui.folders[folder].close();
+      }
+    }
+  }
+
   initControls(){
     // non datgui controls:
     this.btnNext.addEventListener('click', function(){ this.nextPredefinedShip() }.bind(this));
     this.btnPrev.addEventListener('click', function(){ this.prevPredefinedShip() }.bind(this));
     this.btnScreenshot.addEventListener('click', function(){ this.takeScreenshot() }.bind(this));
 
-    var gui = new dat.GUI( { autoPlace: true, width: 300 } );
+    this.gui = new dat.GUI( { autoPlace: true, width: 300 } );
+    const gui = this.gui;
     gui.close();
+    gui.onOpenClose( changedGUI => {
+      this.handleOpenCloseFolder( changedGUI );
+    } );
 
     // utils folder
     var utilsFolder = gui.addFolder('utils');

@@ -35,8 +35,9 @@ export default class Neck extends HullComponent {
     let primaryCenterTop = primary.group.position.z;
     let primaryCenterThickness = primaryCenterTop + primary.dimensions.y * 0.5;
 
-    let primaryFore = primaryCenterForeAft + primaryLength * 0.5;
-    let primaryAft = primaryCenterForeAft - primaryLength * 0.5;
+    let primaryFore = primaryCenterForeAft - primary.dimensions.fore;
+    let primaryAft = primaryCenterForeAft - primary.dimensions.aft;
+
     let engineeringAft = engineering.group.position.y;
     let engineeringFore = engineeringAft + engineeringLength;
     let engineeringForeVerticalCenter = engineering.group.position.z;

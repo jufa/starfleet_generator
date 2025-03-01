@@ -35,7 +35,8 @@
       "primary_z": 0.5,
       "primary_radius": 12,
       "primary_thickness": 4,
-      "primary_widthRatio": 1
+      "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
     },
     {
       "nacelle_toggle": true,
@@ -85,6 +86,7 @@
       "primary_radius": 9,
       "primary_thickness": 3.06,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "USS Ahcannaguarantee"
     },
     {
@@ -123,7 +125,8 @@
       "primary_z": 0.5,
       "primary_radius": 12,
       "primary_thickness": 3.5,
-      "primary_widthRatio": 1
+      "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
     },
     {
       "nacelle_toggle": true,
@@ -173,6 +176,7 @@
       "primary_radius": 11.88,
       "primary_thickness": 3.15,
       "primary_widthRatio": 0.5,
+      "primary_pointiness": 0.0,
       "name": "USS Jauntinger",
       "neckThickness": null
     },
@@ -224,6 +228,7 @@
       "primary_radius": 15.97,
       "primary_thickness": 4.57,
       "primary_widthRatio": 1.3,
+      "primary_pointiness": 0.0,
       "name": "USS Earlgrey",
       "neckThickness": null,
       "nacelle_lowerToggle": false
@@ -264,7 +269,8 @@
       "primary_z": 0.5,
       "primary_radius": 12,
       "primary_thickness": 4,
-      "primary_widthRatio": 1
+      "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
     },
     {
       "nacelle_toggle": true,
@@ -314,6 +320,7 @@
       "primary_radius": 14.81,
       "primary_thickness": 4,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "USS Celcius",
       "neckThickness": null,
       "nacelle_lowerToggle": false
@@ -366,6 +373,7 @@
       "primary_radius": 3.67,
       "primary_thickness": 2.42,
       "primary_widthRatio": 0.36,
+      "primary_pointiness": 0.0,
       "name": "Sparrow of Prey",
       "neckThickness": null,
       "nacelle_lowerToggle": false,
@@ -419,6 +427,7 @@
       "primary_radius": 2.67,
       "primary_thickness": 3.49,
       "primary_widthRatio": 1.16,
+      "primary_pointiness": 0.0,
       "name": "IKS Jeffkaaa",
       "neckThickness": null,
       "nacelle_lowerToggle": false,
@@ -472,6 +481,7 @@
       "primary_radius": 4.56,
       "primary_thickness": 1.74,
       "primary_widthRatio": 0.88,
+      "primary_pointiness": 0.0,
       "name": "RSI Cloaked Canary"
     },
     {
@@ -511,6 +521,7 @@
       "primary_radius": 13.06,
       "primary_thickness": 3.36,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
     },
     {
       "nacelle_toggle": true,
@@ -560,6 +571,7 @@
       "primary_radius": 8.57,
       "primary_thickness": 1.98,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "USS Jeaves"
     },
     {
@@ -599,6 +611,7 @@
       "primary_radius": 7.94,
       "primary_thickness": 3.27,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
     },
     {
       "nacelle_toggle": true,
@@ -636,6 +649,7 @@
       "primary_radius": 14.81,
       "primary_thickness": 4,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": 'USS Gloucester',
     },
     {
@@ -686,6 +700,7 @@
       "primary_radius": 13.06,
       "primary_thickness": 4.68,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "USS Smallstepper"
     },
     {
@@ -736,6 +751,7 @@
       "primary_radius": 9.11,
       "primary_thickness": 2.46,
       "primary_widthRatio": 0.83,
+      "primary_pointiness": 0.0,
       "name": "USS Pfiel",
       "nacelle_lowerToggle": false
     },
@@ -787,6 +803,7 @@
       "primary_radius": 11.62,
       "primary_thickness": 3.35,
       "primary_widthRatio": 0.09,
+      "primary_pointiness": 0.0,
       "name": "FinchFodder Class",
       "nacelle_lowerToggle": false
     },
@@ -838,6 +855,7 @@
       "primary_radius": 6.74,
       "primary_thickness": 3.02,
       "primary_widthRatio": 0.09,
+      "primary_pointiness": 0.0,
       "name": "Sweepenflieger Class",
       "nacelle_lowerToggle": false
     },
@@ -889,6 +907,7 @@
       "primary_radius": 4.28,
       "primary_thickness": 1.49,
       "primary_widthRatio": 1.56,
+      "primary_pointiness": 0.0,
       "name": "USS RightStuff",
       "nacelle_lowerToggle": false
     },
@@ -940,6 +959,7 @@
       "primary_radius": 6.3,
       "primary_thickness": 2.44,
       "primary_widthRatio": 1.16,
+      "primary_pointiness": 0.0,
       "name": "USS TeaKettleSprinter",
       "nacelle_lowerToggle": false
     },
@@ -991,6 +1011,7 @@
       "primary_radius": 10.5,
       "primary_thickness": 3.06,
       "primary_widthRatio": 0.76,
+      "primary_pointiness": 0.0,
       "name": "USS LucklessShot",
       "nacelle_lowerToggle": false
     },
@@ -1042,6 +1063,7 @@
       "primary_radius": 9.74,
       "primary_thickness": 3.49,
       "primary_widthRatio": 0.29,
+      "primary_pointiness": 0.0,
       "name": "USS Mark III",
       "neckThickness": null
     },
@@ -1093,6 +1115,7 @@
       "primary_radius": 7.63,
       "primary_thickness": 3.1,
       "primary_widthRatio": 1.56,
+      "primary_pointiness": 0.0,
       "name": "USS Prosperous",
       "neckThickness": null,
       "nacelle_lowerToggle": false
@@ -1145,6 +1168,7 @@
       "primary_radius": 10.47,
       "primary_thickness": 3.11,
       "primary_widthRatio": 0.56,
+      "primary_pointiness": 0.0,
       "name": "VSA Mol-Kom",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -1197,6 +1221,7 @@
       "primary_radius": 9.11,
       "primary_thickness": 3.04,
       "primary_widthRatio": 1.02,
+      "primary_pointiness": 0.0,
       "name": "USS SwingLowSweet",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -1249,6 +1274,7 @@
       "primary_radius": 8.13,
       "primary_thickness": 2.05,
       "primary_widthRatio": 0.58,
+      "primary_pointiness": 0.0,
       "name": "HMCS AutumnsCrispyEmbrace",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -1301,6 +1327,7 @@
       "primary_radius": 18.47,
       "primary_thickness": 4.26,
       "primary_widthRatio": 0.49,
+      "primary_pointiness": 0.0,
       "name": "HMCS Bonaventure",
       "neckThickness": 1.2,
       "nacelle_lowerToggle": false
@@ -1353,6 +1380,7 @@
       "primary_radius": 6.83,
       "primary_thickness": 2.9,
       "primary_widthRatio": 0.96,
+      "primary_pointiness": 0.0,
       "name": "HMS DutchessOfSpam",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -1405,6 +1433,7 @@
       "primary_radius": 8.03,
       "primary_thickness": 1.78,
       "primary_widthRatio": 0.69,
+      "primary_pointiness": 0.0,
       "name": "HMCS HardDrivenSnowflake",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -1457,6 +1486,7 @@
       "primary_radius": 12,
       "primary_thickness": 2.76,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "HMCS Orthoganis"
     },
     {
@@ -1507,6 +1537,7 @@
       "primary_radius": 10.61,
       "primary_thickness": 3.01,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "HMS Costa Brava",
       "neckThickness": 0.87,
       "nacelle_lowerToggle": false
@@ -1559,6 +1590,7 @@
       "primary_radius": 9.01,
       "primary_thickness": 3.01,
       "primary_widthRatio": 0.11,
+      "primary_pointiness": 0.0,
       "name": "T-SixtyRedFiver Class",
       "nacelle_lowerToggle": false
     },
@@ -1610,6 +1642,7 @@
       "primary_radius": 3.59,
       "primary_thickness": 3.78,
       "primary_widthRatio": 0.49,
+      "primary_pointiness": 0.0,
       "name": "BatBlinder Class",
       "nacelle_lowerToggle": false
     },
@@ -1661,6 +1694,7 @@
       "primary_radius": 4.75,
       "primary_thickness": 1.95,
       "primary_widthRatio": 0.19,
+      "primary_pointiness": 0.0,
       "name": "USS Northrop",
       "neckThickness": 0.71,
       "nacelle_lowerToggle": false,
@@ -1714,6 +1748,7 @@
       "primary_radius": 6.01,
       "primary_thickness": 1.94,
       "primary_widthRatio": 1.74,
+      "primary_pointiness": 0.0,
       "name": "HMAS ForkedTailedDevilCake"
     },
     {
@@ -1764,6 +1799,7 @@
       "primary_radius": 7.26,
       "primary_thickness": 2.76,
       "primary_widthRatio": 1.03,
+      "primary_pointiness": 0.0,
       "name": "HMCS Agameminonicon",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -1816,6 +1852,7 @@
       "primary_radius": 11.11,
       "primary_thickness": 3.35,
       "primary_widthRatio": 0.9,
+      "primary_pointiness": 0.0,
       "name": "HMS Tortuga",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -1868,6 +1905,7 @@
       "primary_radius": 12.29,
       "primary_thickness": 3.11,
       "primary_widthRatio": 0.56,
+      "primary_pointiness": 0.0,
       "name": "USMC Taildragger",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -1920,6 +1958,7 @@
       "primary_radius": 11.32,
       "primary_thickness": 4.5,
       "primary_widthRatio": 0.13,
+      "primary_pointiness": 0.0,
       "name": "Kittyhawk Class",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -1972,6 +2011,7 @@
       "primary_radius": 10.42,
       "primary_thickness": 3.06,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "USS Cerberus"
     },
     {
@@ -2022,6 +2062,7 @@
       "primary_radius": 4.21,
       "primary_thickness": 1.83,
       "primary_widthRatio": 0.23,
+      "primary_pointiness": 0.0,
       "name": "Shooting Star Class",
       "neckThickness": 0.22,
       "nacelle_lowerToggle": false,
@@ -2075,6 +2116,7 @@
       "primary_radius": 10.57,
       "primary_thickness": 2.63,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "USS Vaccufortress",
       "nacelle_lowerToggle": false,
       "neckThickness": 0.52
@@ -2127,6 +2169,7 @@
       "primary_radius": 11.38,
       "primary_thickness": 2.74,
       "primary_widthRatio": 0.63,
+      "primary_pointiness": 0.0,
       "name": "HMCS Nigelius Tufnel",
       "neckThickness": 0.34,
       "nacelle_lowerToggle": false,
@@ -2180,6 +2223,7 @@
       "primary_radius": 10.71,
       "primary_thickness": 3.06,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "HMS Surprisius",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -2232,6 +2276,7 @@
       "primary_radius": 9.92,
       "primary_thickness": 2.84,
       "primary_widthRatio": 0.06,
+      "primary_pointiness": 0.0,
       "name": "Lippisch Class"
     },
     {
@@ -2282,6 +2327,7 @@
       "primary_radius": 12,
       "primary_thickness": 4,
       "primary_widthRatio": 1.21,
+      "primary_pointiness": 0.0,
       "name": "USS Edmontonius"
     },
     {
@@ -2332,6 +2378,7 @@
       "primary_radius": 8.21,
       "primary_thickness": 3.39,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "USS Tocino",
       "nacelle_lowerToggle": false,
       "neckThickness": 0.71
@@ -2384,6 +2431,7 @@
       "primary_radius": 8.1,
       "primary_thickness": 3.86,
       "primary_widthRatio": 1,
+      "primary_pointiness": 0.0,
       "name": "USS ReadingRainbow",
       "neckThickness": 1.08,
       "nacelle_lowerToggle": false
@@ -2436,6 +2484,7 @@
       "primary_radius": 11.65,
       "primary_thickness": 3.31,
       "primary_widthRatio": 0.56,
+      "primary_pointiness": 0.0,
       "name": "USMC Blitzen",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -2488,6 +2537,7 @@
       "primary_radius": 11.65,
       "primary_thickness": 3.31,
       "primary_widthRatio": 0.56,
+      "primary_pointiness": 0.0,
       "name": "USS Vowelprise",
       "nacelle_lowerToggle": false,
       "neckThickness": null
@@ -2540,6 +2590,7 @@
       "primary_radius": 8.56,
       "primary_thickness": 4.38,
       "primary_widthRatio": 1.03,
+      "primary_pointiness": 0.0,
       "name": "USS Kanada Drexx",
       "neckThickness": null,
       "nacelle_lowerToggle": false,
@@ -2593,6 +2644,7 @@
       "primary_radius": 5.84,
       "primary_thickness": 2.68,
       "primary_widthRatio": 1.3,
+      "primary_pointiness": 0.0,
       "name": "HMCS Conspiratorial Raven",
       "neckThickness": 1.2,
       "nacelle_lowerToggle": false,
@@ -2646,6 +2698,7 @@
       "primary_radius": 5.68,
       "primary_thickness": 2.75,
       "primary_widthRatio": 0.12,
+      "primary_pointiness": 0.0,
       "name": "Mosquito Class",
       "nacelle_lowerToggle": false,
       "necktThicknes": null,
