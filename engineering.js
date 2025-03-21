@@ -6,26 +6,30 @@ export default class Engineering extends HullComponent {
     super();
 
     var tex = new THREE.TextureLoader().load( "./images/dish.png");
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set( 8, 1 );
+    tex.wrapS = THREE.MirroredRepeatWrapping;
+    tex.wrapT = THREE.MirroredRepeatWrapping;
+    tex.repeat.set( 4, 1 );
 
     var texSp = new THREE.TextureLoader().load( "./images/dish_sp.png");
-    texSp.wrapS = THREE.RepeatWrapping;
-    texSp.wrapT = THREE.RepeatWrapping;
-    texSp.repeat.set( 8, 1 );
+    texSp.wrapS = THREE.MirroredRepeatWrapping;
+    texSp.wrapT = THREE.MirroredRepeatWrapping;
+    texSp.repeat.set( 12, 1 );
 
     // materials
     this.material = material
-    this.deflectorMaterial = new THREE.MeshPhongMaterial( {
-      shininess: 50,
-      color: 0xFFDF00,
-      emissive: 0x773333,
-      specular: 0x556677,
+    this.deflectorMaterial = new THREE.MeshStandardMaterial( {
+      color: 0xffdd22,
+      emissive: 0xff9900,
+      emissiveIntensity: 0.3,
       side: THREE.DoubleSide,
       flatShading: false,
-      map: tex,
-      specularMap: texSp,
+      map: texSp,
+      metalnessMap: tex,
+      metalness: 6.0,
+      roughnessMap: tex,
+      roughness: 0.9,
+      // bumpMap: texSp,
+      // bumpScale: 0.09,
     } );
     this.group = new THREE.Group();
     this.dimensions = {};
@@ -76,14 +80,14 @@ export default class Engineering extends HullComponent {
 
     // dish curve
     let c = 0.25;
-    const deflectorPointCount = 12.0;
+    const deflectorPointCount = 16.0;
     let r;
-    for (let i = 1.0; i <= deflectorPointCount; i++) {
+    for (let i = 0.0; i <= deflectorPointCount; i++) {
       r =  i / deflectorPointCount;
       deflectorPoints.push (
         new THREE.Vector2(
-          deflectorOuterEdge.x * (1.0 - r), 
-          deflectorOuterEdge.y - c * this.width * r * r - 0.1
+          deflectorOuterEdge.x * (1.0 - r),
+          deflectorOuterEdge.y - Math.sin(Math.PI*r/2.0) * c - 0.1
         )
       );
     };
@@ -93,13 +97,13 @@ export default class Engineering extends HullComponent {
     lastDishPoint.setX(deflectorOuterEdge.x * 0.1);
 
     deflectorPoints.push (
-      new THREE.Vector2( 0.0, deflectorOuterEdge.y + 0.6 )
+      new THREE.Vector2( 0.0, deflectorOuterEdge.y + 0.9 )
     );
 
-    this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 20);
+    this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 40);
     this.engineeringGeometry.scale(this.widthRatio, 1.0, 1.0);
 
-    this.deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, 20);
+    this.deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, 40);
     this.deflectorGeometry.scale(this.widthRatio, 1.0, 1.0);
 
     const matrix = new THREE.Matrix4();
@@ -109,8 +113,8 @@ export default class Engineering extends HullComponent {
                   0,     1,  Szy,  0,
                   0,     0,   1,   0,
                   0,     0,   0,   1  );
-    this.deflectorGeometry.applyMatrix( matrix );
-    this.engineeringGeometry.applyMatrix( matrix );
+    this.deflectorGeometry.applyMatrix4( matrix );
+    this.engineeringGeometry.applyMatrix4( matrix );
 
     this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, this.material.clone() );
     this.deflectoMesh = new THREE.Mesh( this.deflectorGeometry, this.deflectorMaterial );

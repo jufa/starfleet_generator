@@ -1,8 +1,7 @@
 import * as THREE from 'three';
-import OrbitControls from 'orbit-controls-es6';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 // import * as dat from 'dat.gui';
 import * as dat from 'lil-gui';
-import Stars from './stars.js';
 import Nacelle from './nacelle.js';
 import Engineering from './engineering.js';
 import Primary from './primary.js';
@@ -32,29 +31,38 @@ export default class Builder {
     var tex = new THREE.TextureLoader().load( "./images/saucer.png");
     tex.wrapS = THREE.MirroredRepeatWrapping;
     tex.wrapT = THREE.MirroredRepeatWrapping;
-    tex.repeat.set( 2, 2 );
+    tex.repeat.set( 4, 6 );
+    // tex.colorSpace = THREE.SRGBColorSpace;
 
     var texSaucerEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
     texSaucerEm.wrapS = THREE.MirroredRepeatWrapping;
     texSaucerEm.wrapT = THREE.MirroredRepeatWrapping;
-    texSaucerEm.repeat.set( 2, 1 );
+    texSaucerEm.repeat.set( 6, 5 );
+    // texSaucerEm.colorSpace = THREE.SRGBColorSpace;
 
     var texSaucerSp = new THREE.TextureLoader().load( "./images/saucer_sp.png");
     texSaucerSp.wrapS = THREE.MirroredRepeatWrapping;
     texSaucerSp.wrapT = THREE.MirroredRepeatWrapping;
-    texSaucerSp.repeat.set( 2, 1 );
+    texSaucerSp.repeat.set( 6, 2 );
+    // texSaucerSp.colorSpace = THREE.SRGBColorSpace;
 
-    this.hullMaterial = new THREE.MeshPhongMaterial({
-      shininess: 100,
+    this.hullMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
       emissive: 0xeeeeff,
+      emissiveIntensity: 0.6,
       specular: 0x555566,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: tex,
       emissiveMap: texSaucerEm,
-      specularMap: texSaucerSp,
+      emissiveIntensity: 0.6,
+      metalnessMap: tex,
+      metalness: 0.3,
+      roughnessMap: texSaucerSp,
+      roughness: 3.0,
+      // bumpMap:texSaucerSp,
+      // bumpScale: -0.01,
     });
 
     var texEng = new THREE.TextureLoader().load( "./images/engineering.png");
@@ -65,68 +73,113 @@ export default class Builder {
     var texEngSp = new THREE.TextureLoader().load( "./images/engineering_sp.png");
     texEngSp.wrapS = THREE.MirroredRepeatWrapping;
     texEngSp.wrapT = THREE.MirroredRepeatWrapping;
-    texEngSp.repeat.set( 2, 1 );
+    texEngSp.repeat.set( 4, 4 );
 
-    this.engMaterial = new THREE.MeshPhongMaterial({
-      shininess: 30,
+    var texEngEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
+    texEngEm.wrapS = THREE.MirroredRepeatWrapping;
+    texEngEm.wrapT = THREE.MirroredRepeatWrapping;
+    texEngEm.repeat.set( 2, 2 );
+    texEngEm.rotation = Math.PI * 1;
+    texEngEm.center.set(0.0, 0.5);
+
+    this.engMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
-      emissive: 0x000000,
-      specular: 0x555566,
+      emissive: 0xffffff,
+      emissiveMap: texEngEm,
+      emissiveIntensity: 0.1,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: texEng,
-      specularMap: texEngSp,
+      metalnessMap: texEngSp,
+      metalness: 0.3,
+      roughnessMap: texEng,
+      roughness: 0.5,
     });
 
     var texNeck = new THREE.TextureLoader().load( "./images/neck.png");
-    texNeck.wrapS = THREE.MirroredRepeatWrapping;
-    texNeck.wrapT = THREE.MirroredRepeatWrapping;
-    texNeck.repeat.set( 3, 1 );
+    texNeck.wrapS = THREE.RepeatWrapping;
+    texNeck.wrapT = THREE.RepeatWrapping;
+    texNeck.repeat.set( 10, 2 );
     
     var texNeckSp = new THREE.TextureLoader().load( "./images/neck_sp.png");
-    texNeckSp.wrapS = THREE.MirroredRepeatWrapping;
-    texNeckSp.wrapT = THREE.MirroredRepeatWrapping;
-    texNeckSp.repeat.set( 3, 1 );
+    texNeckSp.wrapS = THREE.RepeatWrapping;
+    texNeckSp.wrapT = THREE.RepeatWrapping;
+    texNeckSp.repeat.set( 10, 2 );
 
-    this.neckMaterial = new THREE.MeshPhongMaterial({
-      shininess: 40,
+    this.neckMaterial = new THREE.MeshStandardMaterial({
+      color: 0xeeeeef,
+      emissive: 0x000000,
+      side: THREE.DoubleSide,
+      flatShading: false,
+      wireframe: false,
+      map: texNeck,
+      metalnessMap: texNeckSp,
+      metalness: 0.8,
+      roughnessMap: texNeckSp,
+      roughness: 0.6,
+    });
+
+    const rotation = Math.PI * 0.25;
+    var texPylon = new THREE.TextureLoader().load( "./images/neck.png");
+    texPylon.wrapS = THREE.MirroredRepeatWrapping;
+    texPylon.wrapT = THREE.MirroredRepeatWrapping;
+    texPylon.repeat.set( 2.0, 2.0 );
+    texPylon.rotation = rotation;
+
+    var texPylonSp = new THREE.TextureLoader().load( "./images/neck_sp.png");
+    texPylonSp.wrapS = THREE.MirroredRepeatWrapping;
+    texPylonSp.wrapT = THREE.MirroredRepeatWrapping;
+    texPylonSp.repeat.set( 2.0, 2.0 );
+    texPylonSp.rotation = rotation;
+
+    this.pylonMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
       emissive: 0x000000,
       specular: 0x333338,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
-      map: texNeck,
-      specularMap: texNeckSp,
+      map: texPylon,
+      metalnessMap: texPylonSp,
+      metalness: 0.8,
+      roughnessMap: texPylon,
+      roughness: 0.6,
     });
-
+    const nacelleDefaultRotation = Math.PI * 0.0;
     var texNacelle = new THREE.TextureLoader().load( "./images/nacelle.png");
-    texNacelle.wrapS = THREE.RepeatWrapping;
-    texNacelle.wrapT = THREE.RepeatWrapping;
+    texNacelle.wrapS = THREE.MirroredRepeatWrapping;
+    texNacelle.wrapT = THREE.MirroredRepeatWrapping;
     texNacelle.repeat.set( 2, 1 );
+    texNacelle.rotation = nacelleDefaultRotation;
+    // texNacelle.center.set(0.0, 0.5); // Set rotation center to the middle of the texture
     
     var texNacelleEm = new THREE.TextureLoader().load( "./images/nacelle_em.png");
-    texNacelleEm.wrapS = THREE.RepeatWrapping;
-    texNacelleEm.wrapT = THREE.RepeatWrapping;
+    texNacelleEm.wrapS = THREE.MirroredRepeatWrapping;
+    texNacelleEm.wrapT = THREE.MirroredRepeatWrapping;
     texNacelleEm.repeat.set( 2, 1 );
+    texNacelleEm.rotation = nacelleDefaultRotation;
 
     var texNacelleSp = new THREE.TextureLoader().load( "./images/nacelle_sp.png");
-    texNacelleSp.wrapS = THREE.RepeatWrapping;
-    texNacelleSp.wrapT = THREE.RepeatWrapping;
-    texNacelleSp.repeat.set( 2, 1 );
+    texNacelleSp.wrapS = THREE.MirroredRepeatWrapping;
+    texNacelleSp.wrapT = THREE.MirroredRepeatWrapping;
+    texNacelleSp.repeat.set( 1, 3 );
+    texNacelleSp.rotation = nacelleDefaultRotation;
 
-    this.nacelleMaterial = new THREE.MeshPhongMaterial({
-      shininess: 60,
-      color: 0xeeeeef,
-      emissive: 0xddddff,
-      specular: 0x555566,
+    this.nacelleMaterial = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      emissive: 0xaaddff,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: texNacelle,
       emissiveMap: texNacelleEm,
-      specularMap: texNacelleSp,
+      emissiveIntensity: 0.7,
+      metalnessMap: texNacelleSp,
+      // bumpMap: texNacelleEm,
+      // bumpScale: -1.0,
+      metalness: 0.7,
+      roughness: 0.4,
     });
 
     this.controlConfiguration = {
@@ -185,7 +238,7 @@ export default class Builder {
         radius: [12, 1, 30, 0.01],
         thickness: [4, 1, 10, 0.01],
         widthRatio: [1, 0, 10, 0.01],
-        pointiness: [0.0, 0, 1, 0.01],
+        pointiness: [0.0, 0, 1.5, 0.01],
       }
     };
 
@@ -197,19 +250,19 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    lights[ 0 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
-    lights[ 1 ] = new THREE.PointLight( 0xffffff, 0.5, 0 ); //bottom
-    lights[ 2 ] = new THREE.PointLight( 0xffffff, 0.5, 0 );
+    const intensity = 350;
+    const dist = 20;
+    lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
+    lights[ 1 ] = new THREE.PointLight( 0xffffff, intensity, 0 ); //bottom
+    lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
 
-    lights[ 0 ].position.set( 50, 50, 0 );
-    lights[ 1 ].position.set( -50, -50, 0 );
-    lights[ 2 ].position.set( 0, 0, 100 );
+    lights[ 0 ].position.set( dist, dist, 0 );
+    lights[ 1 ].position.set( -dist, -dist, 0 );
+    lights[ 2 ].position.set( 0, 0, 40 );
 
     this.scene.add( lights[ 0 ] );
     this.scene.add( lights[ 1 ] );
     this.scene.add( lights[ 2 ] );
-
-    new Stars({scene: this.scene});
   }
 
   /**
@@ -252,14 +305,14 @@ export default class Builder {
     this.portUpperPylon = new Pylon({
       nacelle: this.nacelleUpperPort,
       engineering: this.engineering,
-      material: this.neckMaterial
+      material: this.pylonMaterial
     });
     this.mount(this.ship, this.portUpperPylon.group);
 
     this.starboardUpperPylon = new Pylon({
       nacelle: this.nacelleUpperStarboard,
       engineering: this.engineering,
-      material: this.neckMaterial
+      material: this.pylonMaterial
     });
     this.mount(this.ship, this.starboardUpperPylon.group);
 
@@ -403,6 +456,25 @@ export default class Builder {
     // scenes
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color( this.SKY_COLOUR );
+    // add skybox:
+    // https://tools.wwwtyro.net/space-3d/index.html#animationSpeed=0.24598027238215495&fov=150&nebulae=true&pointStars=true&resolution=2048&seed=92cw15qrv81i&stars=true&sun=false
+    
+    const cubeLoader = new THREE.CubeTextureLoader();
+    cubeLoader.setPath("./images/cubemap/");
+
+    const skyboxTexture = cubeLoader.load
+    ([
+      "right.jpg", // +X (right)
+      "left.jpg", // -X (left)
+      "top.jpg", // +Y (top)
+      "bottom.jpg", // -Y (bottom)
+      "front.jpg", // +Z (front)
+      "back.jpg",  // -Z (back)
+    ]);
+
+    this.scene.background = skyboxTexture;
+
+    // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: textureCube } );
 
     // lights
     this.addLights(this.scene);
@@ -411,7 +483,9 @@ export default class Builder {
     this.renderer = new THREE.WebGLRenderer({
       depth: true,
       antialias: true,
-      preserveDrawingBuffer: true // for screenshotting
+      preserveDrawingBuffer: true, // for screenshotting
+      
+
     });
     this.renderer.setClearColor( this.CLEAR_COLOUR );
     this.renderer.setPixelRatio( window.devicePixelRatio );
@@ -438,6 +512,17 @@ export default class Builder {
       this.update();
       this.dirty = false;
     }
+    const angle = shipBuilder.clock.getElapsedTime() * 3.0 % 100.0;
+    const nacelles = [
+      this.nacelleLowerPort,
+      this.nacelleLowerStarboard,
+      this.nacelleUpperPort,
+      this.nacelleUpperStarboard,
+    ]
+    for (let i in nacelles) {
+      nacelles[i].rotateBussard(angle * (-1.0)**i);
+    }
+
     this.controls.update( shipBuilder.clock.getDelta() );
     this.renderer.render( this.scene, this.camera );
   }

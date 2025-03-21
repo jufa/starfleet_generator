@@ -16,29 +16,43 @@ export default class Nacelle extends HullComponent {
     this.bussardMesh = {};
 
     var tex = new THREE.TextureLoader().load( "./images/bussard_em.png");
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set( 12, 1.5 );
+    tex.wrapS = THREE.MirroredRepeatWrapping;
+    tex.wrapT = THREE.MirroredRepeatWrapping;
+    tex.repeat.set( 17, 2.0 );
+    this.bussardInnerTexture = tex;
 
-    this.bussardMaterial = new THREE.MeshPhongMaterial({
-      shininess: 40,
+    this.bussardMaterial = new THREE.MeshStandardMaterial({
       color: 0xff3300,
-      emissive: 0x660000,
-      specular: 0xff3333,
-      opacity: 0.75,
+      emissive: 0xff0000,
+      emissiveIntensity: 1.0,
+      // alphaMap: tex,
+      // alphaTest: 0.0,
+      opacity: 0.6,
       transparent: true,
       flatShading: false,
+      // metalnessMap: tex,
+      // roughnessMap: tex,
+      // metalness: 1.9,
+      // roughness: 4.2,
     });
     
 
-    this.bussardInnerMaterial = new THREE.MeshPhongMaterial({
-      shininess: 30,
+    this.bussardInnerMaterial = new THREE.MeshStandardMaterial({
       color: 0xffffff,
-      emissive: 0x000000,
-      specular: 0xffffff,
+      emissive: 0xffff00,
+      emissiveIntensity: 0.2,
       transparent: false,
       flatShading: false,
       map: tex,
+      emissiveMap: tex,
+      metalnessMap: tex,
+      roughnessMap: tex,
+      // alphaMap: tex,
+      // alphaTest: -0.01,
+      // bumpMap: tex,
+      // bumpScale: 1.0,
+      metalness: 10.0,
+      roughness: 0.9,
     });
 
     return this;
@@ -83,22 +97,22 @@ export default class Nacelle extends HullComponent {
     for ( var i = bussardPointCount; i >= 0; i-- ) {
       bussardInnerPoints.push(
         new THREE.Vector2(
-          Math.pow(i / bussardPointCount, 0.4) * width * 0.86,
-          length + (1.0 - i / bussardPointCount) * width * 1.3
+          Math.pow(i / bussardPointCount, 0.4) * width * 0.99,
+          length + (0.6 - i / bussardPointCount) * width * 2.0
         )
       );
     }
     
 
-    this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, 18);
+    this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, 36);
     this.nacelleGeometry.scale(widthRatio, 1.0, 1.0);
     this.nacelleGeometry.rotateY(rotation);
 
-    this.bussardGeometry = new THREE.LatheGeometry(bussardPoints, 18);
+    this.bussardGeometry = new THREE.LatheGeometry(bussardPoints, 36);
     this.bussardGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardGeometry.rotateY(rotation);
 
-    this.bussardInnerGeometry = new THREE.LatheGeometry(bussardInnerPoints, 18);
+    this.bussardInnerGeometry = new THREE.LatheGeometry(bussardInnerPoints, 16);
     this.bussardInnerGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardInnerGeometry.rotateY(rotation);
 
@@ -119,6 +133,15 @@ export default class Nacelle extends HullComponent {
     this.dimensions.y = measuredGeom.boundingBox.max.y - measuredGeom.boundingBox.min.y;
     this.dimensions.z = measuredGeom.boundingBox.max.z - measuredGeom.boundingBox.min.z;
   }
+
+  rotateBussard(rotation){
+    // rotate the bussardInnerMesh TextureMap:
+    this.bussardInnerTexture.offset.x = rotation;
+    // this.bussardInnerTexture.offset.y = rotation;
+    // this.bussardInnerTexture.rotation = rotation*10.0;
+    // this.tex = rotation;
+  }
+
 
   clear(){
     if (this.nacelleGeometry['dispose']) {

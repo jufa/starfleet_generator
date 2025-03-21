@@ -3,29 +3,30 @@ import * as THREE from 'three';
 export default class HullComponent {
 
   calculateUVs(geometry){
-    var geometry = this.geometry;
-      geometry.computeVertexNormals(); //needed for material shading
-      geometry.computeBoundingBox();
+    geometry.computeVertexNormals(); // Needed for shading
+    geometry.computeBoundingBox(); // Ensure bounding box exists
 
-      var max = geometry.boundingBox.max,
-          min = geometry.boundingBox.min;
-      var offset = new THREE.Vector2(0 - min.x, 0 - min.y);
-      var range = new THREE.Vector2(max.x - min.x, max.y - min.y);
-      var faces = geometry.faces;
-          
-      geometry.faceVertexUvs[0] = [];
+    const bbox = geometry.boundingBox;
+    const min = bbox.min;
+    const max = bbox.max;
 
-      for (var i = 0; i < faces.length ; i++) {
-          var v1 = geometry.vertices[faces[i].a], 
-              v2 = geometry.vertices[faces[i].b], 
-              v3 = geometry.vertices[faces[i].c];
+    const offset = new THREE.Vector2(-min.x, -min.y);
+    const range = new THREE.Vector2(max.x - min.x, max.y - min.y);
 
-          geometry.faceVertexUvs[0].push([
-              new THREE.Vector2((v1.x + offset.x)/range.x ,(v1.y + offset.y)/range.y),
-              new THREE.Vector2((v2.x + offset.x)/range.x ,(v2.y + offset.y)/range.y),
-              new THREE.Vector2((v3.x + offset.x)/range.x ,(v3.y + offset.y)/range.y)
-          ]);
-      }
-      geometry.uvsNeedUpdate = true;
+    const positions = geometry.attributes.position.array;
+    const uvs = new Float32Array((positions.length / 3) * 2); // 2 UV values per vertex
+
+    for (let i = 0, j = 0; i < positions.length; i += 3, j += 2) {
+        let x = positions[i];
+        let y = positions[i + 1];
+
+        // Normalize to [0,1] using bounding box
+        uvs[j] = (x + offset.x) / range.x; // U coordinate
+        uvs[j + 1] = (y + offset.y) / range.y; // V coordinate
     }
+
+    // Assign UVs to BufferGeometry
+    geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+    geometry.uvsNeedUpdate = true;
+  }
 }

@@ -24,8 +24,6 @@ export default class Pylon extends HullComponent {
 
     this.clear();
 
-    this.geometry = new THREE.Geometry();
-
     let nacelle = this.nacelle;
     let engineering = this.engineering;
 
@@ -71,22 +69,38 @@ export default class Pylon extends HullComponent {
       new THREE.Vector3(engineeringCenterX + thicknessX, engineeringAft, engineeringCenterZ - thicknessZ),
     ];
 
-    this.geometry.vertices = this.vertices;
+    // Create a new BufferGeometry
+    this.geometry = new THREE.BufferGeometry();
 
-    // need 8 triangles:
-    this.geometry.faces = [
-      new THREE.Face3(0,1,2),
-      new THREE.Face3(2,1,3),
-      new THREE.Face3(5,3,1),
-      new THREE.Face3(3,5,7),
-      new THREE.Face3(6,7,5),
-      new THREE.Face3(4,6,5),
-      new THREE.Face3(6,4,0),
-      new THREE.Face3(6,0,2),
-      new THREE.Face3(0,4,1),
-      new THREE.Face3(4,5,1),
-    ]
+    // Create an array to hold the vertex positions
+    const positions = [];
 
+    // Populate the positions array with the vertices
+    this.vertices.forEach(v => {
+      positions.push(v.x, v.y, v.z);
+    });
+
+    // Set the position attribute in the BufferGeometry
+    this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+    // Define the faces (index pairs) for the triangles
+    const indices = [
+        0, 1, 2,
+        2, 1, 3,
+        5, 3, 1,
+        3, 5, 7,
+        6, 7, 5,
+        4, 6, 5,
+        6, 4, 0,
+        6, 0, 2,
+        0, 4, 1,
+        4, 5, 1,
+    ];
+
+    // Set the index attribute in the BufferGeometry
+    this.geometry.setIndex(indices);
+
+    // Optionally calculate the UVs (if needed by your material)
     this.calculateUVs(this.geometry);
     this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
     this.group.add( this.mesh );

@@ -27,7 +27,7 @@
     "lil-gui": "^0.20.0",
     "orbit-controls-es6": "^1.0.12",
     "stats.js": "^0.17.0",
-    "three": "^0.98.0"
+    "three": "0.155.0"
   },
   "devDependencies": {
     "cached-path-relative": "^1.0.2",

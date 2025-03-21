@@ -42,37 +42,39 @@ export default class Primary extends HullComponent{
     const lengthZ = this.geometry.boundingBox.max.z - this.geometry.boundingBox.min.z;
 
     // egg-distort
-    const positions = this.geometry.vertices;
+    // const positions = this.geometry.vertices;
+    const positions = this.geometry.attributes.position.array;
     
     let aftMax = -9999999.0;
     let foreMax = 9999999.0;
-    for (let i = 0; i < positions.length; i++) {
-        // const distance = Math.sqrt(x * x + z * z); // Distance from the origin in the XZ plane
-        let zNormalized = this.geometry.vertices[i].z / lengthZ;
-        const stretchFactor = Math.pow(1.0 + zNormalized, pointiness); // Adjust this factor as needed
-        this.stretchFactor = stretchFactor;
-        let newZ = this.geometry.vertices[i].z / stretchFactor; // Stretch along the y-axis
-        this.geometry.vertices[i].z = newZ;
-        if(newZ > aftMax) aftMax = newZ;
-        if(newZ < foreMax) foreMax = newZ;
+    for (let i = 0; i < positions.length; i += 3) {
+      let z = positions[i + 2]; // Get Z value
+      let zNormalized = z / lengthZ;
+      const stretchFactor = Math.pow(1.0 + zNormalized, pointiness);
+      this.stretchFactor = stretchFactor;
+      let newZ = z / stretchFactor; // Stretch along the Z-axis
+      positions[i + 2] = newZ; // Update Z position
+  
+      if (newZ > aftMax) aftMax = newZ;
+      if (newZ < foreMax) foreMax = newZ;
     }
     this.dimensions.center = (aftMax + foreMax) / 2.0
-    console.log("foreMax: " + foreMax + " aftMax: " + aftMax); //fore is -12 at round becoming more negative, aft is 12 at round
-
     this.dimensions.aft = aftMax;
     this.dimensions.fore = foreMax;
     
-    this.geometry.needsUpdate = true; // Ensure Three.js updates the geometry
+    this.geometry.attributes.position.needsUpdate = true;
     this.computeBoundingBox(this.geometry);
     this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
 
+    // saucer cutout:
+    /*
     // Create shape from points
     const shape = new THREE.Shape(points);
 
     // Create flat geometry
     if (foreExclusionAngle > 0.0) {
       const geometry = new THREE.ShapeGeometry(shape);
-      const material = new THREE.MeshPhongMaterial({ color: 0x999999, side: THREE.DoubleSide });
+      const material = new THREE.MeshStandardMaterial({ color: 0x999999, side: THREE.DoubleSide });
       const closeMesh1 = new THREE.Mesh(geometry, material);
       const closeMesh2 = closeMesh1.clone();
       closeMesh1.rotateY( (Math.PI * 0.5) + foreExclusionAngle );
@@ -80,6 +82,7 @@ export default class Primary extends HullComponent{
       this.group.add( closeMesh1 );
       this.group.add( closeMesh2 );
     };
+    */
     this.group.add( this.mesh );
   }
 
