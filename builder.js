@@ -32,19 +32,19 @@ export default class Builder {
     tex.wrapS = THREE.MirroredRepeatWrapping;
     tex.wrapT = THREE.MirroredRepeatWrapping;
     tex.repeat.set( 4, 6 );
-    // tex.colorSpace = THREE.SRGBColorSpace;
+    tex.colorSpace = THREE.SRGBColorSpace;
 
     var texSaucerEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
     texSaucerEm.wrapS = THREE.MirroredRepeatWrapping;
     texSaucerEm.wrapT = THREE.MirroredRepeatWrapping;
     texSaucerEm.repeat.set( 6, 5 );
-    // texSaucerEm.colorSpace = THREE.SRGBColorSpace;
+    texSaucerEm.colorSpace = THREE.SRGBColorSpace;
 
     var texSaucerSp = new THREE.TextureLoader().load( "./images/saucer_sp.png");
     texSaucerSp.wrapS = THREE.MirroredRepeatWrapping;
     texSaucerSp.wrapT = THREE.MirroredRepeatWrapping;
     texSaucerSp.repeat.set( 6, 2 );
-    // texSaucerSp.colorSpace = THREE.SRGBColorSpace;
+    texSaucerSp.colorSpace = THREE.SRGBColorSpace;
 
     this.hullMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
@@ -57,13 +57,48 @@ export default class Builder {
       map: tex,
       emissiveMap: texSaucerEm,
       emissiveIntensity: 0.6,
-      metalnessMap: tex,
-      metalness: 0.3,
+      metalnessMap: texSaucerSp,
+      metalness: 0.2,
       roughnessMap: texSaucerSp,
-      roughness: 3.0,
+      roughness: 30.0,
       // bumpMap:texSaucerSp,
       // bumpScale: -0.01,
     });
+
+    var texBridge = new THREE.TextureLoader().load( "./images/saucer.png");
+    texBridge.wrapS = THREE.MirroredRepeatWrapping;
+    texBridge.wrapT = THREE.MirroredRepeatWrapping;
+    texBridge.repeat.set( 4, 4 );
+    texBridge.colorSpace = THREE.SRGBColorSpace;
+
+    var texBridgeEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
+    texBridgeEm.wrapS = THREE.MirroredRepeatWrapping;
+    texBridgeEm.wrapT = THREE.MirroredRepeatWrapping;
+    texBridgeEm.repeat.set( 2, 6 );
+    texBridgeEm.colorSpace = THREE.SRGBColorSpace;
+
+    var texBridgeSp = new THREE.TextureLoader().load( "./images/saucer_sp.png");
+    texBridgeSp.wrapS = THREE.MirroredRepeatWrapping;
+    texBridgeSp.wrapT = THREE.MirroredRepeatWrapping;
+    texBridgeSp.repeat.set( 4, 4 );
+    texBridgeSp.colorSpace = THREE.SRGBColorSpace;
+
+    this.bridgeMaterial = new THREE.MeshStandardMaterial({
+      color: 0xeeeeef,
+      emissive: 0xeeeeff,
+      emissiveIntensity: 0.6,
+      side: THREE.DoubleSide,
+      flatShading: false,
+      wireframe: false,
+      map: tex,
+      emissiveMap: texBridgeEm,
+      emissiveIntensity: 0.6,
+      metalnessMap: texBridgeSp,
+      metalness: 0.8,
+      roughnessMap: texBridgeSp,
+      roughness: 10.0,
+    });
+
 
     var texEng = new THREE.TextureLoader().load( "./images/engineering.png");
     texEng.wrapS = THREE.MirroredRepeatWrapping;
@@ -81,6 +116,7 @@ export default class Builder {
     texEngEm.repeat.set( 2, 2 );
     texEngEm.rotation = Math.PI * 1;
     texEngEm.center.set(0.0, 0.5);
+    texEngEm.colorSpace = THREE.SRGBColorSpace;
 
     this.engMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
@@ -107,9 +143,19 @@ export default class Builder {
     texNeckSp.wrapT = THREE.RepeatWrapping;
     texNeckSp.repeat.set( 10, 2 );
 
+    var texNeckEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
+    texNeckEm.wrapS = THREE.MirroredRepeatWrapping;
+    texNeckEm.wrapT = THREE.MirroredRepeatWrapping;
+    texNeckEm.repeat.set( 2, 2 );
+    texNeckEm.rotation = Math.PI * 0.5;
+    texNeckEm.center.set(0.0,0.0);
+    texNeckEm.colorSpace = THREE.SRGBColorSpace;
+
     this.neckMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
-      emissive: 0x000000,
+      emissive: 0xffffff,
+      emissiveMap: texNeckEm,
+      emissiveIntensity: 0.7,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
@@ -159,6 +205,7 @@ export default class Builder {
     texNacelleEm.wrapT = THREE.MirroredRepeatWrapping;
     texNacelleEm.repeat.set( 2, 1 );
     texNacelleEm.rotation = nacelleDefaultRotation;
+    texNacelleEm.colorSpace = THREE.SRGBColorSpace;
 
     var texNacelleSp = new THREE.TextureLoader().load( "./images/nacelle_sp.png");
     texNacelleSp.wrapS = THREE.MirroredRepeatWrapping;
@@ -168,7 +215,7 @@ export default class Builder {
 
     this.nacelleMaterial = new THREE.MeshStandardMaterial({
       color: 0xffffff,
-      emissive: 0xaaddff,
+      emissive: 0xffffff,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
@@ -239,6 +286,11 @@ export default class Builder {
         thickness: [4, 1, 10, 0.01],
         widthRatio: [1, 0, 10, 0.01],
         pointiness: [0.0, 0, 1.5, 0.01],
+        bridgeThickness:  [1.0, 1, 2, 0.01],
+        bridgeRadius: [0.1, 0.01, 1, 0.01],
+        bridgeWidthRatio: [1, 0.01, 2, 0.01],
+        bridgeZ: [0.0, -1, 1, 0.01],
+        notchAngle: [0, 0, Math.PI, 0.01],
       }
     };
 
@@ -277,7 +329,7 @@ export default class Builder {
     this.ship = new THREE.Group();
     this.ship.name = 'ship';
 
-    this.primary = new Primary({ material: this.hullMaterial });
+    this.primary = new Primary({ material: this.hullMaterial, bridgeMaterial: this.bridgeMaterial });
     this.mount(this.ship, this.primary.group);
 
     this.nacelleUpperPort = new Nacelle({ material: this.nacelleMaterial});
@@ -346,7 +398,17 @@ export default class Builder {
     // nodes
 
     this.primary.group.visible = this.controlParams.primary_toggle;
-    this.primary.update({thickness: controlParams.primary_thickness, radius: controlParams.primary_radius, widthRatio: controlParams.primary_widthRatio, pointiness: controlParams.primary_pointiness });
+    this.primary.update({
+      thickness: controlParams.primary_thickness,
+      radius: controlParams.primary_radius,
+      widthRatio: controlParams.primary_widthRatio,
+      pointiness: controlParams.primary_pointiness,
+      bridgeThickness: controlParams.primary_bridgeThickness,
+      bridgeRadius: controlParams.primary_bridgeRadius,
+      bridgeWidthRatio: controlParams.primary_bridgeWidthRatio,
+      bridgeZ: controlParams.primary_bridgeZ,
+      notchAngle: controlParams.primary_notchAngle,
+    });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
 
     let separation = controlParams.nacelle_x * 2.0;

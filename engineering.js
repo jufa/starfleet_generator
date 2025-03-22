@@ -19,7 +19,7 @@ export default class Engineering extends HullComponent {
     this.material = material
     this.deflectorMaterial = new THREE.MeshStandardMaterial( {
       color: 0xffdd22,
-      emissive: 0xff9900,
+      emissive: 0xdd9900,
       emissiveIntensity: 0.3,
       side: THREE.DoubleSide,
       flatShading: false,

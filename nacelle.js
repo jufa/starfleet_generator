@@ -20,27 +20,26 @@ export default class Nacelle extends HullComponent {
     tex.wrapT = THREE.MirroredRepeatWrapping;
     tex.repeat.set( 17, 2.0 );
     this.bussardInnerTexture = tex;
+    tex.colorSpace = THREE.SRGBColorSpace;
 
     this.bussardMaterial = new THREE.MeshStandardMaterial({
       color: 0xff3300,
       emissive: 0xff0000,
-      emissiveIntensity: 1.0,
-      // alphaMap: tex,
-      // alphaTest: 0.0,
-      opacity: 0.6,
+      emissiveIntensity: 0.8,
+      opacity: 0.5,
       transparent: true,
       flatShading: false,
-      // metalnessMap: tex,
-      // roughnessMap: tex,
-      // metalness: 1.9,
-      // roughness: 4.2,
+      metalnessMap: tex,
+      roughnessMap: tex,
+      metalness: 10,
+      roughness: 0.9,
     });
     
 
     this.bussardInnerMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      emissive: 0xffff00,
-      emissiveIntensity: 0.2,
+      color: 0x00ffff,
+      emissive: 0xff0000,
+      emissiveIntensity: 0.8,
       transparent: false,
       flatShading: false,
       map: tex,
@@ -52,7 +51,7 @@ export default class Nacelle extends HullComponent {
       // bumpMap: tex,
       // bumpScale: 1.0,
       metalness: 10.0,
-      roughness: 0.9,
+      roughness: 0.0,
     });
 
     return this;
@@ -86,7 +85,7 @@ export default class Nacelle extends HullComponent {
     for ( var i = bussardPointCount; i >= 0; i-- ) {
       bussardPoints.push(
         new THREE.Vector2(
-          Math.pow(i / bussardPointCount, 0.4) * width * 0.95,
+          Math.pow(i / bussardPointCount, 0.4) * width * 1.0,
           length + (1.0 - i / bussardPointCount) * width * 1.5
         )
       );
@@ -97,7 +96,7 @@ export default class Nacelle extends HullComponent {
     for ( var i = bussardPointCount; i >= 0; i-- ) {
       bussardInnerPoints.push(
         new THREE.Vector2(
-          Math.pow(i / bussardPointCount, 0.4) * width * 0.99,
+          Math.pow(i / bussardPointCount, 0.4) * width * 0.97,
           length + (0.6 - i / bussardPointCount) * width * 2.0
         )
       );

@@ -2,13 +2,16 @@ import * as THREE from 'three';
 import HullComponent from './hull_component.js';
 
 export default class Primary extends HullComponent{
-  constructor({ material }) {
+  constructor({ material, bridgeMaterial }) {
     super();
     this.material = material;
+    this.bridgeMaterial = bridgeMaterial;
     this.group = new THREE.Group();
     this.group.rotateX( Math.PI / 2.0); 
     this.geometry = {};
-    this.mesh = {}
+    this.bridgeGeometry = {};
+    this.mesh = {};
+    this.bridgeMesh = {};
     this.dimensions = {};
     this.stretchFactor = 1.0;
 
@@ -19,27 +22,62 @@ export default class Primary extends HullComponent{
     thickness,
     radius,
     widthRatio,
-    pointiness, //0.0-2.0
+    bridgeThickness,
+    bridgeRadius,
+    bridgeWidthRatio,
+    bridgeZ,
+    pointiness, // 0.0-2.0
+    notchAngle,
   }) {
 
     this.clear();
 
     var points = [];
-    const saucerPointCount = 20;
+    const saucerPointCount = 80;
     for ( var i = 0; i <= saucerPointCount; i ++ ) {
+      const lowerSquash = (i-10 > saucerPointCount * 0.5) ? 0.85 : 1.0;
+      const lowerOffset = (i-10 > saucerPointCount * 0.5) ? 0.0 : 0.0;
       points.push(
         new THREE.Vector2( 
-          Math.sin( i / saucerPointCount * Math.PI ) * radius,
-          i / saucerPointCount * thickness
+          (Math.sin( i / saucerPointCount * Math.PI ) * radius) ** 0.7 * 2.0,
+          (i / saucerPointCount * thickness ) ** lowerSquash
         ) 
       );
     }
 
-    const foreExclusionAngle = 0.0;
+    var bridgePoints = [];
+    for ( var i = 0; i <= saucerPointCount; i ++ ) {
+      bridgePoints.push(
+        new THREE.Vector2( 
+          (Math.sin( i / saucerPointCount * Math.PI ) * radius * bridgeRadius) ** 0.5 * 3.0,
+          i / saucerPointCount * thickness * bridgeThickness
+        ) 
+      );
+    }
+    i = bridgePoints.length;
+    // bridgePoints[0].y = bridgePoints[1].y;
+    // bridgePoints[i-1].y = bridgePoints[i-2].y;
+
+    const foreExclusionAngle = notchAngle;
     this.geometry = new THREE.LatheGeometry(points, 64, Math.PI + foreExclusionAngle, 2.0 * ( Math.PI - foreExclusionAngle) );
     this.geometry.scale(widthRatio, 1.0, 1.0);
     this.computeBoundingBox(this.geometry);
     const lengthZ = this.geometry.boundingBox.max.z - this.geometry.boundingBox.min.z;
+
+    // const s = bridgeWidthRatio;
+    // const matrix = new THREE.Matrix4();
+
+    // matrix.set(   1,     0,   0,   0,
+    //               0,     1,   0,   0,
+    //               0,     0,   1,   0,
+    //               0,     0,   0,   1  );
+    // this.geometry.applyMatrix4( matrix );
+
+    this.bridgeGeometry = new THREE.LatheGeometry(bridgePoints, 64, Math.PI, 2.0 * Math.PI );
+    this.bridgeGeometry.scale(bridgeWidthRatio, 1.0, 1.0);
+    this.bridgeGeometry.scale(widthRatio * bridgeWidthRatio, 1.0, 1.0);
+    this.computeBoundingBox(this.bridgeGeometry);
+    // const bridgeLengthZ = this.bridgeGeometry.geometry.max.z - this.bridgeGeometry.boundingBox.min.z;
 
     // egg-distort
     // const positions = this.geometry.vertices;
@@ -65,25 +103,31 @@ export default class Primary extends HullComponent{
     this.geometry.attributes.position.needsUpdate = true;
     this.computeBoundingBox(this.geometry);
     this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
+    this.bridgeMesh = new THREE.Mesh( this.bridgeGeometry, this.bridgeMaterial.clone() );
+    this.bridgeMesh.position.y = - bridgeZ - ( bridgeThickness * 0.4);
+    
 
     // saucer cutout:
-    /*
+
     // Create shape from points
     const shape = new THREE.Shape(points);
 
     // Create flat geometry
     if (foreExclusionAngle > 0.0) {
       const geometry = new THREE.ShapeGeometry(shape);
-      const material = new THREE.MeshStandardMaterial({ color: 0x999999, side: THREE.DoubleSide });
-      const closeMesh1 = new THREE.Mesh(geometry, material);
+      const notchMaterial = new THREE.MeshStandardMaterial({ color: 0x999999, side: THREE.DoubleSide });
+      // const notchMaterial = this.bridgeMaterial.clone();
+      const closeMesh1 = new THREE.Mesh(geometry, notchMaterial);
       const closeMesh2 = closeMesh1.clone();
       closeMesh1.rotateY( (Math.PI * 0.5) + foreExclusionAngle );
       closeMesh2.rotateY( (Math.PI * 0.5) - foreExclusionAngle );
       this.group.add( closeMesh1 );
       this.group.add( closeMesh2 );
     };
-    */
+    
     this.group.add( this.mesh );
+    this.group.add( this.bridgeMesh );
+    // this.computeBoundingBox(this.geometry);
   }
 
   computeBoundingBox(measuredGeom) {
@@ -91,12 +135,12 @@ export default class Primary extends HullComponent{
     this.dimensions.x = measuredGeom.boundingBox.max.x - measuredGeom.boundingBox.min.x;
     this.dimensions.y = measuredGeom.boundingBox.max.y - measuredGeom.boundingBox.min.y;
     this.dimensions.z = measuredGeom.boundingBox.max.z - measuredGeom.boundingBox.min.z;
-    // this.dimensions.fore = 
   }
 
   clear(){
     if (this.geometry['dispose']) {
       this.geometry.dispose();
+      // this.bridgeGeometry.dispose();
       for (var i = this.group.children.length - 1; i >= 0; i--) {
         this.group.remove(this.group.children[i]);
       }
