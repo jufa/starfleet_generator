@@ -42,7 +42,7 @@ export default class Builder {
     var texSaucerEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
     texSaucerEm.wrapS = THREE.MirroredRepeatWrapping;
     texSaucerEm.wrapT = THREE.MirroredRepeatWrapping;
-    texSaucerEm.repeat.set( 6, 5 );
+    texSaucerEm.repeat.set( 8, 5 );
     texSaucerEm.colorSpace = THREE.SRGBColorSpace;
 
     var texSaucerSp = new THREE.TextureLoader().load( "./images/saucer_sp.png");
@@ -54,14 +54,12 @@ export default class Builder {
     this.hullMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
       emissive: 0xeeeeff,
-      emissiveIntensity: 0.6,
-      specular: 0x555566,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: tex,
       emissiveMap: texSaucerEm,
-      emissiveIntensity: 0.6,
+      emissiveIntensity: 0.7,
       metalnessMap: texSaucerSp,
       metalness: 0.2,
       roughnessMap: texSaucerSp,
@@ -226,7 +224,7 @@ export default class Builder {
       wireframe: false,
       map: texNacelle,
       emissiveMap: texNacelleEm,
-      emissiveIntensity: 0.6,
+      emissiveIntensity: 0.4,
       metalnessMap: texNacelleSp,
       // bumpMap: texNacelleEm,
       // bumpScale: -1.0,
@@ -307,8 +305,8 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 350;
-    const dist = 30;
+    const intensity = 1000;
+    const dist = 50;
     lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
     lights[ 1 ] = new THREE.PointLight( 0xffffff, intensity, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
@@ -503,6 +501,11 @@ export default class Builder {
       engineeringAftOffset :controlParams.neck_engineeringAftOffset,
       thickness: controlParams.neck_thickness,
     });
+
+    //make sure camera is orbiting the new position of the saucer:
+    // const target = this.primary.group.position;
+    // this.controls.target.set(target.x, target.y, target.z);
+    // this.controls.update();
   }
 
   init() {
@@ -515,10 +518,10 @@ export default class Builder {
     this.btnScreenshot = document.getElementById('screenshot');
 
     // camera & controls
-    this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1600000 );
+    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1600000 );
     this.camera.position.z = 50;
     this.controls = new OrbitControls( this.camera, this.container );
-    this.controls.lookSpeed = 0.3;
+    // this.controls.lookSpeed = 0.3;
 
     // scenes
     this.scene = new THREE.Scene();
@@ -550,7 +553,8 @@ export default class Builder {
     this.renderer = new THREE.WebGLRenderer({
       depth: true,
       antialias: true,
-      // toneMappingExposure: Math.pow( 1.0, 4.0 ),
+      toneMapping: THREE.ACESFilmicToneMapping,
+      toneMappingExposure: 1.5,
       preserveDrawingBuffer: true, // for screenshotting
     });
     this.renderer.setClearColor( this.CLEAR_COLOUR );
@@ -567,8 +571,8 @@ export default class Builder {
     // Add UnrealBloomPass
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.7, // Strength
-      0.1, // Radius
+      0.6, // Strength
+      0.02, // Radius
       0.5 // Threshold
     );
     this.composer.addPass(bloomPass);
@@ -597,7 +601,7 @@ export default class Builder {
       this.update();
       this.dirty = false;
     }
-    const angle = shipBuilder.clock.getElapsedTime() * 3.0 % 100.0;
+    const angle = shipBuilder.clock.getElapsedTime() * 2.0 % 100.0;
     const nacelles = [
       this.nacelleLowerPort,
       this.nacelleLowerStarboard,

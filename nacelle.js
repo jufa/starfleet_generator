@@ -16,17 +16,17 @@ export default class Nacelle extends HullComponent {
     this.bussardMesh = {};
 
     var tex = new THREE.TextureLoader().load( "./images/bussard_em.png");
-    tex.wrapS = THREE.MirroredRepeatWrapping;
-    tex.wrapT = THREE.MirroredRepeatWrapping;
-    tex.repeat.set( 17, 2.0 );
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set( 9, 1.5 );
     this.bussardInnerTexture = tex;
     tex.colorSpace = THREE.SRGBColorSpace;
 
     this.bussardMaterial = new THREE.MeshStandardMaterial({
       color: 0xff3300,
       emissive: 0xff0000,
-      emissiveIntensity: 0.8,
-      opacity: 0.5,
+      emissiveIntensity: 4,
+      opacity: 0.1,
       transparent: true,
       flatShading: false,
       metalnessMap: tex,
@@ -37,12 +37,12 @@ export default class Nacelle extends HullComponent {
     
 
     this.bussardInnerMaterial = new THREE.MeshStandardMaterial({
-      color: 0x00ffff,
-      emissive: 0xff0000,
-      emissiveIntensity: 4.0,
+      color: 0x000000,
+      emissive: 0xff4400,
+      emissiveIntensity: 2.5,
       transparent: false,
       flatShading: false,
-      map: tex,
+      // map: tex,
       emissiveMap: tex,
       metalnessMap: tex,
       roughnessMap: tex,
@@ -135,7 +135,7 @@ export default class Nacelle extends HullComponent {
 
   rotateBussard(rotation){
     // rotate the bussardInnerMesh TextureMap:
-    this.bussardInnerTexture.offset.x = rotation;
+    this.bussardInnerTexture.offset.x = -rotation;
     // this.bussardInnerTexture.offset.y = rotation;
     // this.bussardInnerTexture.rotation = rotation*10.0;
     // this.tex = rotation;
