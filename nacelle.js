@@ -39,7 +39,7 @@ export default class Nacelle extends HullComponent {
     this.bussardInnerMaterial = new THREE.MeshStandardMaterial({
       color: 0x00ffff,
       emissive: 0xff0000,
-      emissiveIntensity: 0.8,
+      emissiveIntensity: 4.0,
       transparent: false,
       flatShading: false,
       map: tex,
@@ -50,8 +50,8 @@ export default class Nacelle extends HullComponent {
       // alphaTest: -0.01,
       // bumpMap: tex,
       // bumpScale: 1.0,
-      metalness: 10.0,
-      roughness: 0.0,
+      metalness: 0.6,
+      roughness: 0.5,
     });
 
     return this;

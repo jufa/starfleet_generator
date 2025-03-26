@@ -23,11 +23,11 @@
   },
   "homepage": "https://github.com/jufa/starfleetgenerator",
   "dependencies": {
-    "dat.gui": "^0.7.3",
     "lil-gui": "^0.20.0",
     "orbit-controls-es6": "^1.0.12",
     "stats.js": "^0.17.0",
-    "three": "0.155.0"
+    "three": "0.155.0",
+    "three-subdivide": "^1.1.5"
   },
   "devDependencies": {
     "cached-path-relative": "^1.0.2",
@@ -39,5 +39,13 @@
     "webpack-core": "^0.6.9",
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./build/three.module.js"
+    },
+    "./examples/fonts/*": "./examples/fonts/*",
+    "./examples/jsm/*": "./examples/jsm/*",
+    "./addons": "./examples/jsm/Addons.js"
   }
 }

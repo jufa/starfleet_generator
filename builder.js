@@ -1,5 +1,10 @@
-import * as THREE from 'three';
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import * as THREE from "three";
+import { OrbitControls }    from "three/examples/jsm/controls/OrbitControls.js";
+import { EffectComposer }   from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass }       from "three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass }  from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { OutputPass }  from "three/examples/jsm/postprocessing/OutputPass.js";
+
 // import * as dat from 'dat.gui';
 import * as dat from 'lil-gui';
 import Nacelle from './nacelle.js';
@@ -14,7 +19,7 @@ export default class Builder {
     this.predefinedShips = ships;
     this.window = window;
     this.SKY_COLOUR = 0x000000;
-    this.CLEAR_COLOUR = 0xffffff;
+    this.CLEAR_COLOUR = 0x000000;
     this.dirty = true;
     this.components = [];
     this.controlParams = {};
@@ -115,14 +120,14 @@ export default class Builder {
     texEngEm.wrapT = THREE.MirroredRepeatWrapping;
     texEngEm.repeat.set( 2, 2 );
     texEngEm.rotation = Math.PI * 1;
-    texEngEm.center.set(0.0, 0.5);
+    texEngEm.center.set(0.0, 0.668);
     texEngEm.colorSpace = THREE.SRGBColorSpace;
 
     this.engMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
       emissive: 0xffffff,
       emissiveMap: texEngEm,
-      emissiveIntensity: 0.1,
+      emissiveIntensity: 0.4,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
@@ -182,10 +187,10 @@ export default class Builder {
     this.pylonMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
       emissive: 0x000000,
-      specular: 0x333338,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
+      wireframeLinewidth: 3,
       map: texPylon,
       metalnessMap: texPylonSp,
       metalness: 0.8,
@@ -221,7 +226,7 @@ export default class Builder {
       wireframe: false,
       map: texNacelle,
       emissiveMap: texNacelleEm,
-      emissiveIntensity: 0.7,
+      emissiveIntensity: 0.6,
       metalnessMap: texNacelleSp,
       // bumpMap: texNacelleEm,
       // bumpScale: -1.0,
@@ -303,7 +308,7 @@ export default class Builder {
   addLights() {
     var lights = [];
     const intensity = 350;
-    const dist = 20;
+    const dist = 30;
     lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
     lights[ 1 ] = new THREE.PointLight( 0xffffff, intensity, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
@@ -545,13 +550,31 @@ export default class Builder {
     this.renderer = new THREE.WebGLRenderer({
       depth: true,
       antialias: true,
+      // toneMappingExposure: Math.pow( 1.0, 4.0 ),
       preserveDrawingBuffer: true, // for screenshotting
-      
-
     });
     this.renderer.setClearColor( this.CLEAR_COLOUR );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( window.innerWidth, window.innerHeight );
+
+    // Create the EffectComposer
+    this.composer = new EffectComposer(this.renderer);
+
+    // Add RenderPass
+    const renderPass = new RenderPass(this.scene, this.camera);
+    this.composer.addPass(renderPass);
+
+    // Add UnrealBloomPass
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      0.7, // Strength
+      0.1, // Radius
+      0.4 // Threshold
+    );
+    this.composer.addPass(bloomPass);
+    const outputPass = new OutputPass();
+    this.composer.addPass( outputPass );
+    
 
     this.container.innerHTML = "";
     this.container.appendChild( this.renderer.domElement );
@@ -586,7 +609,8 @@ export default class Builder {
     }
 
     this.controls.update( shipBuilder.clock.getDelta() );
-    this.renderer.render( this.scene, this.camera );
+    // this.renderer.render( this.scene, this.camera );
+    this.composer.render();
   }
 
   paramDump() {

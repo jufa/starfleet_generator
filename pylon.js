@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import HullComponent from './hull_component.js';
+import { LoopSubdivision } from 'three-subdivide';
 
 export default class Pylon extends HullComponent {
   constructor({ nacelle, engineering, material }) {
@@ -13,6 +14,7 @@ export default class Pylon extends HullComponent {
 
     return this;
   }
+
 
   update({
     nacelleForeOffset, // distance away from fore edge of nacelle hull 1.0 = Full aft
@@ -102,6 +104,49 @@ export default class Pylon extends HullComponent {
 
     // Optionally calculate the UVs (if needed by your material)
     this.calculateUVs(this.geometry);
+
+    // split the nacelle geometry:
+    const iterations = 1;
+
+    const params = {
+        split:          false,       // optional, default: true
+        uvSmooth:       false,      // optional, default: false
+        preserveEdges:  true,      // optional, default: false
+        flatOnly:       true,      // optional, default: false
+        maxTriangles:   Infinity,   // optional, default: Infinity
+    };
+
+    this.geometry = LoopSubdivision.modify(this.geometry, iterations, params);
+
+    // Modify vertex positions to create a curve
+    // const points = this.geometry.attributes.position;
+    // for (let i = 0; i < points.count; i++) {
+    //     const zNormalized = points.getZ(i) / (engineeringCenterZ - nacelleCenterZ);
+    //     const xNormalized = points.getX(i) / (engineeringCenterX - nacelleCenterX);
+    //     // console.log(xNormalized, zNormalized);
+    //     let newZ = (zNormalized**0.1) * (engineeringCenterZ - nacelleCenterZ);
+    //     // if (zNormalized < 0.0 && newZ > 0.0) {
+    //     //   newZ = -newZ;
+    //     // }
+    //     points.setZ(i, newZ);
+    // }
+    // points.needsUpdate = true;
+
+    const curve = new THREE.CatmullRomCurve3( [
+      new THREE.Vector3( nacelleCenterX, 0.0, nacelleCenterZ),
+      new THREE.Vector3( engineeringCenterX, 0.0, engineeringCenterZ),
+    ] );
+
+    const pointCount = 2 + iterations ** 2;
+    const curvePoints = curve.getPoints( pointCount );
+    // console.log(curvePoints);
+
+    // const points = this.geometry.attributes.position;
+    // for (let i = 0; i < points.count; i++) {
+    //   points.setZ(i, (curvePoints[i]).z);
+    // };
+
+
     this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
     this.group.add( this.mesh );
   }
