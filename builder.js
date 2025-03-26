@@ -569,7 +569,7 @@ export default class Builder {
       new THREE.Vector2(window.innerWidth, window.innerHeight),
       0.7, // Strength
       0.1, // Radius
-      0.4 // Threshold
+      0.5 // Threshold
     );
     this.composer.addPass(bloomPass);
     const outputPass = new OutputPass();
