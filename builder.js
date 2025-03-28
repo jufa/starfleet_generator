@@ -169,26 +169,26 @@ export default class Builder {
       roughness: 0.6,
     });
 
-    const rotation = Math.PI * 0.25;
+    const rotation = Math.PI * 0.5;
     var texPylon = new THREE.TextureLoader().load( "./images/neck.png");
     texPylon.wrapS = THREE.MirroredRepeatWrapping;
     texPylon.wrapT = THREE.MirroredRepeatWrapping;
-    texPylon.repeat.set( 2.0, 2.0 );
+    texPylon.repeat.set( 2, 2);
     texPylon.rotation = rotation;
 
     var texPylonSp = new THREE.TextureLoader().load( "./images/neck_sp.png");
     texPylonSp.wrapS = THREE.MirroredRepeatWrapping;
     texPylonSp.wrapT = THREE.MirroredRepeatWrapping;
-    texPylonSp.repeat.set( 2.0, 2.0 );
+    texPylonSp.repeat.set( 2, 4.0 );
     texPylonSp.rotation = rotation;
 
     this.pylonMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
       emissive: 0x000000,
       side: THREE.DoubleSide,
-      flatShading: false,
-      wireframe: false,
-      wireframeLinewidth: 3,
+      // flatShading: true,
+      // wireframe: true,
+      wireframeLineWidth: 10,
       map: texPylon,
       metalnessMap: texPylonSp,
       metalness: 0.8,
@@ -266,6 +266,7 @@ export default class Builder {
         nacelleAftOffset: [0.3, 0, 1, 0.01],
         engineeringForeOffset: [0.3, 0, 1, 0.01],
         engineeringAftOffset: [0.3, 0, 1, 0.01],
+        midPointOffset: [0.01, 0.01, 0.99, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
       pylonLower: {
@@ -273,6 +274,7 @@ export default class Builder {
         nacelleAftOffset: [0.3, 0, 1, 0.01],
         engineeringForeOffset: [0.3, 0, 1, 0.01],
         engineeringAftOffset: [0.3, 0, 1, 0.01],
+        midPointOffset: [0.01, 0.01, 0.99, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
       neck: {
@@ -463,6 +465,7 @@ export default class Builder {
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
       engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
+      midpointOffset: controlParams.pylon_midPointOffset,
       thickness: controlParams.pylon_thickness,
     });
 
@@ -472,6 +475,7 @@ export default class Builder {
       nacelleAftOffset: controlParams.pylon_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylon_engineeringForeOffset,
       engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
+      midpointOffset: controlParams.pylon_midPointOffset,
       thickness: controlParams.pylon_thickness,
     });
 
@@ -481,6 +485,7 @@ export default class Builder {
       nacelleAftOffset: controlParams.pylonLower_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylonLower_engineeringForeOffset,
       engineeringAftOffset: controlParams.pylonLower_engineeringAftOffset,
+      midpointOffset: controlParams.pylonLower_midPointOffset,
       thickness: controlParams.pylonLower_thickness,
     });
 
@@ -490,6 +495,7 @@ export default class Builder {
       nacelleAftOffset: controlParams.pylonLower_nacelleAftOffset,
       engineeringForeOffset: controlParams.pylonLower_engineeringForeOffset,
       engineeringAftOffset: controlParams.pylonLower_engineeringAftOffset,
+      midpointOffset: controlParams.pylonLower_midPointOffset,
       thickness: controlParams.pylonLower_thickness,
     });
 

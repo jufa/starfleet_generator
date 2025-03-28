@@ -7,8 +7,8 @@ export default class HullComponent {
     geometry.computeBoundingBox(); // Ensure bounding box exists
 
     const bbox = geometry.boundingBox;
-    const min = bbox.min;
-    const max = bbox.max;
+    const min = bbox.min || 0;
+    const max = bbox.max || 1;
 
     const offset = new THREE.Vector2(-min.x, -min.y);
     const range = new THREE.Vector2(max.x - min.x, max.y - min.y);
