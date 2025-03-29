@@ -247,55 +247,6 @@ export default class Builder {
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
       // refer to variable in code as controlParams.folderName_paramName
-      nacelle: {
-        y: [40, -30, 50, 0.01],
-        x: [2.5, -30, 50, 0.01],
-        z: [-3.5, -30, 50, 0.01],
-        length: [12, 1, 50, 0.01],
-        radius: [1, 0.2, 12, 0.01],
-        widthRatio: [1, 0.1, 10, 0.01],
-        rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
-      },
-      nacelleLower: {
-        y: [40, -30, 50, 0.01],
-        x: [2.5, -30, 50, 0.01],
-        z: [-3.5, -30, 50, 0.01],
-        length: [12, 1, 50, 0.01],
-        radius: [1, 0.2, 12, 0.01],
-        widthRatio: [1, 0.1, 10, 0.01],
-        rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
-      },
-      engineering: {
-        y: [-25, -60, 60, 0.01],
-        z: [6, -30, 50, 0.01],
-        length: [10, 1, 50, 0.01],
-        radius: [1, 0, 10, 0.01],
-        widthRatio: [1, 0.1, 10, 0.01],
-        skew: [0, -5, 5, 0.01],
-      },
-      pylon: {
-        nacelleForeOffset: [0.3, 0, 1, 0.01],
-        nacelleAftOffset: [0.3, 0, 1, 0.01],
-        engineeringForeOffset: [0.3, 0, 1, 0.01],
-        engineeringAftOffset: [0.3, 0, 1, 0.01],
-        midPointOffset: [0.01, 0.01, 0.99, 0.01],
-        thickness: [0.15, 0.01, 5, 0.01],
-      },
-      pylonLower: {
-        nacelleForeOffset: [0.3, 0, 1, 0.01],
-        nacelleAftOffset: [0.3, 0, 1, 0.01],
-        engineeringForeOffset: [0.3, 0, 1, 0.01],
-        engineeringAftOffset: [0.3, 0, 1, 0.01],
-        midPointOffset: [0.01, 0.01, 0.99, 0.01],
-        thickness: [0.15, 0.01, 5, 0.01],
-      },
-      neck: {
-        primaryForeOffset: [0.3, 0, 1, 0.01],
-        primaryAftOffset: [0.3, 0, 1, 0.01],
-        engineeringForeOffset: [0.3, 0, 1, 0.01],
-        engineeringAftOffset: [0.3, 0, 1, 0.01],
-        thickness: [0.15, 0.01, 5, 0.01],
-      },
       primary: {
         y: [-10, -30, 50, 0.01],
         z: [0.5, -30, 50, 0.01],
@@ -308,7 +259,56 @@ export default class Builder {
         bridgeWidthRatio: [1, 0.01, 2, 0.01],
         bridgeZ: [0.0, -1, 2, 0.01],
         notchAngle: [0, 0, Math.PI, 0.01],
-      }
+      },
+      neck: {
+        primaryForeOffset: [0.3, 0, 1, 0.01],
+        primaryAftOffset: [0.3, 0, 1, 0.01],
+        engineeringForeOffset: [0.3, 0, 1, 0.01],
+        engineeringAftOffset: [0.3, 0, 1, 0.01],
+        thickness: [0.15, 0.01, 5, 0.01],
+      },
+      engineering: {
+        y: [-25, -60, 60, 0.01],
+        z: [6, -30, 50, 0.01],
+        length: [10, 1, 50, 0.01],
+        radius: [1, 0, 10, 0.01],
+        widthRatio: [1, 0.1, 10, 0.01],
+        skew: [0, -5, 5, 0.01],
+      },
+      nacelle: {
+        y: [40, -30, 50, 0.01],
+        x: [2.5, -30, 50, 0.01],
+        z: [-3.5, -30, 50, 0.01],
+        length: [12, 1, 50, 0.01],
+        radius: [1, 0.2, 12, 0.01],
+        widthRatio: [1, 0.1, 10, 0.01],
+        rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
+      },
+      pylon: {
+        nacelleForeOffset: [0.3, 0, 1, 0.01],
+        nacelleAftOffset: [0.3, 0, 1, 0.01],
+        engineeringForeOffset: [0.3, 0, 1, 0.01],
+        engineeringAftOffset: [0.3, 0, 1, 0.01],
+        midPointOffset: [0.01, 0.01, 1.5, 0.01],
+        thickness: [0.15, 0.01, 5, 0.01],
+      },
+      nacelleLower: {
+        y: [40, -30, 50, 0.01],
+        x: [2.5, -30, 50, 0.01],
+        z: [-3.5, -30, 50, 0.01],
+        length: [12, 1, 50, 0.01],
+        radius: [1, 0.2, 12, 0.01],
+        widthRatio: [1, 0.1, 10, 0.01],
+        rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
+      },
+      pylonLower: {
+        nacelleForeOffset: [0.3, 0, 1, 0.01],
+        nacelleAftOffset: [0.3, 0, 1, 0.01],
+        engineeringForeOffset: [0.3, 0, 1, 0.01],
+        engineeringAftOffset: [0.3, 0, 1, 0.01],
+        midPointOffset: [0.01, 0.01, 1.5, 0.01],
+        thickness: [0.15, 0.01, 5, 0.01],
+      },
     };
 
     this.init();
