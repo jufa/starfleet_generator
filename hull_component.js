@@ -14,6 +14,7 @@ export default class HullComponent {
     const range = new THREE.Vector2(max.x - min.x, max.y - min.y);
 
     const positions = geometry.attributes.position.array;
+    // console.log(positions);
     const uvs = new Float32Array((positions.length / 3) * 2); // 2 UV values per vertex
 
     for (let i = 0, j = 0; i < positions.length; i += 3, j += 2) {
@@ -24,7 +25,7 @@ export default class HullComponent {
         uvs[j] = (x + offset.x) / range.x; // U coordinate
         uvs[j + 1] = (y + offset.y) / range.y; // V coordinate
     }
-
+    // console.log(uvs);
     // Assign UVs to BufferGeometry
     geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
     geometry.uvsNeedUpdate = true;

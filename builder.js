@@ -170,17 +170,27 @@ export default class Builder {
     });
 
     const rotation = Math.PI * 0.5;
-    var texPylon = new THREE.TextureLoader().load( "./images/neck.png");
+    var texPylon = new THREE.TextureLoader().load( "./images/pylon.png");
     texPylon.wrapS = THREE.MirroredRepeatWrapping;
     texPylon.wrapT = THREE.MirroredRepeatWrapping;
-    texPylon.repeat.set( 2, 2);
+    texPylon.repeat.set( 1, 1);
+    texPylon.center.set(0.0, 0.0);
     texPylon.rotation = rotation;
 
-    var texPylonSp = new THREE.TextureLoader().load( "./images/neck_sp.png");
+    var texPylonSp = new THREE.TextureLoader().load( "./images/pylon_sp.png");
     texPylonSp.wrapS = THREE.MirroredRepeatWrapping;
     texPylonSp.wrapT = THREE.MirroredRepeatWrapping;
-    texPylonSp.repeat.set( 2, 4.0 );
+    texPylonSp.repeat.set( 1, 1 );
+    texPylonSp.center.set(0.0, 0.0);
     texPylonSp.rotation = rotation;
+
+    // var texPylonEm = new THREE.TextureLoader().load( "./images/pylon_em.png");
+    // texPylonEm.wrapS = THREE.MirroredRepeatWrapping;
+    // texPylonEm.wrapT = THREE.MirroredRepeatWrapping;
+    // texPylonEm.repeat.set(1, 1);
+    // texPylonEm.rotation = rotation;
+    // texPylonEm.center.set(0.0, 0.0);
+    // texPylonEm.colorSpace = THREE.SRGBColorSpace
 
     this.pylonMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
@@ -192,6 +202,8 @@ export default class Builder {
       map: texPylon,
       metalnessMap: texPylonSp,
       metalness: 0.8,
+      // emissiveMap: texPylonEm,
+      emissiveIntensity: 1.0,
       roughnessMap: texPylon,
       roughness: 0.6,
     });
@@ -291,10 +303,10 @@ export default class Builder {
         thickness: [4, 1, 10, 0.01],
         widthRatio: [1, 0, 10, 0.01],
         pointiness: [0.0, 0, 1.5, 0.01],
-        bridgeThickness:  [1.0, 1, 2, 0.01],
-        bridgeRadius: [0.1, 0.01, 1, 0.01],
+        bridgeThickness:  [1.0, 0.5, 5, 0.01],
+        bridgeRadius: [0.1, 0.01, 1.2, 0.01],
         bridgeWidthRatio: [1, 0.01, 2, 0.01],
-        bridgeZ: [0.0, -1, 1, 0.01],
+        bridgeZ: [0.0, -1, 2, 0.01],
         notchAngle: [0, 0, Math.PI, 0.01],
       }
     };
@@ -376,14 +388,14 @@ export default class Builder {
     this.portLowerPylon = new Pylon({
       nacelle: this.nacelleLowerPort,
       engineering: this.engineering,
-      material: this.neckMaterial
+      material: this.pylonMaterial
     });
     this.mount(this.ship, this.portLowerPylon.group);
 
     this.starboardLowerPylon = new Pylon({
       nacelle: this.nacelleLowerStarboard,
       engineering: this.engineering,
-      material: this.neckMaterial
+      material: this.pylonMaterial
     });
     this.mount(this.ship, this.starboardLowerPylon.group);
 
@@ -582,6 +594,7 @@ export default class Builder {
       0.5 // Threshold
     );
     this.composer.addPass(bloomPass);
+
     const outputPass = new OutputPass();
     this.composer.addPass( outputPass );
     
