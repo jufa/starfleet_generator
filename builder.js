@@ -102,6 +102,39 @@ export default class Builder {
       roughness: 10.0,
     });
 
+    var texNotch = new THREE.TextureLoader().load( "./images/saucer.png");
+    texNotch.wrapS = THREE.MirroredRepeatWrapping;
+    texNotch.wrapT = THREE.MirroredRepeatWrapping;
+    texNotch.repeat.set( 0.15,0.5 );
+    texNotch.colorSpace = THREE.SRGBColorSpace;
+
+    var texNotchEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
+    texNotchEm.wrapS = THREE.MirroredRepeatWrapping;
+    texNotchEm.wrapT = THREE.MirroredRepeatWrapping;
+    texNotchEm.repeat.set( 0.25,0.5 );
+    texNotchEm.colorSpace = THREE.SRGBColorSpace;
+
+    var texNotchSp = new THREE.TextureLoader().load( "./images/saucer_sp.png");
+    texNotchSp.wrapS = THREE.MirroredRepeatWrapping;
+    texNotchSp.wrapT = THREE.MirroredRepeatWrapping;
+    texNotchSp.repeat.set( 0.2,0.5 );
+    texNotchSp.colorSpace = THREE.SRGBColorSpace;
+
+    this.notchMaterial = new THREE.MeshStandardMaterial({
+      color: 0xaaaaaa,
+      emissive: 0xeeeeff,
+      side: THREE.DoubleSide,
+      flatShading: false,
+      wireframe: false,
+      map: texNotch,
+      emissiveMap: texNotchEm,
+      emissiveIntensity: 1.0,
+      metalnessMap: texNotchSp,
+      metalness: 0.5,
+      roughnessMap: texNotchSp,
+      roughness: 1.0,
+    });
+
 
     var texEng = new THREE.TextureLoader().load( "./images/engineering.png");
     texEng.wrapS = THREE.MirroredRepeatWrapping;
@@ -173,28 +206,28 @@ export default class Builder {
     var texPylon = new THREE.TextureLoader().load( "./images/pylon.png");
     texPylon.wrapS = THREE.MirroredRepeatWrapping;
     texPylon.wrapT = THREE.MirroredRepeatWrapping;
-    texPylon.repeat.set( 1, 1);
-    texPylon.center.set(0.0, 0.0);
     texPylon.rotation = rotation;
+    texPylon.repeat.set( 2, 2);
+    texPylon.center.set(0.0, 0.0);
 
     var texPylonSp = new THREE.TextureLoader().load( "./images/pylon_sp.png");
     texPylonSp.wrapS = THREE.MirroredRepeatWrapping;
     texPylonSp.wrapT = THREE.MirroredRepeatWrapping;
-    texPylonSp.repeat.set( 1, 1 );
-    texPylonSp.center.set(0.0, 0.0);
     texPylonSp.rotation = rotation;
+    texPylonSp.repeat.set( 4, 8 );
+    texPylonSp.center.set(0.0, 0.0);
 
     // var texPylonEm = new THREE.TextureLoader().load( "./images/pylon_em.png");
     // texPylonEm.wrapS = THREE.MirroredRepeatWrapping;
     // texPylonEm.wrapT = THREE.MirroredRepeatWrapping;
-    // texPylonEm.repeat.set(1, 1);
     // texPylonEm.rotation = rotation;
-    // texPylonEm.center.set(0.0, 0.0);
+    // texPylonEm.repeat.set(1, 1);
+    // texPylonEm.offset.set(0.05, 0.0);
     // texPylonEm.colorSpace = THREE.SRGBColorSpace
 
     this.pylonMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
-      emissive: 0x000000,
+      // emissive: 0xffffff,
       side: THREE.DoubleSide,
       // flatShading: true,
       // wireframe: true,
@@ -203,7 +236,7 @@ export default class Builder {
       metalnessMap: texPylonSp,
       metalness: 0.8,
       // emissiveMap: texPylonEm,
-      emissiveIntensity: 1.0,
+      // emissiveIntensity: 0.2,
       roughnessMap: texPylon,
       roughness: 0.6,
     });
@@ -346,7 +379,7 @@ export default class Builder {
     this.ship = new THREE.Group();
     this.ship.name = 'ship';
 
-    this.primary = new Primary({ material: this.hullMaterial, bridgeMaterial: this.bridgeMaterial });
+    this.primary = new Primary({ material: this.hullMaterial, bridgeMaterial: this.bridgeMaterial, notchMaterial: this.notchMaterial });
     this.mount(this.ship, this.primary.group);
 
     this.nacelleUpperPort = new Nacelle({ material: this.nacelleMaterial});

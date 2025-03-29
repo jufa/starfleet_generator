@@ -2,10 +2,11 @@ import * as THREE from 'three';
 import HullComponent from './hull_component.js';
 
 export default class Primary extends HullComponent{
-  constructor({ material, bridgeMaterial }) {
+  constructor({ material, bridgeMaterial, notchMaterial }) {
     super();
     this.material = material;
     this.bridgeMaterial = bridgeMaterial;
+    this.notchMaterial = notchMaterial;
     this.group = new THREE.Group();
     this.group.rotateX( Math.PI / 2.0); 
     this.geometry = {};
@@ -79,6 +80,21 @@ export default class Primary extends HullComponent{
     this.computeBoundingBox(this.bridgeGeometry);
     // const bridgeLengthZ = this.bridgeGeometry.geometry.max.z - this.bridgeGeometry.boundingBox.min.z;
 
+    // saucer cutout:
+
+    // Create shape from points
+    const shape = new THREE.Shape(points);
+
+    // Create flat geometry
+    this.notchGeometry = new THREE.ShapeGeometry(shape);
+    const notchMaterial = this.notchMaterial;
+    const closeMesh1 = new THREE.Mesh(this.notchGeometry, notchMaterial);
+    const closeMesh2 = closeMesh1.clone();
+    closeMesh1.rotateY( (Math.PI * 0.5) + foreExclusionAngle );
+    closeMesh2.rotateY( (Math.PI * 0.5) - foreExclusionAngle );
+    closeMesh1.geometry.attributes.position.needsUpdate = true;
+    closeMesh2.geometry.attributes.position.needsUpdate = true;
+
     // egg-distort
     // const positions = this.geometry.vertices;
     const positions = this.geometry.attributes.position.array;
@@ -88,11 +104,11 @@ export default class Primary extends HullComponent{
     for (let i = 0; i < positions.length; i += 3) {
       let z = positions[i + 2]; // Get Z value
       let zNormalized = z / lengthZ;
-      const stretchFactor = Math.pow(1.0 + zNormalized, pointiness);
+      let stretchFactor = Math.pow(1.0 + zNormalized, pointiness);
       this.stretchFactor = stretchFactor;
       let newZ = z / stretchFactor; // Stretch along the Z-axis
       positions[i + 2] = newZ; // Update Z position
-  
+
       if (newZ > aftMax) aftMax = newZ;
       if (newZ < foreMax) foreMax = newZ;
     }
@@ -101,32 +117,16 @@ export default class Primary extends HullComponent{
     this.dimensions.fore = foreMax;
     
     this.geometry.attributes.position.needsUpdate = true;
+
     this.computeBoundingBox(this.geometry);
     this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
     this.bridgeMesh = new THREE.Mesh( this.bridgeGeometry, this.bridgeMaterial.clone() );
     this.bridgeMesh.position.y = - bridgeZ - ( bridgeThickness * 0.4);
     
-
-    // saucer cutout:
-
-    // Create shape from points
-    const shape = new THREE.Shape(points);
-
-    // Create flat geometry
-    if (foreExclusionAngle > 0.0) {
-      const geometry = new THREE.ShapeGeometry(shape);
-      const notchMaterial = new THREE.MeshStandardMaterial({ color: 0x999999, side: THREE.DoubleSide });
-      // const notchMaterial = this.bridgeMaterial.clone();
-      const closeMesh1 = new THREE.Mesh(geometry, notchMaterial);
-      const closeMesh2 = closeMesh1.clone();
-      closeMesh1.rotateY( (Math.PI * 0.5) + foreExclusionAngle );
-      closeMesh2.rotateY( (Math.PI * 0.5) - foreExclusionAngle );
-      this.group.add( closeMesh1 );
-      this.group.add( closeMesh2 );
-    };
-    
     this.group.add( this.mesh );
     this.group.add( this.bridgeMesh );
+    this.group.add( closeMesh1 );
+    this.group.add( closeMesh2 );
     // this.computeBoundingBox(this.geometry);
   }
 
