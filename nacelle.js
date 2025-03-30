@@ -52,6 +52,7 @@ export default class Nacelle extends HullComponent {
       // bumpScale: 1.0,
       metalness: 0.6,
       roughness: 0.5,
+      
     });
 
     return this;

@@ -22,6 +22,8 @@ export default class Neck extends HullComponent {
     engineeringAftOffset, // distance away from aft edge of engineering hull 1.0 = Full fore
     primaryThickness,
     thickness,
+    foretaper,
+    afttaper,
   }) {
 
     this.clear();
@@ -51,15 +53,16 @@ export default class Neck extends HullComponent {
     let thicknessRatio = thickness / primaryThickness;
 
 
-    const rfb = new THREE.Vector3(thickness, engineeringFore, engineeringForeVerticalCenter);
-    const rft = new THREE.Vector3(primaryThickness, primaryFore, primaryCenterThickness);
-    const rbt = new THREE.Vector3(primaryThickness, primaryAft, primaryCenterThickness);
-    const rbb = new THREE.Vector3(thickness, engineeringAft, engineeringForeVerticalCenter);
+    // rfb=right fore bottom, rft=right fore top, rbt=right back top, rbb=right back bottom
+    const rfb = new THREE.Vector3(thickness*foretaper, engineeringFore, engineeringForeVerticalCenter);
+    const rft = new THREE.Vector3(primaryThickness*foretaper, primaryFore, primaryCenterThickness);
+    const rbt = new THREE.Vector3(primaryThickness*afttaper, primaryAft, primaryCenterThickness);
+    const rbb = new THREE.Vector3(thickness*afttaper, engineeringAft, engineeringForeVerticalCenter);
 
-    const lfb = new THREE.Vector3(-thickness, engineeringFore, engineeringForeVerticalCenter);
-    const lft = new THREE.Vector3(-primaryThickness, primaryFore, primaryCenterThickness);
-    const lbt = new THREE.Vector3(-primaryThickness, primaryAft, primaryCenterThickness);
-    const lbb = new THREE.Vector3(-thickness, engineeringAft, engineeringForeVerticalCenter);
+    const lfb = new THREE.Vector3(-thickness*foretaper, engineeringFore, engineeringForeVerticalCenter);
+    const lft = new THREE.Vector3(-primaryThickness*foretaper, primaryFore, primaryCenterThickness);
+    const lbt = new THREE.Vector3(-primaryThickness*afttaper, primaryAft, primaryCenterThickness);
+    const lbb = new THREE.Vector3(-thickness*afttaper, engineeringAft, engineeringForeVerticalCenter);
 
     this.vertices = [
       // Top Face
@@ -158,11 +161,11 @@ export default class Neck extends HullComponent {
     this.geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
     this.geometry.computeVertexNormals(); // Needed for shading
 
-    // const iterations = 1;
+    // const iterations = 2;
     // const params = {
-    //     split:          false,       // optional, default: true
+    //     split:          true,       // optional, default: true
     //     uvSmooth:       true,      // optional, default: false
-    //     preserveEdges:  false,      // optional, default: false
+    //     preserveEdges:  true,      // optional, default: false
     //     flatOnly:       true,      // optional, default: false
     //     maxTriangles:   Infinity,   // optional, default: Infinity
     // };

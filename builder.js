@@ -169,31 +169,29 @@ export default class Builder {
       roughness: 0.5,
     });
 
-    var texNeck = new THREE.TextureLoader().load( "./images/neck.png");
+    var texNeck = new THREE.TextureLoader().load( "./images/neck2_sp.png");
     texNeck.wrapS = THREE.MirroredRepeatWrapping;
     texNeck.wrapT = THREE.MirroredRepeatWrapping;
-    texNeck.repeat.set( 2, 1 );
+    texNeck.repeat.set( 1, 2 );
     
 
-    var texNeckSp = new THREE.TextureLoader().load( "./images/neck_sp.png");
+    var texNeckSp = new THREE.TextureLoader().load( "./images/neck2.png");
     texNeckSp.wrapS = THREE.MirroredRepeatWrapping;
     texNeckSp.wrapT = THREE.MirroredRepeatWrapping;
-    texNeckSp.repeat.set( 4, 2 );
+    texNeckSp.repeat.set( 1, 2 );
     
 
-    var texNeckNm = new THREE.TextureLoader().load( "./images/neck_nm.png");
+    var texNeckNm = new THREE.TextureLoader().load( "./images/neck2_nm.png");
 
-    // var texNeckEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
+    // var texNeckEm = new THREE.TextureLoader().load( "./images/neck2_em.png");
     // texNeckEm.wrapS = THREE.MirroredRepeatWrapping;
     // texNeckEm.wrapT = THREE.MirroredRepeatWrapping;
-    // // texNeckEm.rotation = 1.5 * Math.PI;
     // texNeckEm.offset.set(0, 0);
     // texNeckEm.repeat.set( 2, 2 );
     // texNeckEm.colorSpace = THREE.SRGBColorSpace;
-    // texNeckEm.needsUpdate = true;
 
     this.neckMaterial = new THREE.MeshStandardMaterial({
-      color: 0xeeeeef,
+      color: 0xffffff,
       emissive: 0x000000,
       // emissiveMap: texNeckEm,
       emissiveIntensity: 0.5,
@@ -202,9 +200,9 @@ export default class Builder {
       wireframe: false,
       map: texNeck,
       metalnessMap: texNeckSp,
-      metalness: 0.5,
-      roughnessMap: texNeck,
-      roughness: 0.6,
+      metalness: 0.3,
+      // roughnessMap: texNeck,
+      roughness: 1.0,
       normalMap: texNeckNm,
       normalScale: new THREE.Vector2(1, 1),
     });
@@ -307,6 +305,8 @@ export default class Builder {
         engineeringAftOffset: [0.3, 0, 1, 0.01],
         primaryThickness: [0.15, 0.01, 5, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
+        foretaper: [1.0, 0.01, 3, 0.01],
+        afttaper: [1.0, 0.01, 3, 0.01],
       },
       engineering: {
         y: [-25, -60, 60, 0.01],
@@ -560,6 +560,8 @@ export default class Builder {
       engineeringAftOffset :controlParams.neck_engineeringAftOffset,
       primaryThickness: controlParams.neck_primaryThickness,
       thickness: controlParams.neck_thickness,
+      foretaper: controlParams.neck_foretaper,
+      afttaper: controlParams.neck_afttaper,
     });
 
     //make sure camera is orbiting the new position of the saucer:
