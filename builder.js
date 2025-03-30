@@ -170,36 +170,43 @@ export default class Builder {
     });
 
     var texNeck = new THREE.TextureLoader().load( "./images/neck.png");
-    texNeck.wrapS = THREE.RepeatWrapping;
-    texNeck.wrapT = THREE.RepeatWrapping;
-    texNeck.repeat.set( 10, 2 );
+    texNeck.wrapS = THREE.MirroredRepeatWrapping;
+    texNeck.wrapT = THREE.MirroredRepeatWrapping;
+    texNeck.repeat.set( 2, 1 );
     
-    var texNeckSp = new THREE.TextureLoader().load( "./images/neck_sp.png");
-    texNeckSp.wrapS = THREE.RepeatWrapping;
-    texNeckSp.wrapT = THREE.RepeatWrapping;
-    texNeckSp.repeat.set( 10, 2 );
 
-    var texNeckEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
-    texNeckEm.wrapS = THREE.MirroredRepeatWrapping;
-    texNeckEm.wrapT = THREE.MirroredRepeatWrapping;
-    texNeckEm.repeat.set( 2, 2 );
-    texNeckEm.rotation = Math.PI * 0.5;
-    texNeckEm.center.set(0.0,0.0);
-    texNeckEm.colorSpace = THREE.SRGBColorSpace;
+    var texNeckSp = new THREE.TextureLoader().load( "./images/neck_sp.png");
+    texNeckSp.wrapS = THREE.MirroredRepeatWrapping;
+    texNeckSp.wrapT = THREE.MirroredRepeatWrapping;
+    texNeckSp.repeat.set( 4, 2 );
+    
+
+    var texNeckNm = new THREE.TextureLoader().load( "./images/neck_nm.png");
+
+    // var texNeckEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
+    // texNeckEm.wrapS = THREE.MirroredRepeatWrapping;
+    // texNeckEm.wrapT = THREE.MirroredRepeatWrapping;
+    // // texNeckEm.rotation = 1.5 * Math.PI;
+    // texNeckEm.offset.set(0, 0);
+    // texNeckEm.repeat.set( 2, 2 );
+    // texNeckEm.colorSpace = THREE.SRGBColorSpace;
+    // texNeckEm.needsUpdate = true;
 
     this.neckMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
-      emissive: 0xffffff,
-      emissiveMap: texNeckEm,
-      emissiveIntensity: 0.7,
+      emissive: 0x000000,
+      // emissiveMap: texNeckEm,
+      emissiveIntensity: 0.5,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
       map: texNeck,
       metalnessMap: texNeckSp,
-      metalness: 0.8,
-      roughnessMap: texNeckSp,
+      metalness: 0.5,
+      roughnessMap: texNeck,
       roughness: 0.6,
+      normalMap: texNeckNm,
+      normalScale: new THREE.Vector2(1, 1),
     });
 
     const rotation = Math.PI * 0.5;
@@ -298,6 +305,7 @@ export default class Builder {
         primaryAftOffset: [0.3, 0, 1, 0.01],
         engineeringForeOffset: [0.3, 0, 1, 0.01],
         engineeringAftOffset: [0.3, 0, 1, 0.01],
+        primaryThickness: [0.15, 0.01, 5, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
       engineering: {
@@ -550,6 +558,7 @@ export default class Builder {
       primaryAftOffset: controlParams.neck_primaryAftOffset,
       engineeringForeOffset: controlParams.neck_engineeringForeOffset,
       engineeringAftOffset :controlParams.neck_engineeringAftOffset,
+      primaryThickness: controlParams.neck_primaryThickness,
       thickness: controlParams.neck_thickness,
     });
 

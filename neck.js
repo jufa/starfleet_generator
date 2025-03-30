@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import HullComponent from './hull_component.js';
+import { LoopSubdivision } from 'three-subdivide';
 
 export default class Neck extends HullComponent {
   constructor({ material, primary, engineering }) {
@@ -19,6 +20,7 @@ export default class Neck extends HullComponent {
     primaryAftOffset, // distance away from aft edge of primary hull 1.0 = Full fore
     engineeringForeOffset, // distance away from fore edge of engineering hull 1.0 = Full aft
     engineeringAftOffset, // distance away from aft edge of engineering hull 1.0 = Full fore
+    primaryThickness,
     thickness,
   }) {
 
@@ -45,24 +47,102 @@ export default class Neck extends HullComponent {
 
     engineeringFore -= engineeringLength * engineeringForeOffset;
     engineeringAft += engineeringLength * engineeringAftOffset;
+    
+    let thicknessRatio = thickness / primaryThickness;
 
-    const thicknessRatio = 1.5;
+
+    const rfb = new THREE.Vector3(thickness, engineeringFore, engineeringForeVerticalCenter);
+    const rft = new THREE.Vector3(primaryThickness, primaryFore, primaryCenterThickness);
+    const rbt = new THREE.Vector3(primaryThickness, primaryAft, primaryCenterThickness);
+    const rbb = new THREE.Vector3(thickness, engineeringAft, engineeringForeVerticalCenter);
+
+    const lfb = new THREE.Vector3(-thickness, engineeringFore, engineeringForeVerticalCenter);
+    const lft = new THREE.Vector3(-primaryThickness, primaryFore, primaryCenterThickness);
+    const lbt = new THREE.Vector3(-primaryThickness, primaryAft, primaryCenterThickness);
+    const lbb = new THREE.Vector3(-thickness, engineeringAft, engineeringForeVerticalCenter);
 
     this.vertices = [
-      new THREE.Vector3(thickness * thicknessRatio, primaryFore, primaryCenterThickness),
-      new THREE.Vector3(thickness * thicknessRatio, primaryAft, primaryCenterThickness),
-      new THREE.Vector3(thickness, engineeringFore, engineeringForeVerticalCenter),
-      new THREE.Vector3(thickness, engineeringAft, engineeringForeVerticalCenter),
+      // Top Face
+      rft.clone(), rbt.clone(), lft.clone(), lbt.clone(),
+  
+      // Bottom Face
+      rfb.clone(), rbb.clone(), lfb.clone(), lbb.clone(),
+  
+      // Front Face
+      rft.clone(), lft.clone(), rfb.clone(), lfb.clone(),
+  
+      // Back Face
+      rbt.clone(), lbt.clone(), rbb.clone(), lbb.clone(),
+  
+      // Left Face
+      lft.clone(), lbt.clone(), lfb.clone(), lbb.clone(),
+  
+      // Right Face
+      rft.clone(), rbt.clone(), rfb.clone(), rbb.clone(),
+   ];
 
-      new THREE.Vector3(-thickness * thicknessRatio, primaryFore, primaryCenterThickness),
-      new THREE.Vector3(-thickness * thicknessRatio, primaryAft, primaryCenterThickness),
-      new THREE.Vector3(-thickness, engineeringFore, engineeringForeVerticalCenter),
-      new THREE.Vector3(-thickness, engineeringAft, engineeringForeVerticalCenter)
-    ];
+    // Define the faces (index pairs) for the triangles
+    const indices = [
+      // Top Face
+      0, 1, 2,   3, 2, 1,
+  
+      // Bottom Face
+      4, 5, 6,   6, 5, 7,
+  
+      // Front Face
+      8, 9, 10,  11, 10, 9,
+  
+      // Back Face
+      12, 13, 14,  15, 14, 13,
+  
+      // Left Face
+      16, 17, 18,  19, 18, 17,
+  
+      // Right Face
+      20, 21, 22,  23, 22, 21,
+  ];
+
+    const uvs = new Float32Array([
+      // Top Face
+      0, 0,  // bottom-left
+      1, 0,  // bottom-right
+      0, 1,  // top-left
+      1, 1,  // top-right
+
+      // Bottom Face
+      0, 0,  // bottom-left
+      1, 0,  // bottom-right
+      0, 1,  // top-left
+      1, 1,  // top-right
+
+      // Front Face
+      0, 0,  // bottom-left
+      1, 0,  // bottom-right
+      0, 1,  // top-left
+      1, 1,  // top-right
+
+      // Back Face
+      0, 0,  // bottom-left
+      1, 0,  // bottom-right
+      0, 1,  // top-left
+      1, 1,  // top-right
+
+      // Left Face
+      0, 0,  // bottom-left
+      1, 0,  // bottom-right
+      0, 1,  // top-left
+      1, 1,  // top-right
+
+      // Right Face
+      0, 0,  // bottom-left
+      1, 0,  // bottom-right
+      0, 1,  // top-left
+      1, 1   // top-right
+    ]);
 
     // Create a new BufferGeometry
     this.geometry = new THREE.BufferGeometry();
-
+    
     // Create an array to hold the vertex positions
     const positions = [];
 
@@ -72,27 +152,25 @@ export default class Neck extends HullComponent {
     });
 
     // Set the position attribute in the BufferGeometry
-    this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-
-    // Define the faces (index pairs) for the triangles
-    const indices = [
-        0, 1, 2,
-        2, 1, 3,
-        5, 3, 1,
-        3, 5, 7,
-        6, 7, 5,
-        4, 6, 5,
-        6, 4, 0,
-        6, 0, 2,
-        0, 4, 1,
-        4, 5, 1,
-    ];
-
-
-    // Set the index attribute in the BufferGeometry
     this.geometry.setIndex(indices);
 
-    this.calculateUVs(this.geometry);
+    this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    this.geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+    this.geometry.computeVertexNormals(); // Needed for shading
+
+    // const iterations = 1;
+    // const params = {
+    //     split:          false,       // optional, default: true
+    //     uvSmooth:       true,      // optional, default: false
+    //     preserveEdges:  false,      // optional, default: false
+    //     flatOnly:       true,      // optional, default: false
+    //     maxTriangles:   Infinity,   // optional, default: Infinity
+    // };
+    // this.geometry = LoopSubdivision.modify(this.geometry, iterations, params);
+    // this.geometry.computeVertexNormals(); // Needed for shading
+    
+    this.geometry.uvsNeedUpdate = true;
+
     this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
     this.group.add( this.mesh );
   }
