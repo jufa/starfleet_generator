@@ -23,15 +23,15 @@ export default class Nacelle extends HullComponent {
     tex.colorSpace = THREE.SRGBColorSpace;
 
     this.bussardMaterial = new THREE.MeshStandardMaterial({
-      color: 0xff3300,
+      color: 0xfffffff,
       emissive: 0xff0000,
-      emissiveIntensity: 4,
+      emissiveIntensity: 2,
       opacity: 0.1,
       transparent: true,
       flatShading: false,
       metalnessMap: tex,
       roughnessMap: tex,
-      metalness: 10,
+      metalness: 1,
       roughness: 0.9,
     });
     
