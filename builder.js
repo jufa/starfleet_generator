@@ -61,9 +61,9 @@ export default class Builder {
       emissiveMap: texSaucerEm,
       emissiveIntensity: 0.7,
       metalnessMap: texSaucerSp,
-      metalness: 0.2,
-      roughnessMap: texSaucerSp,
-      roughness: 30.0,
+      metalness: 0.7,
+      roughnessMap: tex,
+      roughness: 0.7,
       // bumpMap:texSaucerSp,
       // bumpScale: -0.01,
     });
@@ -89,7 +89,6 @@ export default class Builder {
     this.bridgeMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
       emissive: 0xeeeeff,
-      emissiveIntensity: 0.6,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
@@ -97,9 +96,9 @@ export default class Builder {
       emissiveMap: texBridgeEm,
       emissiveIntensity: 0.6,
       metalnessMap: texBridgeSp,
-      metalness: 0.8,
-      roughnessMap: texBridgeSp,
-      roughness: 10.0,
+      metalness: 1.0,
+      roughnessMap: texBridge,
+      roughness: 0.9,
     });
 
     var texNotch = new THREE.TextureLoader().load( "./images/saucer.png");
@@ -149,16 +148,16 @@ export default class Builder {
     var texEngEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
     texEngEm.wrapS = THREE.MirroredRepeatWrapping;
     texEngEm.wrapT = THREE.MirroredRepeatWrapping;
-    texEngEm.repeat.set( 2, 2 );
-    texEngEm.rotation = Math.PI * 1;
-    texEngEm.center.set(0.0, 0.668);
+    texEngEm.repeat.set( 4, 2);
+    texEngEm.rotation = Math.PI * 1.0;
+    texEngEm.offset.set(0.0, 0.01);
     texEngEm.colorSpace = THREE.SRGBColorSpace;
 
     this.engMaterial = new THREE.MeshStandardMaterial({
       color: 0xeeeeef,
       emissive: 0xffffff,
       emissiveMap: texEngEm,
-      emissiveIntensity: 0.4,
+      emissiveIntensity: 0.3,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
@@ -169,16 +168,16 @@ export default class Builder {
       roughness: 0.5,
     });
 
-    var texNeck = new THREE.TextureLoader().load( "./images/neck2_sp.png");
+    var texNeck = new THREE.TextureLoader().load( "./images/engineering.png");
     texNeck.wrapS = THREE.MirroredRepeatWrapping;
     texNeck.wrapT = THREE.MirroredRepeatWrapping;
-    texNeck.repeat.set( 1, 2 );
+    texNeck.repeat.set( 2, 0.5 );
     
 
-    var texNeckSp = new THREE.TextureLoader().load( "./images/neck2.png");
+    var texNeckSp = new THREE.TextureLoader().load( "./images/engineering_sp.png");
     texNeckSp.wrapS = THREE.MirroredRepeatWrapping;
     texNeckSp.wrapT = THREE.MirroredRepeatWrapping;
-    texNeckSp.repeat.set( 1, 2 );
+    texNeckSp.repeat.set( 2, 0.5 );
     
 
     var texNeckNm = new THREE.TextureLoader().load( "./images/neck2_nm.png");
@@ -201,8 +200,8 @@ export default class Builder {
       map: texNeck,
       metalnessMap: texNeckSp,
       metalness: 0.3,
-      // roughnessMap: texNeck,
-      roughness: 1.0,
+      roughnessMap: texNeck,
+      roughness: 0.5,
       normalMap: texNeckNm,
       normalScale: new THREE.Vector2(1, 1),
     });
@@ -360,7 +359,7 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 1000;
+    const intensity = 600;
     const dist = 50;
     lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
     lights[ 1 ] = new THREE.PointLight( 0xffffff, intensity, 0 ); //bottom
@@ -613,10 +612,10 @@ export default class Builder {
 
     // renderer
     this.renderer = new THREE.WebGLRenderer({
-      depth: true,
-      antialias: true,
+      depth: false,
+      antialias: false,
       toneMapping: THREE.ACESFilmicToneMapping,
-      toneMappingExposure: 1.5,
+      toneMappingExposure: 2,
       preserveDrawingBuffer: true, // for screenshotting
     });
     this.renderer.setClearColor( this.CLEAR_COLOUR );
@@ -634,8 +633,8 @@ export default class Builder {
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
       0.6, // Strength
-      0.02, // Radius
-      0.5 // Threshold
+      0.0, // Radius
+      0.3 // Threshold
     );
     this.composer.addPass(bloomPass);
 

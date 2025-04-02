@@ -27,7 +27,7 @@ export default class Engineering extends HullComponent {
       color: 0xffdd22,
       emissive: 0xdd9900,
       emissiveMap: texEm,
-      emissiveIntensity: 3.0,
+      emissiveIntensity: 2.0,
       side: THREE.DoubleSide,
       flatShading: false,
       map: texSp,
@@ -86,15 +86,15 @@ export default class Engineering extends HullComponent {
     deflectorPoints.push(deflectorOuterEdge);
 
     // dish curve
-    let c = 0.25;
-    const deflectorPointCount = 32.0;
+    let c = 0.2;
+    const deflectorPointCount = 8.0;
     let r;
     for (let i = 0.0; i <= deflectorPointCount; i++) {
       r =  i / deflectorPointCount;
       deflectorPoints.push (
         new THREE.Vector2(
           deflectorOuterEdge.x * (1.0 - r),
-          deflectorOuterEdge.y - Math.sin(Math.PI*r/2.0) * c - 0.1
+          deflectorOuterEdge.y - Math.sin(Math.PI*r/2.0) * c - 0.05
         )
       );
     };
@@ -110,7 +110,7 @@ export default class Engineering extends HullComponent {
     this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 40);
     this.engineeringGeometry.scale(this.widthRatio, 1.0, 1.0);
 
-    this.deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, 40);
+    this.deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, 36);
     this.deflectorGeometry.scale(this.widthRatio, 1.0, 1.0);
 
     const matrix = new THREE.Matrix4();
