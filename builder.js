@@ -12,6 +12,7 @@ import Engineering from './engineering.js';
 import Primary from './primary.js';
 import Neck from './neck.js';
 import Pylon from './pylon.js';
+import Boom from './boom.js';
 import ships from './ships.js';
 
 export default class Builder {
@@ -26,9 +27,9 @@ export default class Builder {
     this.currentShip = {}; // storage of currently selected predefined ship params independent of control parmas
     this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
     this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
-    this.predefinedShipTransitionFrames = 30; // the total number of frames to do the transition animation
-    this.transitionRate = 0.25;
-    this.maxTransitionTime = 1000; // ms for transition. If it takes longer than this it is forced to finish
+    this.predefinedShipTransitionFrames = 60*2; // the total number of frames to do the transition animation
+    this.transitionRate = 0.05;
+    this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
     
 
@@ -341,6 +342,8 @@ export default class Builder {
         widthRatio: [1, 0.1, 10, 0.01],
         rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
       },
+      boomLower: {
+      },
       pylonLower: {
         nacelleForeOffset: [0.3, 0, 1, 0.01],
         nacelleAftOffset: [0.3, 0, 1, 0.01],
@@ -359,19 +362,22 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 600;
+    const intensity = 400;
     const dist = 50;
     lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
     lights[ 1 ] = new THREE.PointLight( 0xffffff, intensity, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
+    lights[ 3 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
 
     lights[ 0 ].position.set( dist, dist, 0 );
-    lights[ 1 ].position.set( -dist, -dist, 0 );
-    lights[ 2 ].position.set( 0, 0, 40 );
+    lights[ 1 ].position.set( -dist, -dist/2, 0 );
+    lights[ 2 ].position.set( 0, 0, dist*2 );
+    lights[ 3 ].position.set( dist, -dist/2, 0 );
 
     this.scene.add( lights[ 0 ] );
     this.scene.add( lights[ 1 ] );
     this.scene.add( lights[ 2 ] );
+    this.scene.add( lights[ 3 ] );
   }
 
   /**
@@ -403,6 +409,13 @@ export default class Builder {
 
     this.engineering = new Engineering({ material: this.engMaterial });
     this.mount(this.ship, this.engineering.group);
+
+    this.boomLowerPort = new Boom({ material: this.engMaterial });
+      this.mount(this.ship, this.boomLowerPort.group);
+    
+    this.boomLowerStarboard = new Boom({ material: this.engMaterial });
+      this.mount(this.ship, this.boomLowerStarboard.group);
+
 
     this.neck = new Neck({
       primary: this.primary,
@@ -499,6 +512,16 @@ export default class Builder {
     this.nacelleLowerStarboard.group.visible = this.controlParams.nacelleLower_toggle;
     this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
     this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
+
+    this.boomLowerPort.group.visible = this.controlParams.boomLower_toggle;
+    this.boomLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});
+    this.boomLowerPort.group.position.set(separation2, -aft2-length2, height2);
+
+    this.boomLowerStarboard.group.visible = this.controlParams.boomLower_toggle;
+    this.boomLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
+    this.boomLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
+
+
 
     this.engineering.group.visible = this.controlParams.engineering_toggle;
     this.engineering.update ({
