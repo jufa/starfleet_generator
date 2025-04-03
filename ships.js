@@ -187,7 +187,7 @@
       "primary_bridgeRadius": 0.97,
       "primary_bridgeWidthRatio": 0.66,
       "primary_bridgeZ": 2,
-      "primary_bridgeY": 2,
+      "primary_bridgeY": -0.33,
       "primary_notchAngle": 0,
       "neck_toggle": false,
       "neck_primaryForeOffset": 0.29,
