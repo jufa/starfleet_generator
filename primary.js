@@ -27,6 +27,7 @@ export default class Primary extends HullComponent{
     bridgeRadius,
     bridgeWidthRatio,
     bridgeZ,
+    bridgeY,
     pointiness, // 0.0-2.0
     notchAngle,
   }) {
@@ -122,11 +123,14 @@ export default class Primary extends HullComponent{
     this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
     this.bridgeMesh = new THREE.Mesh( this.bridgeGeometry, this.bridgeMaterial.clone() );
     this.bridgeMesh.position.y = - bridgeZ - ( bridgeThickness * 0.4);
+    this.bridgeMesh.position.z = radius * bridgeY;
     
     this.group.add( this.mesh );
     this.group.add( this.bridgeMesh );
-    this.group.add( closeMesh1 );
-    this.group.add( closeMesh2 );
+    if (notchAngle > 0){
+      this.group.add( closeMesh1 );
+      this.group.add( closeMesh2 );
+    }
     // this.computeBoundingBox(this.geometry);
   }
 

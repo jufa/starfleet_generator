@@ -291,11 +291,12 @@ export default class Builder {
         radius: [12, 1, 30, 0.01],
         thickness: [4, 1, 10, 0.01],
         widthRatio: [1, 0, 10, 0.01],
-        pointiness: [0.0, 0, 1.5, 0.01],
-        bridgeThickness:  [1.0, 0.5, 5, 0.01],
+        pointiness: [0.0, -1.0, 1.5, 0.01],
+        bridgeThickness:  [0.8, 0.5, 9, 0.01],
         bridgeRadius: [0.1, 0.01, 1.2, 0.01],
         bridgeWidthRatio: [1, 0.01, 2, 0.01],
-        bridgeZ: [0.0, -1, 2, 0.01],
+        bridgeZ: [-3.0, -1, 3, 0.01],
+        bridgeY: [0, -1, 1, 0.01],
         notchAngle: [0, 0, Math.PI, 0.01],
       },
       neck: {
@@ -367,7 +368,7 @@ export default class Builder {
     lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
     lights[ 1 ] = new THREE.PointLight( 0xffffff, intensity, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
-    lights[ 3 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
+    lights[ 3 ] = new THREE.PointLight( 0x473184, intensity*2, 0 );
 
     lights[ 0 ].position.set( dist, dist, 0 );
     lights[ 1 ].position.set( -dist, -dist/2, 0 );
@@ -477,6 +478,7 @@ export default class Builder {
       bridgeRadius: controlParams.primary_bridgeRadius,
       bridgeWidthRatio: controlParams.primary_bridgeWidthRatio,
       bridgeZ: controlParams.primary_bridgeZ,
+      bridgeY: controlParams.primary_bridgeY,
       notchAngle: controlParams.primary_notchAngle,
     });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
