@@ -144,7 +144,7 @@ export default class Primary extends HullComponent{
   clear(){
     if (this.geometry['dispose']) {
       this.geometry.dispose();
-      // this.bridgeGeometry.dispose();
+      this.bridgeGeometry.dispose();
       for (var i = this.group.children.length - 1; i >= 0; i--) {
         this.group.remove(this.group.children[i]);
       }

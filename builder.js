@@ -588,9 +588,11 @@ export default class Builder {
       afttaper: controlParams.neck_afttaper,
     });
 
-    //make sure camera is orbiting the new position of the saucer:
-    // const target = this.primary.group.position;
-    // this.controls.target.set(target.x, target.y, target.z);
+    // make sure camera is orbiting the new position of the saucer:
+    // const targetPosition = new THREE.Vector3();
+    // this.primary.group.getWorldPosition(targetPosition);
+    // this.controls.target.copy(targetPosition);
+    // this.camera.lookAt(this.controls.target);
     // this.controls.update();
   }
 
@@ -607,6 +609,7 @@ export default class Builder {
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1600000 );
     this.camera.position.z = 50;
     this.controls = new OrbitControls( this.camera, this.container );
+    this.controls.enableDamping = true;
     // this.controls.lookSpeed = 0.3;
 
     // scenes
