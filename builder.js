@@ -364,12 +364,12 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 300;
+    const intensity = 600;
     const dist = 30;
-    lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity*3, 0 );
-    lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity, 0 ); //bottom
-    lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
-    lights[ 3 ] = new THREE.PointLight( 0xFFAACC, intensity*2, 0 );
+    lights[ 0 ] = new THREE.PointLight( 0xddddff, intensity*1, 0 );
+    lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity*1, 0 ); //bottom
+    lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
+    lights[ 3 ] = new THREE.PointLight( 0xFC82C0, intensity*1, 0 );
 
     lights[ 0 ].position.set( dist/2, dist, -dist/3 );
     lights[ 1 ].position.set( -dist, -dist, 0 );
