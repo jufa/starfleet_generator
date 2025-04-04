@@ -60,11 +60,11 @@ export default class Builder {
       wireframe: false,
       map: tex,
       emissiveMap: texSaucerEm,
-      emissiveIntensity: 0.7,
+      emissiveIntensity: 0.9,
       metalnessMap: texSaucerSp,
-      metalness: 0.7,
+      metalness: 0.3,
       roughnessMap: tex,
-      roughness: 0.7,
+      roughness: 1.0,
       // bumpMap:texSaucerSp,
       // bumpScale: -0.01,
     });
@@ -158,7 +158,7 @@ export default class Builder {
       color: 0xeeeeef,
       emissive: 0xffffff,
       emissiveMap: texEngEm,
-      emissiveIntensity: 0.3,
+      emissiveIntensity: 0.9,
       side: THREE.DoubleSide,
       flatShading: false,
       wireframe: false,
@@ -275,7 +275,7 @@ export default class Builder {
       map: texNacelle,
       roughnessMap: texNacelle,
       emissiveMap: texNacelleEm,
-      emissiveIntensity: 0.5,
+      emissiveIntensity: 0.7,
       metalnessMap: texNacelleSp,
       // bumpMap: texNacelleEm,
       // bumpScale: -1.0,
@@ -369,9 +369,9 @@ export default class Builder {
     lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity*3, 0 );
     lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
-    lights[ 3 ] = new THREE.PointLight( 0xFFAACC, intensity, 0 );
+    lights[ 3 ] = new THREE.PointLight( 0xFFAACC, intensity*2, 0 );
 
-    lights[ 0 ].position.set( dist/2, dist, 0 );
+    lights[ 0 ].position.set( dist/2, dist, -dist/3 );
     lights[ 1 ].position.set( -dist, -dist, 0 );
     lights[ 2 ].position.set( 0, 0, dist*2 );
     lights[ 3 ].position.set( dist, -dist, 0 );
@@ -633,6 +633,7 @@ export default class Builder {
     ]);
 
     this.scene.background = skyboxTexture;
+    // this.scene.environment = skyboxTexture;
 
     // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: textureCube } );
 
@@ -663,7 +664,7 @@ export default class Builder {
       new THREE.Vector2(window.innerWidth, window.innerHeight),
       0.6, // Strength
       0.0, // Radius
-      0.3 // Threshold
+      0.4 // Threshold
     );
     this.composer.addPass(bloomPass);
 
