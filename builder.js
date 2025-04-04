@@ -273,13 +273,14 @@ export default class Builder {
       flatShading: false,
       wireframe: false,
       map: texNacelle,
+      roughnessMap: texNacelle,
       emissiveMap: texNacelleEm,
-      emissiveIntensity: 0.4,
+      emissiveIntensity: 0.5,
       metalnessMap: texNacelleSp,
       // bumpMap: texNacelleEm,
       // bumpScale: -1.0,
-      metalness: 0.7,
-      roughness: 0.4,
+      metalness: 0.5,
+      roughness: 0.5,
     });
 
     this.controlConfiguration = {
@@ -290,7 +291,7 @@ export default class Builder {
         z: [0.5, -30, 50, 0.01],
         radius: [12, 1, 30, 0.01],
         thickness: [4, 1, 10, 0.01],
-        widthRatio: [1, 0, 10, 0.01],
+        widthRatio: [1, 0.01, 10, 0.01],
         pointiness: [0.0, -1.0, 1.5, 0.01],
         bridgeThickness:  [0.8, 0.5, 9, 0.01],
         bridgeRadius: [0.1, 0.01, 1.2, 0.01],
@@ -363,17 +364,17 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 400;
-    const dist = 50;
-    lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
-    lights[ 1 ] = new THREE.PointLight( 0xffffff, intensity, 0 ); //bottom
+    const intensity = 300;
+    const dist = 30;
+    lights[ 0 ] = new THREE.PointLight( 0xffffff, intensity*3, 0 );
+    lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity, 0 );
-    lights[ 3 ] = new THREE.PointLight( 0x473184, intensity*2, 0 );
+    lights[ 3 ] = new THREE.PointLight( 0xFFAACC, intensity, 0 );
 
-    lights[ 0 ].position.set( dist, dist, 0 );
-    lights[ 1 ].position.set( -dist, -dist/2, 0 );
+    lights[ 0 ].position.set( dist/2, dist, 0 );
+    lights[ 1 ].position.set( -dist, -dist, 0 );
     lights[ 2 ].position.set( 0, 0, dist*2 );
-    lights[ 3 ].position.set( dist, -dist/2, 0 );
+    lights[ 3 ].position.set( dist, -dist, 0 );
 
     this.scene.add( lights[ 0 ] );
     this.scene.add( lights[ 1 ] );
