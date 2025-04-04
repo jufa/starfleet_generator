@@ -617,8 +617,8 @@ export default class Builder {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color( this.SKY_COLOUR );
     // add skybox:
-    // https://tools.wwwtyro.net/space-3d/index.html#animationSpeed=0.24598027238215495&fov=150&nebulae=true&pointStars=true&resolution=2048&seed=92cw15qrv81i&stars=true&sun=false
-    
+    //https://tools.wwwtyro.net/space-3d/index.html#animationSpeed=1&fov=80&nebulae=true&pointStars=true&resolution=2048&seed=ad3fw753fffegrf48&stars=true&sun=true    
+    // star texture: The sun erupted with an X1.7-class solar flare on May 12, 2013. The flare appears as the bright point on the left of the sun in this full disk view NASA's Solar Dynamics Observatory.
     const cubeLoader = new THREE.CubeTextureLoader();
     cubeLoader.setPath("./images/cubemap/");
 
