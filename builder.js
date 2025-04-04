@@ -62,11 +62,11 @@ export default class Builder {
       emissiveMap: texSaucerEm,
       emissiveIntensity: 0.9,
       metalnessMap: texSaucerSp,
-      metalness: 0.3,
-      roughnessMap: tex,
-      roughness: 1.0,
-      // bumpMap:texSaucerSp,
-      // bumpScale: -0.01,
+      metalness: 0.9,
+      // roughnessMap: tex,
+      roughness: 0.4,
+      // bumpMap:texSaucerEm,
+      // bumpScale: 12,
     });
 
     var texBridge = new THREE.TextureLoader().load( "./images/saucer.png");
@@ -200,8 +200,8 @@ export default class Builder {
       wireframe: false,
       map: texNeck,
       metalnessMap: texNeckSp,
-      metalness: 0.3,
-      roughnessMap: texNeck,
+      metalness: 0.6,
+      // roughnessMap: texNeck,
       roughness: 0.5,
       normalMap: texNeckNm,
       normalScale: new THREE.Vector2(1, 1),
@@ -239,11 +239,11 @@ export default class Builder {
       wireframeLineWidth: 10,
       map: texPylon,
       metalnessMap: texPylonSp,
-      metalness: 0.8,
+      metalness: 1.0,
       // emissiveMap: texPylonEm,
       // emissiveIntensity: 0.2,
-      roughnessMap: texPylon,
-      roughness: 0.6,
+      // roughnessMap: texPylon,
+      roughness: 0.4,
     });
     const nacelleDefaultRotation = Math.PI * 0.0;
     var texNacelle = new THREE.TextureLoader().load( "./images/nacelle.png");
@@ -273,14 +273,14 @@ export default class Builder {
       flatShading: false,
       wireframe: false,
       map: texNacelle,
-      roughnessMap: texNacelle,
+      // roughnessMap: texNacelle,
       emissiveMap: texNacelleEm,
       emissiveIntensity: 0.7,
       metalnessMap: texNacelleSp,
       // bumpMap: texNacelleEm,
       // bumpScale: -1.0,
-      metalness: 0.5,
-      roughness: 0.5,
+      metalness: 0.8,
+      roughness: 0.65,
     });
 
     this.controlConfiguration = {
@@ -364,8 +364,8 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 600;
-    const dist = 30;
+    const intensity = 1200;
+    const dist = 40;
     lights[ 0 ] = new THREE.PointLight( 0xddddff, intensity*1, 0 );
     lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity*1, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
@@ -611,6 +611,7 @@ export default class Builder {
     this.camera.position.z = 50;
     this.controls = new OrbitControls( this.camera, this.container );
     this.controls.enableDamping = true;
+    // this.controls.screenSpacePanning = false;
     // this.controls.lookSpeed = 0.3;
 
     // scenes
@@ -662,9 +663,9 @@ export default class Builder {
     // Add UnrealBloomPass
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.6, // Strength
+      0.7, // Strength
       0.0, // Radius
-      0.4 // Threshold
+      0.35 // Threshold
     );
     this.composer.addPass(bloomPass);
 
