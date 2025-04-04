@@ -607,7 +607,7 @@ export default class Builder {
     this.btnScreenshot = document.getElementById('screenshot');
 
     // camera & controls
-    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1600000 );
+    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 10, 2000 );
     this.camera.position.z = 50;
     this.controls = new OrbitControls( this.camera, this.container );
     this.controls.enableDamping = true;
