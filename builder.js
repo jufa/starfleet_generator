@@ -890,6 +890,10 @@ export default class Builder {
 
 var shipBuilder = new Builder(window);
 
+window.sayback = (back) => {
+  console.log("you said:", back);
+}
+
 function animate() {
   requestAnimationFrame( animate );
   shipBuilder.render();
