@@ -359,7 +359,8 @@ export default class Builder {
     this.init();
     this.initControls();
     this.build();
-    this.setPredefinedShip(this.predefinedShips[0].name);
+    const startIndex = Number.parseInt(Math.random() * (this.predefinedShips.length-1));
+    this.setPredefinedShip(this.predefinedShips[startIndex].name);
   }
 
   addLights() {
