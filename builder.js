@@ -719,6 +719,7 @@ export default class Builder {
       }
     }
     let pretty = JSON.stringify(roundedParams, null, 2)
+    return pretty;
     console.log(pretty);
     alert("params output to console (and clipboard for supported browsers)");
     navigator.permissions.query({name: "clipboard-write"}).then(result => {
@@ -841,7 +842,18 @@ export default class Builder {
     utilsFolder.add({ screenshot: this.takeScreenshot.bind(this) }, 'screenshot');
 
     // export button:
-    utilsFolder.add({ copy_ship_params: this.paramDump.bind(this) }, 'copy_ship_params');
+    // utilsFolder.add({ copy_ship_params: this.paramDump.bind(this) }, 'copy_ship_params');
+
+    utilsFolder.add({ 
+      copy_ship_params: () => {
+        const text = this.paramDump();  // or however you get the text
+        console.log("Ship Parameters:\n\n");
+        console.log(text);
+        navigator.clipboard.writeText(text)
+          .then(() => alert('Ship params copied to clipboard (for supported browsers) and printed in the console'))
+          .catch(err => console.error('Copy to clipboard failed, but still printed to console.', err));
+      }
+    }, 'copy_ship_params');
 
     // rescale button:
     utilsFolder.add({ scale_up: this.rescale.bind(this, 1) }, 'scale_up');
