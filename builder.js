@@ -812,7 +812,7 @@ export default class Builder {
   }
 
   handleOpenCloseFolder(changedGUI) {
-    console.log(changedGUI);
+    // console.log(changedGUI);
     const cg = changedGUI;
     // close all other gui folders:
     for (var folder in this.gui.folders) {
@@ -822,19 +822,42 @@ export default class Builder {
     }
   }
 
+  setGuiVisibility(visible) {
+    const guiNode = document.getElementById('gui-container');
+    guiNode.style.opacity = visible ? 0.75 : 0.1;
+  }
+
   initControls(){
     // non datgui controls:
     this.btnNext.addEventListener('click', function(){ this.nextPredefinedShip() }.bind(this));
     this.btnPrev.addEventListener('click', function(){ this.prevPredefinedShip() }.bind(this));
     this.btnScreenshot.addEventListener('click', function(){ this.takeScreenshot() }.bind(this));
 
-    this.gui = new dat.GUI( { autoPlace: true, width: 300 } );
+    this.gui = new dat.GUI( { autoPlace: false, width: 300 } );
     const gui = this.gui;
     gui.close();
     gui.onOpenClose( changedGUI => {
       this.handleOpenCloseFolder( changedGUI );
     } );
+    document.getElementById('gui-container').appendChild(gui.domElement);
+    const guiNode = document.getElementById('gui-container');
 
+    // Find all sliders inside lil-gui when added
+    guiNode.addEventListener('touchstart', (e) => {
+      if (e.target.closest('.controller.number')) {
+        this.setGuiVisibility(false);
+      }
+    });
+    guiNode.addEventListener('mousedown', (e) => {
+      if (e.target.closest('.controller.number')) {
+        this.setGuiVisibility(false);
+      }
+    });
+    // Show GUI again when touch/mouse ends
+    const showOnEnd = () => this.setGuiVisibility(true);
+    window.addEventListener('touchend', showOnEnd);
+    window.addEventListener('mouseup', showOnEnd);
+    
     // utils folder
     var utilsFolder = gui.addFolder('utils');
 

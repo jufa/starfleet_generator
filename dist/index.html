@@ -15,7 +15,12 @@
         color: #000;
         font-family: 'Teko', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 26px;
+        touch-action: none;
       }
+      .lil-gui.root {
+
+      }
+
       #container {
         width: 100%;
         height: 100%;
@@ -23,7 +28,7 @@
       #credits {
         position: fixed;
         left: 10px;
-        top:34px;
+        top:54px;
         height: 30px;
         width: 100%;
         text-align: left;
@@ -45,11 +50,11 @@
       }
       #ship-name {
         position: absolute;
-        top: 0;
+        top: 30px;
         width: 100%;
         height: 30px;
         text-align: left;
-        padding: 10px 0 0 10px;
+        padding: 0 0 0 10px;
         font-size: 1.5em;
         color: #fff;
       }
@@ -68,6 +73,16 @@
         flex: 1; /* Make buttons take equal space */
         margin: 0 5px; /* Add small spacing */
       }
+      #gui-container {
+        position: absolute;
+        opacity:0.75;
+        top: 0;
+        right: 0;
+      }
+      #gui-container .lil-gui {
+        flex-direction: column-reverse !important;
+        align-items: flex-end;
+      }
       a:hover {
         text-decoration: underline;
       }
@@ -75,7 +90,8 @@
         background-color: #444;
       }
       .lil-gui, .lil-gui.root {
-        --width: 25% !important;
+        --width: 100% !important;
+        /* width: 100%; */
         min-width: 300px;
         max-width: 600px;
       }
@@ -101,5 +117,6 @@
   <div id="credits">
     <p>NOT AFFILIATED WITH ANY THIRD PARTY. <a href="/terms.html">TERMS</a></p>
   </div>
+  <div id="gui-container"></div>
 <script type="text/javascript" src="bundle.js"></script></body>
 </html>
