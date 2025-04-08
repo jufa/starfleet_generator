@@ -302,7 +302,7 @@ export default class Builder {
       },
       neck: {
         primaryForeOffset: [0.3, 0, 1, 0.01],
-        primaryAftOffset: [0.3, 0, 1, 0.01],
+        primaryAftOffset: [0.3, -0.3, 1, 0.01],
         engineeringForeOffset: [0.3, 0, 1, 0.01],
         engineeringAftOffset: [0.3, 0, 1, 0.01],
         primaryThickness: [0.15, 0.01, 5, 0.01],
