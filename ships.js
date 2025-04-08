@@ -66,12 +66,12 @@
       "neck_toggle": true,
       "neck_primaryForeOffset": 0.59,
       "neck_primaryAftOffset": 0,
-      "neck_engineeringForeOffset": 0.17,
+      "neck_engineeringForeOffset": 0.2,
       "neck_engineeringAftOffset": 0.29,
       "neck_primaryThickness": 1.83,
       "neck_thickness": 1.91,
-      "neck_foretaper": 0.21,
-      "neck_afttaper": 0.91,
+      "neck_foretaper": 0.61,
+      "neck_afttaper": 1.16,
       "engineering_toggle": true,
       "engineering_y": -25.55,
       "engineering_z": 8.03,
@@ -95,12 +95,12 @@
       "pylon_midPointOffset": 0.99,
       "pylon_thickness": 0.67,
       "nacelleLower_toggle": false,
-      "nacelleLower_y": 22.04,
+      "nacelleLower_y": 24.86,
       "nacelleLower_x": 0,
-      "nacelleLower_z": 7,
-      "nacelleLower_length": 14.79,
-      "nacelleLower_radius": 2.55,
-      "nacelleLower_widthRatio": 0.47,
+      "nacelleLower_z": 7.68,
+      "nacelleLower_length": 15.22,
+      "nacelleLower_radius": 3.26,
+      "nacelleLower_widthRatio": 0.24,
       "nacelleLower_rotation": -1.57,
       "boomLower_toggle": true,
       "pylonLower_toggle": false,
@@ -111,8 +111,7 @@
       "pylonLower_midPointOffset": 0.34,
       "pylonLower_thickness": 0.01,
       "name": "NX-DeuxMille et Une",
-      "nacelle_lowerToggle": false,
-      "necktThicknes": null
+      "nacelle_lowerToggle": false
     },
     {
       "primary_toggle": true,
@@ -367,8 +366,7 @@
       "pylonLower_midPointOffset": 0.34,
       "pylonLower_thickness": 0.01,
       "name": "UnsolicitedDesignProposal",
-      "nacelle_lowerToggle": false,
-      "necktThicknes": null
+      "nacelle_lowerToggle": false
     },
     {
       "nacelle_toggle": true,
@@ -2386,8 +2384,7 @@
       "pylonLower_midPointOffset": 0.01,
       "pylonLower_thickness": 0.22,
       "name": "T-SixtyRedFiver Class",
-      "nacelle_lowerToggle": false,
-      "necktThicknes": null
+      "nacelle_lowerToggle": false
     },
     {
       "primary_toggle": true,
@@ -2451,8 +2448,7 @@
       "pylonLower_midPointOffset": 0.28,
       "pylonLower_thickness": 0.44,
       "name": "BatBlinder Class",
-      "nacelle_lowerToggle": false,
-      "necktThicknes": null
+      "nacelle_lowerToggle": false
     },
     {
       "nacelle_toggle": true,
@@ -2516,8 +2512,7 @@
       "primary_bridgeY": 0.0,
       "primary_notchAngle": 0,
       "name": "Northrop",
-      "nacelle_lowerToggle": false,
-      "necktThicknes": null
+      "nacelle_lowerToggle": false
     },
     {
       "nacelle_toggle": true,
@@ -2963,8 +2958,7 @@
       "primary_bridgeY": 0.0,
       "primary_notchAngle": 0,
       "name": "Shooting Star Class",
-      "nacelle_lowerToggle": false,
-      "necktThicknes": null
+      "nacelle_lowerToggle": false
     },
     {
       "nacelle_toggle": true,
@@ -3092,8 +3086,7 @@
       "primary_bridgeY": 0.0,
       "primary_notchAngle": 0,
       "name": "Nigelius Tufnel",
-      "nacelle_lowerToggle": false,
-      "necktThicknes": null
+      "nacelle_lowerToggle": false
     },
     {
       "nacelle_toggle": true,
@@ -3603,8 +3596,7 @@
       "pylonLower_midPointOffset": 0.1,
       "pylonLower_thickness": 0.39,
       "name": "AJaegerlex",
-      "nacelle_lowerToggle": false,
-      "necktThicknes": null
+      "nacelle_lowerToggle": false
     },
     {
       "nacelle_toggle": true,
@@ -3668,8 +3660,7 @@
       "primary_bridgeY": 0.0,
       "primary_notchAngle": 0,
       "name": "Conspiratorial Raven",
-      "nacelle_lowerToggle": false,
-      "necktThicknes": null
+      "nacelle_lowerToggle": false
     },
     {
       "nacelle_toggle": true,
@@ -3734,7 +3725,6 @@
       "primary_notchAngle": 0,
       "name": "Mosquito Class",
       "nacelle_lowerToggle": false,
-      "necktThicknes": null,
     }
   ]
   export default ships;
