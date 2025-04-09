@@ -519,7 +519,7 @@ export default class Builder {
     for (let name of userDefinedShipNames) {
       let data = localStorage.getItem(name);
       const parsed = JSON.parse(data);
-      userDefinedShips.push(parsed);
+      userDefinedShips.unshift(parsed);
     }
     return userDefinedShips;
   }
