@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Starship Generator</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1159015801527149"
-     crossorigin="anonymous"></script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Teko:wght@300..700&display=swap');
       body, html, canvas {
@@ -40,7 +38,7 @@
       }
       #nav {
         position: absolute;
-        bottom: 0;
+        bottom: 92px;
         width: 100%;
         height: 50px;
         display: flex;
@@ -105,6 +103,22 @@
       .lil-gui button { 
         color: aqua;
       }
+      /* Ad strip at the bottom */
+      #adStrip {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        background-color: #f1f1f1; /* Optional: Background color for the ad strip */
+        padding: 0;
+        margin: 0;
+        max-height: 90px;
+        text-align: center;
+        z-index: 1000; /* Ensure it stays on top */
+      }
+      #adStrip ins {
+        display: block;
+      }
     </style>
 </head>
 <body>
@@ -119,5 +133,20 @@
     <p>NOT AFFILIATED WITH ANY THIRD PARTY. <a href="/terms.html">TERMS</a></p>
   </div>
   <div id="gui-container"></div>
+  <!-- Google Ads strip -->
+  <div id="adStrip">
+    <!-- Google Ads script goes here -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1159015801527149">
+      crossorigin="anonymous">
+    </script>
+    <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-1159015801527149"
+        data-ad-slot="your-ad-slot-id"
+        data-ad-format="auto"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
 <script type="text/javascript" src="bundle.js"></script></body>
 </html>
