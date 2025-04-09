@@ -521,6 +521,7 @@ export default class Builder {
       const parsed = JSON.parse(data);
       userDefinedShips.unshift(parsed);
     }
+    userDefinedShips = userDefinedShips.sort( (a,b) => b.saveDate - a.saveDate );
     return userDefinedShips;
   }
 
@@ -570,6 +571,7 @@ export default class Builder {
     }
     const config = this.getParamsRoundedJSON();
     config.name = newName;
+    config.saveDate = new Date().getTime();
     const key = this.STORAGE_PREFIX + config.name;
     localStorage.setItem(key, JSON.stringify(config));
     const saved = localStorage.getItem(key);
