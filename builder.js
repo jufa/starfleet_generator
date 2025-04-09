@@ -748,7 +748,7 @@ export default class Builder {
       const toggle_name = folder + '_toggle';
       this.controlParams[toggle_name] = true;
 
-      let toggle = controls.add( this.controlParams, toggle_name, true );
+      let toggle = controls.add( this.controlParams, toggle_name, true ).name("VISIBLE");
       toggle.onChange( function(value) {
         toggle.object[toggle.property] = value;
         this.dirty = true;
@@ -763,13 +763,18 @@ export default class Builder {
           paramsInFolder[key][1],
           paramsInFolder[key][2],
           paramsInFolder[key][3]
-        );
+        ).name(this.splitAtCaps(key));
         ref.onChange(function(){ this.dirty = true }.bind(this));
         ref.listen();
       }
     }
   }
+
+  splitAtCaps(str) {
+    return str.replace(/([a-z])([A-Z])/g, '$1 $2');
+  }
 } // class
+
 
 var shipBuilder = new Builder(window);
 
