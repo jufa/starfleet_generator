@@ -4,6 +4,7 @@ import { EffectComposer }   from "three/examples/jsm/postprocessing/EffectCompos
 import { RenderPass }       from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass }  from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { OutputPass }  from "three/examples/jsm/postprocessing/OutputPass.js";
+import { generateMaterials } from './materials.js';
 
 // import * as dat from 'dat.gui';
 import * as dat from 'lil-gui';
@@ -15,8 +16,12 @@ import Pylon from './pylon.js';
 import Boom from './boom.js';
 import ships from './ships.js';
 
+
+
 export default class Builder {
+  
   constructor(window) {
+    this.STORAGE_PREFIX = 'STARSHIPGENERATORV01-'; // for localstoage
     this.predefinedShips = ships;
     this.window = window;
     this.SKY_COLOUR = 0x000000;
@@ -31,257 +36,12 @@ export default class Builder {
     this.transitionRate = 0.05;
     this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
-    
-
-    // materials
-    var tex = new THREE.TextureLoader().load( "./images/saucer.png");
-    tex.wrapS = THREE.MirroredRepeatWrapping;
-    tex.wrapT = THREE.MirroredRepeatWrapping;
-    tex.repeat.set( 4, 6 );
-    tex.colorSpace = THREE.SRGBColorSpace;
-
-    var texSaucerEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
-    texSaucerEm.wrapS = THREE.MirroredRepeatWrapping;
-    texSaucerEm.wrapT = THREE.MirroredRepeatWrapping;
-    texSaucerEm.repeat.set( 8, 5 );
-    texSaucerEm.colorSpace = THREE.SRGBColorSpace;
-
-    var texSaucerSp = new THREE.TextureLoader().load( "./images/saucer_sp.png");
-    texSaucerSp.wrapS = THREE.MirroredRepeatWrapping;
-    texSaucerSp.wrapT = THREE.MirroredRepeatWrapping;
-    texSaucerSp.repeat.set( 6, 2 );
-    texSaucerSp.colorSpace = THREE.SRGBColorSpace;
-
-    this.hullMaterial = new THREE.MeshStandardMaterial({
-      color: 0xeeeeef,
-      emissive: 0xeeeeff,
-      side: THREE.DoubleSide,
-      flatShading: false,
-      wireframe: false,
-      map: tex,
-      emissiveMap: texSaucerEm,
-      emissiveIntensity: 0.9,
-      metalnessMap: texSaucerSp,
-      metalness: 0.9,
-      // roughnessMap: tex,
-      roughness: 0.4,
-      // bumpMap:texSaucerEm,
-      // bumpScale: 12,
-    });
-
-    var texBridge = new THREE.TextureLoader().load( "./images/saucer.png");
-    texBridge.wrapS = THREE.MirroredRepeatWrapping;
-    texBridge.wrapT = THREE.MirroredRepeatWrapping;
-    texBridge.repeat.set( 4, 4 );
-    texBridge.colorSpace = THREE.SRGBColorSpace;
-
-    var texBridgeEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
-    texBridgeEm.wrapS = THREE.MirroredRepeatWrapping;
-    texBridgeEm.wrapT = THREE.MirroredRepeatWrapping;
-    texBridgeEm.repeat.set( 2, 6 );
-    texBridgeEm.colorSpace = THREE.SRGBColorSpace;
-
-    var texBridgeSp = new THREE.TextureLoader().load( "./images/saucer_sp.png");
-    texBridgeSp.wrapS = THREE.MirroredRepeatWrapping;
-    texBridgeSp.wrapT = THREE.MirroredRepeatWrapping;
-    texBridgeSp.repeat.set( 4, 4 );
-    texBridgeSp.colorSpace = THREE.SRGBColorSpace;
-
-    this.bridgeMaterial = new THREE.MeshStandardMaterial({
-      color: 0xeeeeef,
-      emissive: 0xeeeeff,
-      side: THREE.DoubleSide,
-      flatShading: false,
-      wireframe: false,
-      map: tex,
-      emissiveMap: texBridgeEm,
-      emissiveIntensity: 0.6,
-      metalnessMap: texBridgeSp,
-      metalness: 1.0,
-      roughnessMap: texBridge,
-      roughness: 0.9,
-    });
-
-    var texNotch = new THREE.TextureLoader().load( "./images/saucer.png");
-    texNotch.wrapS = THREE.MirroredRepeatWrapping;
-    texNotch.wrapT = THREE.MirroredRepeatWrapping;
-    texNotch.repeat.set( 0.15,0.5 );
-    texNotch.colorSpace = THREE.SRGBColorSpace;
-
-    var texNotchEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
-    texNotchEm.wrapS = THREE.MirroredRepeatWrapping;
-    texNotchEm.wrapT = THREE.MirroredRepeatWrapping;
-    texNotchEm.repeat.set( 0.25,0.5 );
-    texNotchEm.colorSpace = THREE.SRGBColorSpace;
-
-    var texNotchSp = new THREE.TextureLoader().load( "./images/saucer_sp.png");
-    texNotchSp.wrapS = THREE.MirroredRepeatWrapping;
-    texNotchSp.wrapT = THREE.MirroredRepeatWrapping;
-    texNotchSp.repeat.set( 0.2,0.5 );
-    texNotchSp.colorSpace = THREE.SRGBColorSpace;
-
-    this.notchMaterial = new THREE.MeshStandardMaterial({
-      color: 0xaaaaaa,
-      emissive: 0xeeeeff,
-      side: THREE.DoubleSide,
-      flatShading: false,
-      wireframe: false,
-      map: texNotch,
-      emissiveMap: texNotchEm,
-      emissiveIntensity: 1.0,
-      metalnessMap: texNotchSp,
-      metalness: 0.5,
-      roughnessMap: texNotchSp,
-      roughness: 1.0,
-    });
 
 
-    var texEng = new THREE.TextureLoader().load( "./images/engineering.png");
-    texEng.wrapS = THREE.MirroredRepeatWrapping;
-    texEng.wrapT = THREE.MirroredRepeatWrapping;
-    texEng.repeat.set( 2, 1 );
+    //prepend user-saved ships:
+    this.predefinedShips = this.getSavedShips().concat(this.predefinedShips);
 
-    var texEngSp = new THREE.TextureLoader().load( "./images/engineering_sp.png");
-    texEngSp.wrapS = THREE.MirroredRepeatWrapping;
-    texEngSp.wrapT = THREE.MirroredRepeatWrapping;
-    texEngSp.repeat.set( 4, 4 );
-
-    var texEngEm = new THREE.TextureLoader().load( "./images/saucer_em.png");
-    texEngEm.wrapS = THREE.MirroredRepeatWrapping;
-    texEngEm.wrapT = THREE.MirroredRepeatWrapping;
-    texEngEm.repeat.set( 4, 2);
-    texEngEm.rotation = Math.PI * 1.0;
-    texEngEm.offset.set(0.0, 0.01);
-    texEngEm.colorSpace = THREE.SRGBColorSpace;
-
-    this.engMaterial = new THREE.MeshStandardMaterial({
-      color: 0xeeeeef,
-      emissive: 0xffffff,
-      emissiveMap: texEngEm,
-      emissiveIntensity: 0.9,
-      side: THREE.DoubleSide,
-      flatShading: false,
-      wireframe: false,
-      map: texEng,
-      metalnessMap: texEngSp,
-      metalness: 0.3,
-      roughnessMap: texEng,
-      roughness: 0.5,
-    });
-
-    var texNeck = new THREE.TextureLoader().load( "./images/engineering.png");
-    texNeck.wrapS = THREE.MirroredRepeatWrapping;
-    texNeck.wrapT = THREE.MirroredRepeatWrapping;
-    texNeck.repeat.set( 2, 0.5 );
-    
-
-    var texNeckSp = new THREE.TextureLoader().load( "./images/engineering_sp.png");
-    texNeckSp.wrapS = THREE.MirroredRepeatWrapping;
-    texNeckSp.wrapT = THREE.MirroredRepeatWrapping;
-    texNeckSp.repeat.set( 2, 0.5 );
-    
-
-    var texNeckNm = new THREE.TextureLoader().load( "./images/neck2_nm.png");
-
-    // var texNeckEm = new THREE.TextureLoader().load( "./images/neck2_em.png");
-    // texNeckEm.wrapS = THREE.MirroredRepeatWrapping;
-    // texNeckEm.wrapT = THREE.MirroredRepeatWrapping;
-    // texNeckEm.offset.set(0, 0);
-    // texNeckEm.repeat.set( 2, 2 );
-    // texNeckEm.colorSpace = THREE.SRGBColorSpace;
-
-    this.neckMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      emissive: 0x000000,
-      // emissiveMap: texNeckEm,
-      emissiveIntensity: 0.5,
-      side: THREE.DoubleSide,
-      flatShading: false,
-      wireframe: false,
-      map: texNeck,
-      metalnessMap: texNeckSp,
-      metalness: 0.6,
-      // roughnessMap: texNeck,
-      roughness: 0.5,
-      normalMap: texNeckNm,
-      normalScale: new THREE.Vector2(1, 1),
-    });
-
-    const rotation = Math.PI * 0.5;
-    var texPylon = new THREE.TextureLoader().load( "./images/pylon.png");
-    texPylon.wrapS = THREE.MirroredRepeatWrapping;
-    texPylon.wrapT = THREE.MirroredRepeatWrapping;
-    texPylon.rotation = rotation;
-    texPylon.repeat.set( 2, 2);
-    texPylon.center.set(0.0, 0.0);
-
-    var texPylonSp = new THREE.TextureLoader().load( "./images/pylon_sp.png");
-    texPylonSp.wrapS = THREE.MirroredRepeatWrapping;
-    texPylonSp.wrapT = THREE.MirroredRepeatWrapping;
-    texPylonSp.rotation = rotation;
-    texPylonSp.repeat.set( 4, 8 );
-    texPylonSp.center.set(0.0, 0.0);
-
-    // var texPylonEm = new THREE.TextureLoader().load( "./images/pylon_em.png");
-    // texPylonEm.wrapS = THREE.MirroredRepeatWrapping;
-    // texPylonEm.wrapT = THREE.MirroredRepeatWrapping;
-    // texPylonEm.rotation = rotation;
-    // texPylonEm.repeat.set(1, 1);
-    // texPylonEm.offset.set(0.05, 0.0);
-    // texPylonEm.colorSpace = THREE.SRGBColorSpace
-
-    this.pylonMaterial = new THREE.MeshStandardMaterial({
-      color: 0xeeeeef,
-      // emissive: 0xffffff,
-      side: THREE.DoubleSide,
-      // flatShading: true,
-      // wireframe: true,
-      wireframeLineWidth: 10,
-      map: texPylon,
-      metalnessMap: texPylonSp,
-      metalness: 1.0,
-      // emissiveMap: texPylonEm,
-      // emissiveIntensity: 0.2,
-      // roughnessMap: texPylon,
-      roughness: 0.4,
-    });
-    const nacelleDefaultRotation = Math.PI * 0.0;
-    var texNacelle = new THREE.TextureLoader().load( "./images/nacelle.png");
-    texNacelle.wrapS = THREE.MirroredRepeatWrapping;
-    texNacelle.wrapT = THREE.MirroredRepeatWrapping;
-    texNacelle.repeat.set( 2, 1 );
-    texNacelle.rotation = nacelleDefaultRotation;
-    // texNacelle.center.set(0.0, 0.5); // Set rotation center to the middle of the texture
-    
-    var texNacelleEm = new THREE.TextureLoader().load( "./images/nacelle_em.png");
-    texNacelleEm.wrapS = THREE.MirroredRepeatWrapping;
-    texNacelleEm.wrapT = THREE.MirroredRepeatWrapping;
-    texNacelleEm.repeat.set( 2, 1 );
-    texNacelleEm.rotation = nacelleDefaultRotation;
-    texNacelleEm.colorSpace = THREE.SRGBColorSpace;
-
-    var texNacelleSp = new THREE.TextureLoader().load( "./images/nacelle_sp.png");
-    texNacelleSp.wrapS = THREE.MirroredRepeatWrapping;
-    texNacelleSp.wrapT = THREE.MirroredRepeatWrapping;
-    texNacelleSp.repeat.set( 1, 3 );
-    texNacelleSp.rotation = nacelleDefaultRotation;
-
-    this.nacelleMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      emissive: 0xffffff,
-      side: THREE.DoubleSide,
-      flatShading: false,
-      wireframe: false,
-      map: texNacelle,
-      // roughnessMap: texNacelle,
-      emissiveMap: texNacelleEm,
-      emissiveIntensity: 0.7,
-      metalnessMap: texNacelleSp,
-      // bumpMap: texNacelleEm,
-      // bumpScale: -1.0,
-      metalness: 0.8,
-      roughness: 0.65,
-    });
+    generateMaterials(this);
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -359,7 +119,7 @@ export default class Builder {
     this.init();
     this.initControls();
     this.build();
-    const startIndex = Number.parseInt(Math.random() * (this.predefinedShips.length-1));
+    const startIndex = 0; // Number.parseInt(Math.random() * (this.predefinedShips.length-1));
     this.setPredefinedShip(this.predefinedShips[startIndex].name);
   }
 
@@ -711,30 +471,70 @@ export default class Builder {
     this.composer.render();
   }
 
-  paramDump() {
+  getParamsRoundedJSON() {
     var roundedParams = Object.assign({}, this.controlParams);
     for (var param in roundedParams) {
       if ( typeof roundedParams[param] === "number" ) {
         roundedParams[param] = parseFloat( parseFloat(roundedParams[param]).toFixed(2) );
       }
     }
-    let pretty = JSON.stringify(roundedParams, null, 2)
-    return pretty;
-    console.log(pretty);
-    alert("params output to console (and clipboard for supported browsers)");
-    navigator.permissions.query({name: "clipboard-write"}).then(result => {
-      if (result.state == "granted" || result.state == "prompt") {
-        navigator.clipboard.writeText(pretty);
-      }
-    });
+    return roundedParams;
   }
+
+  generateChecksum(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash >>> 0; // Return unsigned
+  }
+
+  paramDump() {
+    var roundedParams = this.getParamsRoundedJSON();
+    let pretty = JSON.stringify(roundedParams, null, 2)
+    // const checksum = generateChecksum
+    return pretty;
+    // console.log(pretty);
+    // alert("params output to console (and clipboard for supported browsers)");
+    // navigator.permissions.query({name: "clipboard-write"}).then(result => {
+    //   if (result.state == "granted" || result.state == "prompt") {
+    //     navigator.clipboard.writeText(pretty);
+    //   }
+    // });
+  }
+
+  getSavedShipNames() {
+    return Object.keys(localStorage)
+      .filter(k => k.startsWith(this.STORAGE_PREFIX))
+      .map(k => k.replace(this.STORAGE_PREFIX, ''));
+  }
+
+  getSavedShips() {
+    let userDefinedShips = [];
+    const userDefinedShipNames = Object.keys(localStorage)
+      .filter(k => k.startsWith(this.STORAGE_PREFIX));
+    
+    for (let name of userDefinedShipNames) {
+      let data = localStorage.getItem(name);
+      const parsed = JSON.parse(data);
+      userDefinedShips.push(parsed);
+    }
+    return userDefinedShips;
+  }
+
 
   takeScreenshot() {
     const timeDateStamp = Date.now();
     var a = document.createElement('a');
     a.href = this.renderer.domElement.toDataURL().replace("image/png", "image/octet-stream");
     a.download = `${this.currentShip.name} ${timeDateStamp}.png`
-    a.click();
+    if (/(iPad|iPhone|iPod)/.test(navigator.userAgent)) {
+      window.open(dataUrl, '_blank');
+    } else {
+      a.click();
+    }
   }
 
   setPredefinedShip(shipName) {
@@ -757,6 +557,33 @@ export default class Builder {
     }
   }
 
+  saveShipConfig() {
+    const newName = prompt("Enter ship name");
+    if (newName === null || newName === "" ) {
+      alert("Ship name cannot be empty");
+      return;
+    }
+    if (this.predefinedShips.map( (ship) => ship.name ).includes(newName) &&
+        !this.getSavedShipNames().includes(newName)) {
+      alert("Ship name already exists in predefined ships - enter a new name, or an existing saved ship name to overwrite");
+      return;
+    }
+    const config = this.getParamsRoundedJSON();
+    config.name = newName;
+    const key = this.STORAGE_PREFIX + config.name;
+    localStorage.setItem(key, JSON.stringify(config));
+    const saved = localStorage.getItem(key);
+    alert(`Saved "${config.name}" to local browser storage`);
+    window.location.reload(); // simple way of reinitializing the UI
+  }
+
+  loadSavedShip(name){
+    // console.log("loadSavedShip: ", name);
+    const key = this.STORAGE_PREFIX + name;
+    const config = localStorage.getItem(key);
+    return config;
+  }
+
   nextPredefinedShip() {
     let index = this.currentShipIndex();
     index = (index + 1) % this.predefinedShips.length;
@@ -777,7 +604,10 @@ export default class Builder {
   }
 
   shipParams(shipName) {
-    return this.predefinedShips.find(function (ship) { return ship.name == shipName; });
+    // console.log(shipName);
+    const params = this.predefinedShips.find(function (ship) { return ship.name == shipName; });
+    // console.log(params);
+    return params;
   }
 
   updatePredifinedShipTransitionAnimation() {
@@ -859,32 +689,49 @@ export default class Builder {
     window.addEventListener('mouseup', showOnEnd);
     
     // utils folder
-    var utilsFolder = gui.addFolder('utils');
+    var utilsFolder = gui.addFolder('utilities');
 
     // screenshot button:
-    utilsFolder.add({ screenshot: this.takeScreenshot.bind(this) }, 'screenshot');
+    utilsFolder.add({ save_screen_shot: this.takeScreenshot.bind(this) }, 'save_screen_shot').name('SAVE SCREEN SHOT');
 
     // export button:
     // utilsFolder.add({ copy_ship_params: this.paramDump.bind(this) }, 'copy_ship_params');
 
     utilsFolder.add({ 
       copy_ship_params: () => {
-        const text = this.paramDump();  // or however you get the text
+        const text = this.paramDump();
         console.log("Ship Parameters:\n\n");
         console.log(text);
         navigator.clipboard.writeText(text)
           .then(() => alert('Ship params copied to clipboard (for supported browsers) and printed in the console'))
           .catch(err => console.error('Copy to clipboard failed, but still printed to console.', err));
       }
-    }, 'copy_ship_params');
+    }, 'copy_ship_params').name('COPY SHIP PARAMETERS');
+
+    utilsFolder.add({ paste_ship: () => {
+      const text = prompt("Paste ship parameters here:");
+      try {
+        const data = JSON.parse(text);
+        console.log("Parsed object:", data);
+        this.predefinedShips.unshift(data);
+        this.shipSelector.setValue(this.predefinedShips[0].name);
+      } catch (error) {
+        console.error("Invalid JSON:", error.message);
+        alert("The input is not valid JSON.");
+        return null;
+      }
+    } }, 'paste_ship').name('PASTE SHIP PARAMETERS');
+
+
+    utilsFolder.add({ save_ship: this.saveShipConfig.bind(this) }, 'save_ship').name('SAVE SHIP');
 
     // rescale button:
-    utilsFolder.add({ scale_up: this.rescale.bind(this, 1) }, 'scale_up');
-    utilsFolder.add({ scale_down: this.rescale.bind(this, -1) }, 'scale_down');
+    utilsFolder.add({ scale_up: this.rescale.bind(this, 1) }, 'scale_up').name('SCALE UP');
+    utilsFolder.add({ scale_down: this.rescale.bind(this, -1) }, 'scale_down').name('SCALE DOWN');
 
     // predefined ships:
     this.currentShip.name = this.predefinedShips[0].name;
-    this.shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) )
+    this.shipSelector = gui.add( this.currentShip, 'name', this.predefinedShips.map( (ship) => ship.name ) );
 
     this.shipSelector.onChange(
       function(newShipName) {
