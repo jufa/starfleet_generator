@@ -10,7 +10,13 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: 'index.html'
-    })
+    }),
+    // Terms page
+    new HtmlWebpackPlugin({
+      template: 'terms.html',
+      filename: 'terms.html', // Output in dist/terms.html
+      inject: false,
+    }),
   ],
   output: {
     filename: 'bundle.js',
