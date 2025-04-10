@@ -117,6 +117,15 @@ export default class Builder {
     };
 
     this.init();
+    if (!this.getConsentStatus()) {
+      const consentSelection = prompt("This site uses local storage to save your ship designs and uses traffic analytics. Click [Cancel] if you do not consent", "yes");
+      if (consentSelection !== "yes") {
+        window.location.href = "/terms.html";
+      } else {
+        this.setConsentStatus(true);
+      }
+    }
+
     this.initControls();
     this.build();
     const startIndex = 0; // Number.parseInt(Math.random() * (this.predefinedShips.length-1));
@@ -503,6 +512,20 @@ export default class Builder {
     //     navigator.clipboard.writeText(pretty);
     //   }
     // });
+  }
+
+  getConsentStatus() {
+    const consent =  localStorage[`${this.STORAGE_PREFIX}_consent`]
+    console.log("builder:getConsentStatus: ", consent);
+    return consent ? true : false;
+  }
+
+  setConsentStatus(value) {
+    if (value) {
+      localStorage.setItem(`${this.STORAGE_PREFIX}_consent`, true);
+    } else {
+      localStorage.removeItem(`${this.STORAGE_PREFIX}_consent`);
+    }
   }
 
   getSavedShipNames() {
