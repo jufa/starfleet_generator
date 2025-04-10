@@ -530,14 +530,14 @@ export default class Builder {
 
   getSavedShipNames() {
     return Object.keys(localStorage)
-      .filter(k => k.startsWith(this.STORAGE_PREFIX))
+      .filter(k => k.startsWith(this.STORAGE_PREFIX) && k !== `${this.STORAGE_PREFIX}_consent`)
       .map(k => k.replace(this.STORAGE_PREFIX, ''));
   }
 
   getSavedShips() {
     let userDefinedShips = [];
     const userDefinedShipNames = Object.keys(localStorage)
-      .filter(k => k.startsWith(this.STORAGE_PREFIX));
+      .filter(k => k.startsWith(this.STORAGE_PREFIX) && k !== `${this.STORAGE_PREFIX}_consent`);
     
     for (let name of userDefinedShipNames) {
       let data = localStorage.getItem(name);
