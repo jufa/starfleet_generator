@@ -56,7 +56,8 @@ export default class Engineering extends HullComponent {
     length = 1.0,
     width = 50.0,
     widthRatio = 1.0,
-    skew = 0.0
+    skew = 0.0,
+    segments = 32,
   }) {
 
     this.clear();
@@ -107,10 +108,10 @@ export default class Engineering extends HullComponent {
       new THREE.Vector2( 0.0, deflectorOuterEdge.y + 0.9 )
     );
 
-    this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, 40);
+    this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, segments);
     this.engineeringGeometry.scale(this.widthRatio, 1.0, 1.0);
 
-    this.deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, 36);
+    this.deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, segments);
     this.deflectorGeometry.scale(this.widthRatio, 1.0, 1.0);
 
     const matrix = new THREE.Matrix4();

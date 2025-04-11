@@ -16,8 +16,6 @@ import Pylon from './pylon.js';
 import Boom from './boom.js';
 import ships from './ships.js';
 
-
-
 export default class Builder {
   
   constructor(window) {
@@ -53,12 +51,15 @@ export default class Builder {
         thickness: [4, 1, 10, 0.01],
         widthRatio: [1, 0.01, 10, 0.01],
         pointiness: [0.0, -1.0, 1.5, 0.01],
+        segments: [64, 3, 64, 1],
         bridgeThickness:  [0.8, 0.5, 9, 0.01],
         bridgeRadius: [0.1, 0.01, 1.2, 0.01],
         bridgeWidthRatio: [1, 0.01, 2, 0.01],
         bridgeZ: [-3.0, -1, 3, 0.01],
         bridgeY: [0, -1, 1, 0.01],
+        bridgeSegments: [64, 3, 64, 1],
         notchAngle: [0, 0, Math.PI, 0.01],
+        
       },
       neck: {
         primaryForeOffset: [0.3, 0, 1, 0.01],
@@ -77,6 +78,7 @@ export default class Builder {
         radius: [1, 0, 10, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
         skew: [0, -5, 5, 0.01],
+        segments: [32, 3, 32, 1],
       },
       nacelle: {
         y: [40, -30, 50, 0.01],
@@ -86,12 +88,14 @@ export default class Builder {
         radius: [1, 0.2, 12, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
         rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
+        // segments: [32, 3, 32, 1],
+        // skew: [0, -1.5, 1.5, 0.01],
       },
       pylon: {
-        nacelleForeOffset: [0.3, 0, 1, 0.01],
-        nacelleAftOffset: [0.3, 0, 1, 0.01],
-        engineeringForeOffset: [0.3, 0, 1, 0.01],
-        engineeringAftOffset: [0.3, 0, 1, 0.01],
+        nacelleForeOffset: [0.3, -0.3, 1.5, 0.01],
+        nacelleAftOffset: [0.3, -0.3, 1.5, 0.01],
+        engineeringForeOffset: [-0.3, -0.3, 1.5, 0.01],
+        engineeringAftOffset: [-0.3, -0.3, 1.5, 0.01],
         midPointOffset: [0.01, 0.01, 1.5, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
@@ -103,14 +107,16 @@ export default class Builder {
         radius: [1, 0.2, 12, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
         rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
+        // segments: [32, 3, 32, 1],
+        // skew: [0, -1.5, 1.5, 0.01],
       },
       boomLower: {
       },
       pylonLower: {
-        nacelleForeOffset: [0.3, 0, 1, 0.01],
-        nacelleAftOffset: [0.3, 0, 1, 0.01],
-        engineeringForeOffset: [0.3, 0, 1, 0.01],
-        engineeringAftOffset: [0.3, 0, 1, 0.01],
+        nacelleForeOffset: [0.3, -0.3, 1.5, 0.01],
+        nacelleAftOffset: [0.3, -0.3, 1.5, 0.01],
+        engineeringForeOffset: [0.3, -0.3, 1.5, 0.01],
+        engineeringAftOffset: [0.3, -0.3, 1.5, 0.01],
         midPointOffset: [0.01, 0.01, 1.5, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
@@ -251,6 +257,8 @@ export default class Builder {
       bridgeZ: controlParams.primary_bridgeZ,
       bridgeY: controlParams.primary_bridgeY,
       notchAngle: controlParams.primary_notchAngle,
+      // segments: controlParams.primary_segments,
+      // bridgeSegments: controlParams.primary_bridgeSegments,
     });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
 
@@ -261,6 +269,8 @@ export default class Builder {
     let width = controlParams.nacelle_radius;
     let widthRatio = controlParams.nacelle_widthRatio;
     let rotation = controlParams.nacelle_rotation;
+    let segments = controlParams.nacelle_segments || 32;
+    let skew = controlParams.nacelle_skew || 0;
 
     let separation2 = controlParams.nacelleLower_x * 2.0;
     let aft2 = controlParams.nacelleLower_y;
@@ -269,29 +279,31 @@ export default class Builder {
     let width2 = controlParams.nacelleLower_radius;
     let widthRatio2 = controlParams.nacelleLower_widthRatio;
     let rotation2 = controlParams.nacelleLower_rotation;
+    let segments2 = controlParams.nacelleLower_segments || 32;
+    let skew2 = controlParams.nacelleLower_skew || 0;
 
     this.nacelleUpperPort.group.visible = this.controlParams.nacelle_toggle;
-    this.nacelleUpperPort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation});
+    this.nacelleUpperPort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation, segments: segments, skew: skew});
     this.nacelleUpperPort.group.position.set(separation, -aft-length, -height);
 
     this.nacelleUpperStarboard.group.visible = this.controlParams.nacelle_toggle;
-    this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation });
+    this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation, segments: segments, skew: skew});
     this.nacelleUpperStarboard.group.position.set(-separation, -aft-length, -height);
     
     this.nacelleLowerPort.group.visible = this.controlParams.nacelleLower_toggle;
-    this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});
+    this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2});
     this.nacelleLowerPort.group.position.set(separation2, -aft2-length2, height2);
 
     this.nacelleLowerStarboard.group.visible = this.controlParams.nacelleLower_toggle;
-    this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
+    this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2});
     this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
 
     this.boomLowerPort.group.visible = this.controlParams.boomLower_toggle;
-    this.boomLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2});
+    this.boomLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2 });
     this.boomLowerPort.group.position.set(separation2, -aft2-length2, height2);
 
     this.boomLowerStarboard.group.visible = this.controlParams.boomLower_toggle;
-    this.boomLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2 });
+    this.boomLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2 });
     this.boomLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
 
 
@@ -301,7 +313,8 @@ export default class Builder {
       length: controlParams.engineering_length,
       width: controlParams.engineering_radius,
       widthRatio: controlParams.engineering_widthRatio,
-      skew: controlParams.engineering_skew
+      skew: controlParams.engineering_skew,
+      // segments: controlParams.engineering_segments,
     });
     this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
 
@@ -490,28 +503,10 @@ export default class Builder {
     return roundedParams;
   }
 
-  generateChecksum(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash |= 0; // Convert to 32bit integer
-    }
-    return hash >>> 0; // Return unsigned
-  }
-
   paramDump() {
     var roundedParams = this.getParamsRoundedJSON();
     let pretty = JSON.stringify(roundedParams, null, 2)
-    // const checksum = generateChecksum
     return pretty;
-    // console.log(pretty);
-    // alert("params output to console (and clipboard for supported browsers)");
-    // navigator.permissions.query({name: "clipboard-write"}).then(result => {
-    //   if (result.state == "granted" || result.state == "prompt") {
-    //     navigator.clipboard.writeText(pretty);
-    //   }
-    // });
   }
 
   getConsentStatus() {
@@ -547,7 +542,6 @@ export default class Builder {
     userDefinedShips = userDefinedShips.sort( (a,b) => b.saveDate - a.saveDate );
     return userDefinedShips;
   }
-
 
   takeScreenshot() {
     const timeDateStamp = Date.now();

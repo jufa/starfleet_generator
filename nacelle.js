@@ -52,14 +52,13 @@ export default class Nacelle extends HullComponent {
       // bumpScale: 1.0,
       metalness: 0.6,
       roughness: 0.5,
-      
     });
 
     return this;
   }
 
-  update({ length, width, widthRatio, rotation=0 }) {
-
+  update({ length, width, widthRatio, rotation=0, segments=32, skew=0 }) {
+    
     this.clear();
 
     // nacelle body
@@ -104,21 +103,31 @@ export default class Nacelle extends HullComponent {
     }
     
 
-    this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, 36);
+    this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, segments, Math.PI*0.25);
     this.nacelleGeometry.scale(widthRatio, 1.0, 1.0);
     this.nacelleGeometry.rotateY(rotation);
 
-    this.bussardGeometry = new THREE.LatheGeometry(bussardPoints, 36);
+    this.bussardGeometry = new THREE.LatheGeometry(bussardPoints, segments, Math.PI*0.25);
     this.bussardGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardGeometry.rotateY(rotation);
 
-    this.bussardInnerGeometry = new THREE.LatheGeometry(bussardInnerPoints, 16);
+    this.bussardInnerGeometry = new THREE.LatheGeometry(bussardInnerPoints, segments, Math.PI*0.25);
     this.bussardInnerGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardInnerGeometry.rotateY(rotation);
 
     this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, this.material.clone() );
     this.bussardMesh = new THREE.Mesh( this.bussardGeometry, this.bussardMaterial );
     this.bussardInnerMesh = new THREE.Mesh( this.bussardInnerGeometry, this.bussardInnerMaterial );
+
+    const Szy = skew;
+    const matrix = new THREE.Matrix4();
+    matrix.set(   1,     0,    0,  0,
+                  0,     1,  Szy,  0,
+                  0,     0,   1,   0,
+                  0,     0,   0,   1  );
+    this.nacelleGeometry.applyMatrix4( matrix );
+    this.bussardGeometry.applyMatrix4( matrix );
+    this.bussardInnerGeometry.applyMatrix4( matrix );
 
     this.group.add( this.nacelleMesh );
     this.group.add( this.bussardMesh );
@@ -147,6 +156,7 @@ export default class Nacelle extends HullComponent {
     if (this.nacelleGeometry['dispose']) {
       this.nacelleGeometry.dispose();
       this.bussardGeometry.dispose();
+      this.bussardInnerGeometry.dispose();
       for (var i = this.group.children.length - 1; i >= 0; i--) {
         this.group.remove(this.group.children[i]);
       }

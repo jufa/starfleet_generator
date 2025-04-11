@@ -29,7 +29,9 @@ export default class Primary extends HullComponent{
     bridgeZ,
     bridgeY,
     pointiness, // 0.0-2.0
-    notchAngle,
+    notchAngle=0,
+    segments=64,
+    bridgeSegments=64,
   }) {
 
     this.clear();
@@ -61,7 +63,7 @@ export default class Primary extends HullComponent{
     // bridgePoints[i-1].y = bridgePoints[i-2].y;
 
     const foreExclusionAngle = notchAngle;
-    this.geometry = new THREE.LatheGeometry(points, 64, Math.PI + foreExclusionAngle, 2.0 * ( Math.PI - foreExclusionAngle) );
+    this.geometry = new THREE.LatheGeometry(points, segments, Math.PI + foreExclusionAngle, 2.0 * ( Math.PI - foreExclusionAngle) );
     this.geometry.scale(widthRatio, 1.0, 1.0);
     this.computeBoundingBox(this.geometry);
     const lengthZ = this.geometry.boundingBox.max.z - this.geometry.boundingBox.min.z;
@@ -75,7 +77,7 @@ export default class Primary extends HullComponent{
     //               0,     0,   0,   1  );
     // this.geometry.applyMatrix4( matrix );
 
-    this.bridgeGeometry = new THREE.LatheGeometry(bridgePoints, 64, Math.PI, 2.0 * Math.PI );
+    this.bridgeGeometry = new THREE.LatheGeometry(bridgePoints, bridgeSegments, Math.PI, 2.0 * Math.PI );
     this.bridgeGeometry.scale(bridgeWidthRatio, 1.0, 1.0);
     this.bridgeGeometry.scale(widthRatio * bridgeWidthRatio, 1.0, 1.0);
     this.computeBoundingBox(this.bridgeGeometry);
