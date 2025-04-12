@@ -78,7 +78,7 @@ export default class Builder {
         radius: [1, 0, 10, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
         skew: [0, -5, 5, 0.01],
-        segments: [32, 3, 32, 1],
+        // segments: [32, 3, 32, 1],
       },
       nacelle: {
         y: [40, -30, 50, 0.01],
