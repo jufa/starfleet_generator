@@ -140,7 +140,7 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 1200;
+    const intensity = 1800;
     const dist = 40;
     lights[ 0 ] = new THREE.PointLight( 0xddddff, intensity*1, 0 );
     lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity*1, 0 ); //bottom
@@ -446,9 +446,9 @@ export default class Builder {
     // Add UnrealBloomPass
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.7, // Strength
+      0.8, // Strength
       0.0, // Radius
-      0.35 // Threshold
+      0.45 // Threshold
     );
     this.composer.addPass(bloomPass);
 

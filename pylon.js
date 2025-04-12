@@ -101,25 +101,44 @@ export default class Pylon extends HullComponent {
       new THREE.Vector3(midCenterX + thicknessX_nm, midAft, midCenterZ - thicknessZ_nm),
     ];
 
-    const uvs = new Float32Array(
-    [
-      0.5,0.4,          // 0
-      0.5,0,            // 1
-      0,0.4,            // 2
-      0,0,              // 3
-      0.5,0.5,          // 4
-      0.5,0.9,          // 5
-      0,0.9,            // 6
-      0,0.5,            // 7
-      0.9,0.4,          // 8
-      0.9,0,            // 9
-      0.5,0.4,          // 10
-      0.5,0,            // 11
-      0.4,1,            // 12
-      0,1,              // 13
-      0.5,0.5,          // 14
-      0.5,1,          // 15
-    ]);
+      const uvs = new Float32Array(
+      [
+        // 0.5,1.0,          // 0
+        // 0.5,1,            // 1
+        // 0,0.5,            // 2
+        // 0,0,              // 3
+        // 0.5,0.5,          // 4
+        // 0.5,1.0,          // 5
+        // 0,1.0,            // 6
+        // 0,0.5,            // 7
+        // 1,0.5,            // 8
+        // 1,0,              // 9
+        // 0.5,0.5,          // 10
+        // 0.5,1,            // 11
+        // 0.5,1,            // 12
+        // 0,1,              // 13
+        // 0.5,0.5,          // 14
+        // 0.5,1,            // 15
+        0.0,0.0,         
+        1.0,0.0,  
+        0.0,1.0,         
+        1.0,1.0,
+        0.0,0.0,         
+        1.0,0.0,  
+        0.0,1.0,         
+        1.0,1.0,
+        0.0,0.0,         
+        1.0,0.0,  
+        0.0,1.0,         
+        1.0,1.0,
+        0.0,0.0,         
+        1.0,0.0,  
+        0.0,1.0,         
+        1.0,1.0, 
+        
+        // 0
+
+      ]);
 
 
     this.vertices[0] = this.vertices[10].clone();
@@ -149,26 +168,26 @@ export default class Pylon extends HullComponent {
       6, 0, 2,
       2, 3, 6,
       3, 7, 6,
-      // 0, 4, 1, engineering box, mid endplate A
-      // 4, 5, 1, engineering box, mid endplate B
+      0, 4, 1, // engineering box, mid endplate A
+      4, 5, 1, // engineering box, mid endplate B
       8, 9, 10,
       10, 9, 11,
       13, 11, 9,
       11, 13, 15,
+      13, 12, 14,
       14, 15, 13,
-      12, 14, 13,
       14, 12, 8,
       14, 8, 10,
       8, 12, 9,
       12, 13, 9,
-      // 10, 11, 14, // nacelle box, mid endplate A
-      // 11, 15, 14, // nacelle box, mid endplate B
+      10, 11, 14, // nacelle box, mid endplate A
+      11, 15, 14, // nacelle box, mid endplate B
     ];
 
     // Set the position attribute in the BufferGeometry
     
     this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    this.geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+    this.geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
     
 
     // Set the index attribute in the BufferGeometry

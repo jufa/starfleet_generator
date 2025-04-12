@@ -158,7 +158,7 @@ export default class Neck extends HullComponent {
     this.geometry.setIndex(indices);
 
     this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    this.geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+    this.geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
     this.geometry.computeVertexNormals(); // Needed for shading
 
     // const iterations = 2;

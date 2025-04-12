@@ -174,20 +174,23 @@ export function generateMaterials(context) {
     normalScale: new THREE.Vector2(1, 1),
   });
 
-  const rotation = Math.PI * 0.5;
+  const rotation = - Math.PI * 1.0;
   var texPylon = new THREE.TextureLoader().load( "./images/pylon.png");
+  // var texPylon = new THREE.TextureLoader().load( "./images/uv_grid_opengl.jpg");
   texPylon.wrapS = THREE.MirroredRepeatWrapping;
   texPylon.wrapT = THREE.MirroredRepeatWrapping;
   texPylon.rotation = rotation;
-  texPylon.repeat.set( 2, 2);
-  texPylon.center.set(0.0, 0.0);
+  texPylon.repeat.set( -0.5, 0.5);
+  texPylon.offset.set( -1, -1);
+  // texPylon.center.set(0.0, 0.0);
 
   var texPylonSp = new THREE.TextureLoader().load( "./images/pylon_sp.png");
   texPylonSp.wrapS = THREE.MirroredRepeatWrapping;
   texPylonSp.wrapT = THREE.MirroredRepeatWrapping;
   texPylonSp.rotation = rotation;
-  texPylonSp.repeat.set( 4, 8 );
-  texPylonSp.center.set(0.0, 0.0);
+  texPylonSp.repeat.set( 1.0, 0.5);
+  // texPylonSp.offset.set( -0.5, -0.5);
+  // texPylonSp.center.set(0.0, 0.0);
 
   // var texPylonEm = new THREE.TextureLoader().load( "./images/pylon_em.png");
   // texPylonEm.wrapS = THREE.MirroredRepeatWrapping;
