@@ -103,15 +103,15 @@ export default class Nacelle extends HullComponent {
     }
     
 
-    this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, segments, Math.PI*0.25);
+    this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, segments, Math.PI*0);
     this.nacelleGeometry.scale(widthRatio, 1.0, 1.0);
     this.nacelleGeometry.rotateY(rotation);
 
-    this.bussardGeometry = new THREE.LatheGeometry(bussardPoints, segments, Math.PI*0.25);
+    this.bussardGeometry = new THREE.LatheGeometry(bussardPoints, segments, Math.PI*0);
     this.bussardGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardGeometry.rotateY(rotation);
 
-    this.bussardInnerGeometry = new THREE.LatheGeometry(bussardInnerPoints, segments, Math.PI*0.25);
+    this.bussardInnerGeometry = new THREE.LatheGeometry(bussardInnerPoints, segments, Math.PI*0);
     this.bussardInnerGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardInnerGeometry.rotateY(rotation);
 
