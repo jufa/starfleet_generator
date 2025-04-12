@@ -167,11 +167,11 @@ export function generateMaterials(context) {
     wireframe: false,
     map: texNeck,
     metalnessMap: texNeckSp,
-    metalness: 0.6,
+    metalness: 0.4,
     // roughnessMap: texNeck,
     roughness: 0.5,
-    normalMap: texNeckNm,
-    normalScale: new THREE.Vector2(1, 1),
+    // normalMap: texNeckNm,
+    // normalScale: new THREE.Vector2(0.5, 0.5),
   });
 
   const rotation = - Math.PI * 1.0;

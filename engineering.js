@@ -58,6 +58,8 @@ export default class Engineering extends HullComponent {
     widthRatio = 1.0,
     skew = 0.0,
     segments = 32,
+    undercut = 0.0,
+    undercutStart = 0.0,
   }) {
 
     this.clear();
@@ -71,7 +73,7 @@ export default class Engineering extends HullComponent {
     // engineering hull
     var engineeringPoints = [new THREE.Vector2(0, 0)];
     var engineeringPointCount = 10;
-    for ( var i = 0; i <= 10; i ++ ) {
+    for ( var i = 0; i <= engineeringPointCount; i ++ ) {
       engineeringPoints.push(
         new THREE.Vector2(
           Math.sin( i / engineeringPointCount * Math.PI * 0.65 + 0.35) * this.width,
@@ -110,6 +112,28 @@ export default class Engineering extends HullComponent {
 
     this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, segments);
     this.engineeringGeometry.scale(this.widthRatio, 1.0, 1.0);
+
+    // undercut cargo doors:
+    const positions = this.engineeringGeometry.attributes.position.array;
+    for (let i = 0; i < positions.length; i += 3) {
+      let y = positions[i + 1]; // Get Y value
+      let z = positions[i + 2]; // Get Z value
+      let zNormalized = z / this.width;
+      let yNormalized = y / this.length;
+      let compression = 1.0;
+      if (zNormalized >= 0.0 && yNormalized < (1.0 - undercutStart)) {
+        compression = (1.0 - undercut);
+      }
+      // let compression = (yNormalized > (1.0 - undercutStart) || zNormalized <= 0.0) ? 1.0 : (1.0 - undercut);
+      let newZ = z * compression; // Stretch along the Z-axis
+      positions[i + 2] = newZ; // Update Z position
+    }
+    
+    this.engineeringGeometry.attributes.position.needsUpdate = true;
+
+
+
+
 
     this.deflectorGeometry = new THREE.LatheGeometry(deflectorPoints, segments);
     this.deflectorGeometry.scale(this.widthRatio, 1.0, 1.0);

@@ -79,6 +79,8 @@ export default class Builder {
         widthRatio: [1, 0.1, 10, 0.01],
         skew: [0, -5, 5, 0.01],
         // segments: [32, 3, 32, 1],
+        undercut: [0, 0, 1.0, 0.01],
+        undercutStart: [0.7, 0, 1.0, 0.01],
       },
       nacelle: {
         y: [40, -30, 50, 0.01],
@@ -314,7 +316,9 @@ export default class Builder {
       width: controlParams.engineering_radius,
       widthRatio: controlParams.engineering_widthRatio,
       skew: controlParams.engineering_skew,
-      // segments: controlParams.engineering_segments,
+      segments: 36, //controlParams.engineering_segments,
+      undercut: controlParams.engineering_undercut,
+      undercutStart: controlParams.engineering_undercutStart,
     });
     this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
 
