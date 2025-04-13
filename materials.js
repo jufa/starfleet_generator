@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
 export function generateMaterials(context) {
+  const roughness = 0.5;
   var tex = new THREE.TextureLoader().load( "./images/saucer.png");
   tex.wrapS = THREE.MirroredRepeatWrapping;
   tex.wrapT = THREE.MirroredRepeatWrapping;
@@ -31,7 +32,7 @@ export function generateMaterials(context) {
     metalnessMap: texSaucerSp,
     metalness: 0.9,
     // roughnessMap: tex,
-    roughness: 0.4,
+    roughness: roughness,
     // bumpMap:texSaucerEm,
     // bumpScale: 12,
   });
@@ -65,8 +66,8 @@ export function generateMaterials(context) {
     emissiveIntensity: 0.6,
     metalnessMap: texBridgeSp,
     metalness: 1.0,
-    roughnessMap: texBridge,
-    roughness: 0.9,
+    // roughnessMap: texBridge,
+    roughness: roughness,
   });
 
   var texNotch = new THREE.TextureLoader().load( "./images/saucer.png");
@@ -98,8 +99,8 @@ export function generateMaterials(context) {
     emissiveIntensity: 1.0,
     metalnessMap: texNotchSp,
     metalness: 0.5,
-    roughnessMap: texNotchSp,
-    roughness: 1.0,
+    // roughnessMap: texNotchSp,
+    roughness: roughness,
   });
 
 
@@ -125,15 +126,15 @@ export function generateMaterials(context) {
     color: 0xeeeeef,
     emissive: 0xffffff,
     emissiveMap: texEngEm,
-    emissiveIntensity: 0.9,
+    emissiveIntensity: 0.7,
     side: THREE.DoubleSide,
     flatShading: false,
     wireframe: false,
     map: texEng,
     metalnessMap: texEngSp,
     metalness: 0.3,
-    roughnessMap: texEng,
-    roughness: 0.5,
+    // roughnessMap: texEng,
+    roughness: roughness,
   });
 
   var texNeck = new THREE.TextureLoader().load( "./images/engineering.png");
@@ -169,7 +170,7 @@ export function generateMaterials(context) {
     metalnessMap: texNeckSp,
     metalness: 0.4,
     // roughnessMap: texNeck,
-    roughness: 0.5,
+    roughness: roughness,
     // normalMap: texNeckNm,
     // normalScale: new THREE.Vector2(0.5, 0.5),
   });
@@ -213,7 +214,7 @@ export function generateMaterials(context) {
     // emissiveMap: texPylonEm,
     // emissiveIntensity: 0.2,
     // roughnessMap: texPylon,
-    roughness: 0.4,
+    roughness: roughness,
   });
   const nacelleDefaultRotation = Math.PI * 0.0;
   var texNacelle = new THREE.TextureLoader().load( "./images/nacelle.png");
@@ -247,9 +248,7 @@ export function generateMaterials(context) {
     emissiveMap: texNacelleEm,
     emissiveIntensity: 0.7,
     metalnessMap: texNacelleSp,
-    // bumpMap: texNacelleEm,
-    // bumpScale: -1.0,
     metalness: 0.8,
-    roughness: 0.65,
+    roughness: roughness,
   });
 }

@@ -142,8 +142,8 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 1800;
-    const dist = 40;
+    const intensity = 70**2;
+    const dist = 50;
     lights[ 0 ] = new THREE.PointLight( 0xddddff, intensity*1, 0 );
     lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity*1, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );

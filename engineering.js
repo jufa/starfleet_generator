@@ -33,8 +33,8 @@ export default class Engineering extends HullComponent {
       map: texSp,
       metalnessMap: texSp,
       metalness: 7.0,
-      roughnessMap: tex,
-      roughness: 0.6,
+      // roughnessMap: tex,
+      roughness: 0.55,
       // bumpMap: texSp,
       // bumpScale: 0.09,
     } );
