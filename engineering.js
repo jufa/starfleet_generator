@@ -28,6 +28,8 @@ export default class Engineering extends HullComponent {
     segments = 32,
     undercut = 0.0,
     undercutStart = 0.0,
+    dishRadius = 1.0,
+    dishInset = 0.0,
   }) {
 
     this.clear();
@@ -50,6 +52,7 @@ export default class Engineering extends HullComponent {
       );
     }
 
+    engineeringPoints[engineeringPoints.length - 1].x = engineeringPoints[engineeringPoints.length - 1].x * dishRadius;
     // deflector array
     var deflectorPoints = [];
 
@@ -65,7 +68,7 @@ export default class Engineering extends HullComponent {
       deflectorPoints.push (
         new THREE.Vector2(
           deflectorOuterEdge.x * (1.0 - r),
-          deflectorOuterEdge.y - Math.sin(Math.PI*r/2.0) * c - 0.05
+          deflectorOuterEdge.y - Math.sin(Math.PI*r/2.0) * c - dishInset
         )
       );
     };

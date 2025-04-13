@@ -81,6 +81,8 @@ export default class Builder {
         // segments: [32, 3, 32, 1],
         undercut: [0, 0, 1.0, 0.01],
         undercutStart: [0.7, 0, 1.0, 0.01],
+        dishRadius: [1, 0.3, 1.1, 0.01],
+        dishInset: [0, 0, 2.0, 0.01],
       },
       nacelle: {
         y: [40, -30, 50, 0.01],
@@ -142,22 +144,26 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 90**2;
-    const dist = 70;
+    const intensity = 55**2;
+    const dist = 40;
     lights[ 0 ] = new THREE.PointLight( 0xddddff, intensity*1, 0 );
     lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity*1, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
     lights[ 3 ] = new THREE.PointLight( 0xFC82C0, intensity*1, 0 );
+    // lights[ 4 ] = new THREE.PointLight( 0xffffff, intensity/2, 0 );
 
     lights[ 0 ].position.set( dist/2, dist, -dist/2 );
     lights[ 1 ].position.set( -dist, -dist, 0 );
     lights[ 2 ].position.set( 0, 0, dist*2 );
     lights[ 3 ].position.set( dist, -dist, 0 );
+    // lights[ 4 ].position.set(0, 20, 0);
 
     this.scene.add( lights[ 0 ] );
     this.scene.add( lights[ 1 ] );
     this.scene.add( lights[ 2 ] );
     this.scene.add( lights[ 3 ] );
+    this.camera.add( lights[ 4 ] );
+    // this.scene.add( this.camera );
   }
 
   /**
@@ -315,6 +321,8 @@ export default class Builder {
       segments: 36, //controlParams.engineering_segments,
       undercut: controlParams.engineering_undercut,
       undercutStart: controlParams.engineering_undercutStart,
+      dishRadius: controlParams.engineering_dishRadius,
+      dishInset: controlParams.engineering_dishInset,
     });
     this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
 
@@ -394,6 +402,7 @@ export default class Builder {
     this.camera.position.z = 50;
     this.controls = new OrbitControls( this.camera, this.container );
     this.controls.enableDamping = true;
+
     // this.controls.screenSpacePanning = false;
     // this.controls.lookSpeed = 0.3;
 
@@ -446,9 +455,9 @@ export default class Builder {
     // Add UnrealBloomPass
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.8, // Strength
+      1.1, // Strength
       0.0, // Radius
-      0.45 // Threshold
+      0.8 // Threshold
     );
     this.composer.addPass(bloomPass);
 
