@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import HullComponent from './hull_component.js';
 import { LoopSubdivision } from 'three-subdivide';
+import * as materials from './materials.js';
+
 
 export default class Neck extends HullComponent {
-  constructor({ material, primary, engineering }) {
+  constructor({ primary, engineering }) {
     super();
-    this.material = material;
     this.group = new THREE.Group();
     this.geometry = {};
     this.mesh = {};
@@ -174,7 +175,7 @@ export default class Neck extends HullComponent {
     
     this.geometry.uvsNeedUpdate = true;
 
-    this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
+    this.mesh = new THREE.Mesh( this.geometry, materials.neckMaterial );
     this.group.add( this.mesh );
   }
 

@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
-export function generateMaterials(context) {
-  const roughness = 0.5;
+  const roughness = 0.55;
+  const metalness = 0.8;
   var tex = new THREE.TextureLoader().load( "./images/saucer.png");
   tex.wrapS = THREE.MirroredRepeatWrapping;
   tex.wrapT = THREE.MirroredRepeatWrapping;
@@ -20,7 +20,7 @@ export function generateMaterials(context) {
   texSaucerSp.repeat.set( 6, 2 );
   texSaucerSp.colorSpace = THREE.SRGBColorSpace;
 
-  context.hullMaterial = new THREE.MeshStandardMaterial({
+  export const hullMaterial = new THREE.MeshStandardMaterial({
     color: 0xeeeeef,
     emissive: 0xeeeeff,
     side: THREE.DoubleSide,
@@ -55,7 +55,7 @@ export function generateMaterials(context) {
   texBridgeSp.repeat.set( 4, 4 );
   texBridgeSp.colorSpace = THREE.SRGBColorSpace;
 
-  context.bridgeMaterial = new THREE.MeshStandardMaterial({
+  export const bridgeMaterial = new THREE.MeshStandardMaterial({
     color: 0xeeeeef,
     emissive: 0xeeeeff,
     side: THREE.DoubleSide,
@@ -88,7 +88,7 @@ export function generateMaterials(context) {
   texNotchSp.repeat.set( 0.2,0.5 );
   texNotchSp.colorSpace = THREE.SRGBColorSpace;
 
-  context.notchMaterial = new THREE.MeshStandardMaterial({
+  export const notchMaterial = new THREE.MeshStandardMaterial({
     color: 0xaaaaaa,
     emissive: 0xeeeeff,
     side: THREE.DoubleSide,
@@ -122,7 +122,7 @@ export function generateMaterials(context) {
   texEngEm.offset.set(0.0, 0.01);
   texEngEm.colorSpace = THREE.SRGBColorSpace;
 
-  context.engMaterial = new THREE.MeshStandardMaterial({
+  export const engMaterial = new THREE.MeshStandardMaterial({
     color: 0xeeeeef,
     emissive: 0xffffff,
     emissiveMap: texEngEm,
@@ -158,7 +158,7 @@ export function generateMaterials(context) {
   // texNeckEm.repeat.set( 2, 2 );
   // texNeckEm.colorSpace = THREE.SRGBColorSpace;
 
-  context.neckMaterial = new THREE.MeshStandardMaterial({
+  export const neckMaterial = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     emissive: 0x000000,
     // emissiveMap: texNeckEm,
@@ -201,7 +201,7 @@ export function generateMaterials(context) {
   // texPylonEm.offset.set(0.05, 0.0);
   // texPylonEm.colorSpace = THREE.SRGBColorSpace
 
-  context.pylonMaterial = new THREE.MeshStandardMaterial({
+  export const pylonMaterial = new THREE.MeshStandardMaterial({
     color: 0xeeeeef,
     // emissive: 0xffffff,
     side: THREE.DoubleSide,
@@ -237,7 +237,7 @@ export function generateMaterials(context) {
   texNacelleSp.repeat.set( 1, 3 );
   texNacelleSp.rotation = nacelleDefaultRotation;
 
-  context.nacelleMaterial = new THREE.MeshStandardMaterial({
+  export const nacelleMaterial = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     emissive: 0xffffff,
     side: THREE.DoubleSide,
@@ -251,4 +251,74 @@ export function generateMaterials(context) {
     metalness: 0.8,
     roughness: roughness,
   });
-}
+
+  var tex = new THREE.TextureLoader().load( "./images/dish.png");
+  tex.wrapS = THREE.MirroredRepeatWrapping;
+  tex.wrapT = THREE.MirroredRepeatWrapping;
+  tex.repeat.set( 4, 1 );
+
+  var texSp = new THREE.TextureLoader().load( "./images/dish_sp.png");
+  texSp.wrapS = THREE.MirroredRepeatWrapping;
+  texSp.wrapT = THREE.MirroredRepeatWrapping;
+  texSp.repeat.set( 12, 1 );
+
+  var texEm = new THREE.TextureLoader().load( "./images/dish_sp.png");
+  texEm.wrapS = THREE.MirroredRepeatWrapping;
+  texEm.wrapT = THREE.MirroredRepeatWrapping;
+  texEm.repeat.set( 24, 4 );
+  texEm.colorSpace = THREE.SRGBColorSpace;
+
+  export const deflectorMaterial = new THREE.MeshStandardMaterial( {
+    color: 0xffdd22,
+    emissive: 0xdd9900,
+    emissiveMap: texEm,
+    emissiveIntensity: 3.0,
+    side: THREE.DoubleSide,
+    flatShading: false,
+    map: texSp,
+    metalnessMap: texSp,
+    metalness: 7.0,
+    // roughnessMap: tex,
+    roughness: 0.55,
+    // bumpMap: texSp,
+    // bumpScale: 0.09,
+  } );
+
+  const texBussard = new THREE.TextureLoader().load( "./images/bussard_em.png");
+  texBussard.wrapS = THREE.RepeatWrapping;
+  texBussard.wrapT = THREE.RepeatWrapping;
+  texBussard.repeat.set( 9, 1.5 );
+  texBussard.colorSpace = THREE.SRGBColorSpace;
+
+  export const bussardMaterial = new THREE.MeshStandardMaterial({
+    color: 0x000000,
+    emissive: 0xff0000,
+    emissiveIntensity: 2,
+    opacity: 0.2,
+    transparent: true,
+    flatShading: false,
+    metalnessMap: texBussard,
+    roughnessMap: texBussard,
+    metalness: 1,
+    roughness: 0.9,
+  });
+    
+
+  export const bussardInnerMaterial = new THREE.MeshStandardMaterial({
+    color: 0x000000,
+    emissive: 0xff4400,
+    emissiveIntensity: 5,
+    transparent: false,
+    flatShading: false,
+    // map: tex,
+    emissiveMap: texBussard.clone(),
+    metalnessMap: texBussard,
+    roughnessMap: texBussard,
+    // alphaMap: tex,
+    // alphaTest: -0.01,
+    // bumpMap: tex,
+    // bumpScale: 1.0,
+    metalness: 0.6,
+    roughness: 0.5,
+  });
+

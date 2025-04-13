@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import HullComponent from './hull_component.js';
+import * as materials from './materials.js';
 
 export default class Nacelle extends HullComponent {
-  constructor({ material }) {
+  constructor() {
     super();
 
-    this.material = material;
     this.group = new THREE.Group();
     this.dimensions = {};
 
@@ -15,46 +15,8 @@ export default class Nacelle extends HullComponent {
     this.nacelleMesh = {};
     this.bussardMesh = {};
 
-    var tex = new THREE.TextureLoader().load( "./images/bussard_em.png");
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set( 9, 1.5 );
-    this.bussardInnerTexture = tex;
-    tex.colorSpace = THREE.SRGBColorSpace;
-
-    this.bussardMaterial = new THREE.MeshStandardMaterial({
-      color: 0x000000,
-      emissive: 0xff0000,
-      emissiveIntensity: 2,
-      opacity: 0.2,
-      transparent: true,
-      flatShading: false,
-      metalnessMap: tex,
-      roughnessMap: tex,
-      metalness: 1,
-      roughness: 0.9,
-    });
-    
-
-    this.bussardInnerMaterial = new THREE.MeshStandardMaterial({
-      color: 0x000000,
-      emissive: 0xff4400,
-      emissiveIntensity: 5,
-      transparent: false,
-      flatShading: false,
-      // map: tex,
-      emissiveMap: tex,
-      metalnessMap: tex,
-      roughnessMap: tex,
-      // alphaMap: tex,
-      // alphaTest: -0.01,
-      // bumpMap: tex,
-      // bumpScale: 1.0,
-      metalness: 0.6,
-      roughness: 0.5,
-    });
-
     return this;
+
   }
 
   update({ length, width, widthRatio, rotation=0, segments=32, skew=0 }) {
@@ -115,9 +77,11 @@ export default class Nacelle extends HullComponent {
     this.bussardInnerGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardInnerGeometry.rotateY(rotation);
 
-    this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, this.material.clone() );
-    this.bussardMesh = new THREE.Mesh( this.bussardGeometry, this.bussardMaterial );
-    this.bussardInnerMesh = new THREE.Mesh( this.bussardInnerGeometry, this.bussardInnerMaterial );
+    this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, materials.nacelleMaterial );
+    this.bussardMesh = new THREE.Mesh( this.bussardGeometry, materials.bussardMaterial );
+    this.bussardInnerMaterial = materials.bussardInnerMaterial.clone();
+    this.bussardInnerMaterial.emissiveMap = materials.bussardInnerMaterial.emissiveMap.clone();
+    this.bussardInnerMesh = new THREE.Mesh( this.bussardInnerGeometry, this.bussardInnerMaterial);
 
     const Szy = skew;
     const matrix = new THREE.Matrix4();
@@ -144,13 +108,12 @@ export default class Nacelle extends HullComponent {
   }
 
   rotateBussard(rotation){
-    // rotate the bussardInnerMesh TextureMap:
-    this.bussardInnerTexture.offset.x = -rotation;
-    // this.bussardInnerTexture.offset.y = rotation;
-    // this.bussardInnerTexture.rotation = rotation*10.0;
-    // this.tex = rotation;
+    const worldPos = new THREE.Vector3();
+    this.group.getWorldPosition(worldPos);
+    const rotationSense = worldPos.x > 0 ? -1 : 1;
+    this.bussardInnerMaterial.emissiveMap.offset.x = rotationSense * rotation;
+    this.bussardInnerMaterial.emissiveMap.offset.y = rotation/8;
   }
-
 
   clear(){
     if (this.nacelleGeometry['dispose']) {

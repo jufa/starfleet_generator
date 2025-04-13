@@ -1,12 +1,10 @@
 import * as THREE from 'three';
 import HullComponent from './hull_component.js';
+import * as materials from './materials.js';
 
 export default class Primary extends HullComponent{
-  constructor({ material, bridgeMaterial, notchMaterial }) {
+  constructor() {
     super();
-    this.material = material;
-    this.bridgeMaterial = bridgeMaterial;
-    this.notchMaterial = notchMaterial;
     this.group = new THREE.Group();
     this.group.rotateX( Math.PI / 2.0); 
     this.geometry = {};
@@ -90,8 +88,7 @@ export default class Primary extends HullComponent{
 
     // Create flat geometry
     this.notchGeometry = new THREE.ShapeGeometry(shape);
-    const notchMaterial = this.notchMaterial;
-    const closeMesh1 = new THREE.Mesh(this.notchGeometry, notchMaterial);
+    const closeMesh1 = new THREE.Mesh(this.notchGeometry, materials.notchMaterial);
     const closeMesh2 = closeMesh1.clone();
     closeMesh1.rotateY( (Math.PI * 0.5) + foreExclusionAngle );
     closeMesh2.rotateY( (Math.PI * 0.5) - foreExclusionAngle );
@@ -122,8 +119,8 @@ export default class Primary extends HullComponent{
     this.geometry.attributes.position.needsUpdate = true;
 
     this.computeBoundingBox(this.geometry);
-    this.mesh = new THREE.Mesh( this.geometry, this.material.clone() );
-    this.bridgeMesh = new THREE.Mesh( this.bridgeGeometry, this.bridgeMaterial.clone() );
+    this.mesh = new THREE.Mesh( this.geometry, materials.hullMaterial );
+    this.bridgeMesh = new THREE.Mesh( this.bridgeGeometry, materials.bridgeMaterial );
     this.bridgeMesh.position.y = - bridgeZ - ( bridgeThickness * 0.4);
     this.bridgeMesh.position.z = radius * bridgeY;
     

@@ -4,7 +4,7 @@ import { EffectComposer }   from "three/examples/jsm/postprocessing/EffectCompos
 import { RenderPass }       from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass }  from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { OutputPass }  from "three/examples/jsm/postprocessing/OutputPass.js";
-import { generateMaterials } from './materials.js';
+import * as materials from './materials.js';
 
 // import * as dat from 'dat.gui';
 import * as dat from 'lil-gui';
@@ -39,7 +39,7 @@ export default class Builder {
     //prepend user-saved ships:
     this.predefinedShips = this.getSavedShips().concat(this.predefinedShips);
 
-    generateMaterials(this);
+    // generateMaterials(this);
 
     this.controlConfiguration = {
       // folderName: {paramName: [default, min, max, step]}
@@ -142,14 +142,14 @@ export default class Builder {
 
   addLights() {
     var lights = [];
-    const intensity = 70**2;
-    const dist = 50;
+    const intensity = 90**2;
+    const dist = 70;
     lights[ 0 ] = new THREE.PointLight( 0xddddff, intensity*1, 0 );
     lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity*1, 0 ); //bottom
     lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
     lights[ 3 ] = new THREE.PointLight( 0xFC82C0, intensity*1, 0 );
 
-    lights[ 0 ].position.set( dist/2, dist, -dist/3 );
+    lights[ 0 ].position.set( dist/2, dist, -dist/2 );
     lights[ 1 ].position.set( -dist, -dist, 0 );
     lights[ 2 ].position.set( 0, 0, dist*2 );
     lights[ 3 ].position.set( dist, -dist, 0 );
@@ -172,63 +172,59 @@ export default class Builder {
     this.ship = new THREE.Group();
     this.ship.name = 'ship';
 
-    this.primary = new Primary({ material: this.hullMaterial, bridgeMaterial: this.bridgeMaterial, notchMaterial: this.notchMaterial });
+    this.primary = new Primary();
     this.mount(this.ship, this.primary.group);
 
-    this.nacelleUpperPort = new Nacelle({ material: this.nacelleMaterial});
+    this.nacelleUpperPort = new Nacelle();
     this.mount(this.ship, this.nacelleUpperPort.group);
 
-    this.nacelleUpperStarboard = new Nacelle({ material: this.nacelleMaterial });
+    this.nacelleUpperStarboard = new Nacelle();
     this.mount(this.ship, this.nacelleUpperStarboard.group);
 
-    this.nacelleLowerPort = new Nacelle({ material: this.nacelleMaterial});
+    this.nacelleLowerPort = new Nacelle();
     this.mount(this.ship, this.nacelleLowerPort.group);
 
-    this.nacelleLowerStarboard = new Nacelle({ material: this.nacelleMaterial });
+    this.nacelleLowerStarboard = new Nacelle();
     this.mount(this.ship, this.nacelleLowerStarboard.group);
 
-    this.engineering = new Engineering({ material: this.engMaterial });
+    this.engineering = new Engineering();
     this.mount(this.ship, this.engineering.group);
 
-    this.boomLowerPort = new Boom({ material: this.engMaterial });
+    this.boomLowerPort = new Boom();
       this.mount(this.ship, this.boomLowerPort.group);
     
-    this.boomLowerStarboard = new Boom({ material: this.engMaterial });
+    this.boomLowerStarboard = new Boom();
       this.mount(this.ship, this.boomLowerStarboard.group);
 
 
     this.neck = new Neck({
       primary: this.primary,
       engineering: this.engineering,
-      material: this.neckMaterial
+      material: materials.neckMaterial
     });
     this.mount(this.ship, this.neck.group);
 
     this.portUpperPylon = new Pylon({
       nacelle: this.nacelleUpperPort,
       engineering: this.engineering,
-      material: this.pylonMaterial
     });
     this.mount(this.ship, this.portUpperPylon.group);
 
     this.starboardUpperPylon = new Pylon({
       nacelle: this.nacelleUpperStarboard,
       engineering: this.engineering,
-      material: this.pylonMaterial
     });
     this.mount(this.ship, this.starboardUpperPylon.group);
 
     this.portLowerPylon = new Pylon({
       nacelle: this.nacelleLowerPort,
       engineering: this.engineering,
-      material: this.pylonMaterial
     });
     this.mount(this.ship, this.portLowerPylon.group);
 
     this.starboardLowerPylon = new Pylon({
       nacelle: this.nacelleLowerStarboard,
       engineering: this.engineering,
-      material: this.pylonMaterial
     });
     this.mount(this.ship, this.starboardLowerPylon.group);
 
@@ -489,7 +485,7 @@ export default class Builder {
       this.nacelleUpperStarboard,
     ]
     for (let i in nacelles) {
-      nacelles[i].rotateBussard(angle * (-1.0)**i);
+      nacelles[i].rotateBussard(angle);
     }
 
     this.controls.update( shipBuilder.clock.getDelta() );

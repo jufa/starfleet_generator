@@ -1,43 +1,11 @@
 import * as THREE from 'three';
+import * as materials from './materials.js';
 import HullComponent from './hull_component.js';
 
 export default class Engineering extends HullComponent {
-  constructor({ material }) {
+  constructor() {
     super();
 
-    var tex = new THREE.TextureLoader().load( "./images/dish.png");
-    tex.wrapS = THREE.MirroredRepeatWrapping;
-    tex.wrapT = THREE.MirroredRepeatWrapping;
-    tex.repeat.set( 4, 1 );
-
-    var texSp = new THREE.TextureLoader().load( "./images/dish_sp.png");
-    texSp.wrapS = THREE.MirroredRepeatWrapping;
-    texSp.wrapT = THREE.MirroredRepeatWrapping;
-    texSp.repeat.set( 12, 1 );
-
-    var texEm = new THREE.TextureLoader().load( "./images/dish_sp.png");
-    texEm.wrapS = THREE.MirroredRepeatWrapping;
-    texEm.wrapT = THREE.MirroredRepeatWrapping;
-    texEm.repeat.set( 24, 4 );
-    texEm.colorSpace = THREE.SRGBColorSpace;
-
-    // materials
-    this.material = material
-    this.deflectorMaterial = new THREE.MeshStandardMaterial( {
-      color: 0xffdd22,
-      emissive: 0xdd9900,
-      emissiveMap: texEm,
-      emissiveIntensity: 3.0,
-      side: THREE.DoubleSide,
-      flatShading: false,
-      map: texSp,
-      metalnessMap: texSp,
-      metalness: 7.0,
-      // roughnessMap: tex,
-      roughness: 0.55,
-      // bumpMap: texSp,
-      // bumpScale: 0.09,
-    } );
     this.group = new THREE.Group();
     this.dimensions = {};
 
@@ -148,8 +116,8 @@ export default class Engineering extends HullComponent {
     this.deflectorGeometry.applyMatrix4( matrix );
     this.engineeringGeometry.applyMatrix4( matrix );
 
-    this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, this.material.clone() );
-    this.deflectoMesh = new THREE.Mesh( this.deflectorGeometry, this.deflectorMaterial );
+    this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, materials.engMaterial );
+    this.deflectoMesh = new THREE.Mesh( this.deflectorGeometry, materials.deflectorMaterial );
 
     this.group.add( this.engineeringMesh );
     this.group.add( this.deflectoMesh );
