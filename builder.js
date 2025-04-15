@@ -4,6 +4,7 @@ import { EffectComposer }   from "three/examples/jsm/postprocessing/EffectCompos
 import { RenderPass }       from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass }  from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { OutputPass }  from "three/examples/jsm/postprocessing/OutputPass.js";
+import { STLExporter } from "three/examples/jsm/exporters/STLExporter.js";
 import * as materials from './materials.js';
 
 // import * as dat from 'dat.gui';
@@ -653,6 +654,44 @@ export default class Builder {
     this.dirty = true;
   }
 
+  exportSTL() {
+    alert("This is experimental feature which exports a binary STL file for local download");
+    const exporter = new STLExporter();
+    const options = { binary: true } // binary is preferred for 3D printing services
+
+    const stlGroup = new THREE.Group();
+
+    // we only add a mesh if all its parents are visible:
+    this.ship.traverse((child) => {
+      if (!child.isMesh) return;
+    
+      let current = child;
+      let allVisible = true;
+    
+      // Walk up to the root (but stop at this.ship or null)
+      while (current && current !== this.ship.parent) {
+        if (!current.visible) {
+          allVisible = false;
+          break;
+        }
+        current = current.parent;
+      }
+    
+      if (allVisible) {
+        stlGroup.add(child.clone());
+      }
+    });
+
+    const stlData = exporter.parse(stlGroup, options);
+    const blob = new Blob([stlData], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${this.currentShip.name}.stl`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   rescale(dir) {
     for (var param in this.controlParams) {
       if ( typeof this.controlParams[param] === "number" && 
@@ -721,6 +760,10 @@ export default class Builder {
 
     // screenshot button:
     utilsFolder.add({ save_screen_shot: this.takeScreenshot.bind(this) }, 'save_screen_shot').name('SAVE SCREEN SHOT');
+    
+    // STL Export:
+    utilsFolder.add({ export_stl: this.exportSTL.bind(this) }, 'export_stl').name('EXPORT STL FILE');
+
 
     // export button:
     // utilsFolder.add({ copy_ship_params: this.paramDump.bind(this) }, 'copy_ship_params');
