@@ -36,7 +36,7 @@ export default class Builder {
     this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
     this.materialNames = ['Standard', 'Gold Desk Model', 'Chrome Desk Model'];
-    this.materialIndex = 2;
+    this.materialIndex = 0;
     this.lights = [];
 
 
