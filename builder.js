@@ -35,6 +35,9 @@ export default class Builder {
     this.transitionRate = 0.05;
     this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
+    this.materialNames = ['Standard', 'Gold Desk Model', 'Chrome Desk Model'];
+    this.materialIndex = 2;
+    this.lights = [];
 
 
     //prepend user-saved ships:
@@ -143,29 +146,70 @@ export default class Builder {
     this.setPredefinedShip(this.predefinedShips[startIndex].name);
   }
 
-  addLights() {
-    var lights = [];
+  addLights(configIndex=0) {
+    if (this.lights.length > 0) {
+      this.lights.forEach(light => {
+        this.scene.remove(light);
+      });
+    }
+    this.lights = [];
+
+    const lightConfigs = [
+      this.addLightsDefault,
+      this.addLightsDeskModel,
+      this.addLightsDeskModel,
+    ];
+
+    lightConfigs[configIndex].call(this);
+
+  }
+
+  // lighting configurations:
+  addLightsDefault() {
     const intensity = 55**2;
     const dist = 40;
-    lights[ 0 ] = new THREE.PointLight( 0xddddff, intensity*1, 0 );
-    lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity*1, 0 ); //bottom
-    lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
-    lights[ 3 ] = new THREE.PointLight( 0xFC82C0, intensity*1, 0 );
-    // lights[ 4 ] = new THREE.PointLight( 0xffffff, intensity/2, 0 );
+    this.lights[ 0 ] = new THREE.PointLight( 0xddddff, intensity*1, 0 );
+    this.lights[ 1 ] = new THREE.PointLight( 0x00AAE3, intensity*1, 0 ); //bottom
+    this.lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
+    this.lights[ 3 ] = new THREE.PointLight( 0xFC82C0, intensity*1, 0 );
+    // this.lights[ 4 ] = new THREE.PointLight( 0xffffff, intensity/2, 0 );
 
-    lights[ 0 ].position.set( dist/2, dist, -dist/2 );
-    lights[ 1 ].position.set( -dist, -dist, 0 );
-    lights[ 2 ].position.set( 0, 0, dist*2 );
-    lights[ 3 ].position.set( dist, -dist, 0 );
-    // lights[ 4 ].position.set(0, 20, 0);
+    this.lights[ 0 ].position.set( dist/2, dist, -dist/2 );
+    this.lights[ 1 ].position.set( -dist, -dist, 0 );
+    this.lights[ 2 ].position.set( 0, 0, dist*2 );
+    this.lights[ 3 ].position.set( dist, -dist, 0 );
+    // this.lights[ 4 ].position.set(0, 20, 0);
 
-    this.scene.add( lights[ 0 ] );
-    this.scene.add( lights[ 1 ] );
-    this.scene.add( lights[ 2 ] );
-    this.scene.add( lights[ 3 ] );
-    this.camera.add( lights[ 4 ] );
+    this.scene.add( this.lights[ 0 ] );
+    this.scene.add( this.lights[ 1 ] );
+    this.scene.add( this.lights[ 2 ] );
+    this.scene.add( this.lights[ 3 ] );
+    this.camera.add( this.lights[ 4 ] );
     // this.scene.add( this.camera );
-  }
+  };
+
+  addLightsDeskModel() {
+    const intensity = 55**2;
+    const dist = 60;
+    this.lights[ 0 ] = new THREE.PointLight( 0xdddddd, intensity*1, 0 );
+    this.lights[ 1 ] = new THREE.PointLight( 0x888888, intensity*1, 0 ); //bottom
+    this.lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
+    this.lights[ 3 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
+    // this.lights[ 4 ] = new THREE.PointLight( 0xffffff, intensity/2, 0 );
+
+    this.lights[ 0 ].position.set( dist, dist, -dist );
+    this.lights[ 1 ].position.set( -dist, -dist, 0 );
+    this.lights[ 2 ].position.set( 0, 0, dist*2 );
+    this.lights[ 3 ].position.set( dist, -dist, 0 );
+    // this.lights[ 4 ].position.set(0, 20, 0);
+
+    this.scene.add( this.lights[ 0 ] );
+    this.scene.add( this.lights[ 1 ] );
+    this.scene.add( this.lights[ 2 ] );
+    this.scene.add( this.lights[ 3 ] );
+    this.camera.add( this.lights[ 4 ] );
+    // this.scene.add( this.camera );
+  };
 
   /**
    *
@@ -203,11 +247,9 @@ export default class Builder {
     this.boomLowerStarboard = new Boom();
       this.mount(this.ship, this.boomLowerStarboard.group);
 
-
     this.neck = new Neck({
       primary: this.primary,
       engineering: this.engineering,
-      material: materials.neckMaterial
     });
     this.mount(this.ship, this.neck.group);
 
@@ -264,6 +306,7 @@ export default class Builder {
       notchAngle: controlParams.primary_notchAngle,
       // segments: controlParams.primary_segments,
       // bridgeSegments: controlParams.primary_bridgeSegments,
+      materialIndex: this.materialIndex,
     });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
 
@@ -288,27 +331,27 @@ export default class Builder {
     let skew2 = controlParams.nacelleLower_skew || 0;
 
     this.nacelleUpperPort.group.visible = this.controlParams.nacelle_toggle;
-    this.nacelleUpperPort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation, segments: segments, skew: skew});
+    this.nacelleUpperPort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation, segments: segments, skew: skew, materialIndex: this.materialIndex});
     this.nacelleUpperPort.group.position.set(separation, -aft-length, -height);
 
     this.nacelleUpperStarboard.group.visible = this.controlParams.nacelle_toggle;
-    this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation, segments: segments, skew: skew});
+    this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation, segments: segments, skew: skew, materialIndex: this.materialIndex});
     this.nacelleUpperStarboard.group.position.set(-separation, -aft-length, -height);
     
     this.nacelleLowerPort.group.visible = this.controlParams.nacelleLower_toggle;
-    this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2});
+    this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex});
     this.nacelleLowerPort.group.position.set(separation2, -aft2-length2, height2);
 
     this.nacelleLowerStarboard.group.visible = this.controlParams.nacelleLower_toggle;
-    this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2});
+    this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex});
     this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
 
     this.boomLowerPort.group.visible = this.controlParams.boomLower_toggle;
-    this.boomLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2 });
+    this.boomLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex });
     this.boomLowerPort.group.position.set(separation2, -aft2-length2, height2);
 
     this.boomLowerStarboard.group.visible = this.controlParams.boomLower_toggle;
-    this.boomLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2 });
+    this.boomLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex });
     this.boomLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
 
 
@@ -324,6 +367,7 @@ export default class Builder {
       undercutStart: controlParams.engineering_undercutStart,
       dishRadius: controlParams.engineering_dishRadius,
       dishInset: controlParams.engineering_dishInset,
+      materialIndex: this.materialIndex,
     });
     this.engineering.group.position.set(0.0, controlParams.engineering_y, controlParams.engineering_z);
 
@@ -337,6 +381,7 @@ export default class Builder {
       engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
       midpointOffset: controlParams.pylon_midPointOffset,
       thickness: controlParams.pylon_thickness,
+      materialIndex: this.materialIndex,
     });
 
     this.starboardUpperPylon.group.visible = this.controlParams.pylon_toggle;
@@ -347,6 +392,7 @@ export default class Builder {
       engineeringAftOffset: controlParams.pylon_engineeringAftOffset,
       midpointOffset: controlParams.pylon_midPointOffset,
       thickness: controlParams.pylon_thickness,
+      materialIndex: this.materialIndex,
     });
 
     this.portLowerPylon.group.visible = this.controlParams.pylonLower_toggle;
@@ -357,6 +403,7 @@ export default class Builder {
       engineeringAftOffset: controlParams.pylonLower_engineeringAftOffset,
       midpointOffset: controlParams.pylonLower_midPointOffset,
       thickness: controlParams.pylonLower_thickness,
+      materialIndex: this.materialIndex,
     });
 
     this.starboardLowerPylon.group.visible = this.controlParams.pylonLower_toggle;
@@ -367,6 +414,7 @@ export default class Builder {
       engineeringAftOffset: controlParams.pylonLower_engineeringAftOffset,
       midpointOffset: controlParams.pylonLower_midPointOffset,
       thickness: controlParams.pylonLower_thickness,
+      materialIndex: this.materialIndex,
     });
 
     this.neck.group.visible = this.controlParams.neck_toggle;
@@ -379,6 +427,7 @@ export default class Builder {
       thickness: controlParams.neck_thickness,
       foretaper: controlParams.neck_foretaper,
       afttaper: controlParams.neck_afttaper,
+      materialIndex: this.materialIndex,
     });
 
     // make sure camera is orbiting the new position of the saucer:
@@ -432,7 +481,7 @@ export default class Builder {
     // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: textureCube } );
 
     // lights
-    this.addLights(this.scene);
+    this.addLights(this.materialIndex);
 
     // renderer
     this.renderer = new THREE.WebGLRenderer({
@@ -456,7 +505,7 @@ export default class Builder {
     // Add UnrealBloomPass
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      1.1, // Strength
+      1.0, // Strength
       0.0, // Radius
       0.8 // Threshold
     );
@@ -680,7 +729,11 @@ export default class Builder {
       if (allVisible) {
         stlGroup.add(child.clone());
       }
-    });
+    })
+
+    // scaling - these are generally too small for  a 3D printing service that defaults to units of mm for STL
+    const scaleFactor = 5;
+    stlGroup.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
     const stlData = exporter.parse(stlGroup, options);
     const blob = new Blob([stlData], { type: 'text/plain' });
@@ -690,6 +743,14 @@ export default class Builder {
     a.download = `${this.currentShip.name}.stl`;
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  handleMaterialIndexChange(value) {
+    this.materialIndex = this.materialNames.indexOf(value);
+    console.log("materialIndex: ", this.materialIndex);
+    this.addLights(this.materialIndex);
+    this.dirty = true;
+    this.render();
   }
 
   rescale(dir) {
@@ -764,7 +825,6 @@ export default class Builder {
     // STL Export:
     utilsFolder.add({ export_stl: this.exportSTL.bind(this) }, 'export_stl').name('EXPORT STL FILE');
 
-
     // export button:
     // utilsFolder.add({ copy_ship_params: this.paramDump.bind(this) }, 'copy_ship_params');
 
@@ -799,6 +859,10 @@ export default class Builder {
     // rescale button:
     utilsFolder.add({ scale_up: this.rescale.bind(this, 1) }, 'scale_up').name('SCALE UP');
     utilsFolder.add({ scale_down: this.rescale.bind(this, -1) }, 'scale_down').name('SCALE DOWN');
+
+    // Material selector:
+    const dummy = {skin: this.materialNames[this.materialIndex]};
+    utilsFolder.add(dummy, 'skin', this.materialNames).name("SKIN").onChange( (value) => { this.handleMaterialIndexChange(value) } );
 
     // predefined ships:
     this.currentShip.name = this.predefinedShips[0].name;

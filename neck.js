@@ -25,6 +25,7 @@ export default class Neck extends HullComponent {
     thickness,
     foretaper,
     afttaper,
+    materialIndex=0,
   }) {
 
     this.clear();
@@ -175,7 +176,7 @@ export default class Neck extends HullComponent {
     
     this.geometry.uvsNeedUpdate = true;
 
-    this.mesh = new THREE.Mesh( this.geometry, materials.neckMaterial );
+    this.mesh = new THREE.Mesh( this.geometry, materials.neckMaterial[materialIndex] );
     this.group.add( this.mesh );
   }
 

@@ -19,7 +19,15 @@ export default class Nacelle extends HullComponent {
 
   }
 
-  update({ length, width, widthRatio, rotation=0, segments=32, skew=0 }) {
+  update({ 
+    length,
+    width,
+    widthRatio,
+    rotation=0,
+    segments=32,
+    skew=0,
+    materialIndex=0,
+  }) {
     
     this.clear();
 
@@ -77,10 +85,10 @@ export default class Nacelle extends HullComponent {
     this.bussardInnerGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardInnerGeometry.rotateY(rotation);
 
-    this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, materials.nacelleMaterial );
-    this.bussardMesh = new THREE.Mesh( this.bussardGeometry, materials.bussardMaterial );
-    this.bussardInnerMaterial = materials.bussardInnerMaterial.clone();
-    this.bussardInnerMaterial.emissiveMap = materials.bussardInnerMaterial.emissiveMap.clone();
+    this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, materials.nacelleMaterial[materialIndex] );
+    this.bussardMesh = new THREE.Mesh( this.bussardGeometry, materials.bussardMaterial[materialIndex] );
+    this.bussardInnerMaterial = materials.bussardInnerMaterial[materialIndex].clone();
+    this.bussardInnerMaterial.emissiveMap = materials.bussardInnerMaterial[materialIndex].emissiveMap.clone();
     this.bussardInnerMesh = new THREE.Mesh( this.bussardInnerGeometry, this.bussardInnerMaterial);
 
     const Szy = skew;

@@ -30,6 +30,7 @@ export default class Primary extends HullComponent{
     notchAngle=0,
     segments=64,
     bridgeSegments=64,
+    materialIndex=0,
   }) {
 
     this.clear();
@@ -88,7 +89,7 @@ export default class Primary extends HullComponent{
 
     // Create flat geometry
     this.notchGeometry = new THREE.ShapeGeometry(shape);
-    const closeMesh1 = new THREE.Mesh(this.notchGeometry, materials.notchMaterial);
+    const closeMesh1 = new THREE.Mesh(this.notchGeometry, materials.notchMaterial[materialIndex]);
     const closeMesh2 = closeMesh1.clone();
     closeMesh1.rotateY( (Math.PI * 0.5) + foreExclusionAngle );
     closeMesh2.rotateY( (Math.PI * 0.5) - foreExclusionAngle );
@@ -119,8 +120,8 @@ export default class Primary extends HullComponent{
     this.geometry.attributes.position.needsUpdate = true;
 
     this.computeBoundingBox(this.geometry);
-    this.mesh = new THREE.Mesh( this.geometry, materials.hullMaterial );
-    this.bridgeMesh = new THREE.Mesh( this.bridgeGeometry, materials.bridgeMaterial );
+    this.mesh = new THREE.Mesh( this.geometry, materials.hullMaterial[materialIndex] );
+    this.bridgeMesh = new THREE.Mesh( this.bridgeGeometry, materials.bridgeMaterial[materialIndex] );
     this.bridgeMesh.position.y = - bridgeZ - ( bridgeThickness * 0.4);
     this.bridgeMesh.position.z = radius * bridgeY;
     

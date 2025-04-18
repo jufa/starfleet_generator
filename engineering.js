@@ -30,6 +30,7 @@ export default class Engineering extends HullComponent {
     undercutStart = 0.0,
     dishRadius = 1.0,
     dishInset = 0.0,
+    materialIndex = 0,
   }) {
 
     this.clear();
@@ -119,8 +120,8 @@ export default class Engineering extends HullComponent {
     this.deflectorGeometry.applyMatrix4( matrix );
     this.engineeringGeometry.applyMatrix4( matrix );
 
-    this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, materials.engMaterial );
-    this.deflectoMesh = new THREE.Mesh( this.deflectorGeometry, materials.deflectorMaterial );
+    this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, materials.engMaterial[materialIndex] );
+    this.deflectoMesh = new THREE.Mesh( this.deflectorGeometry, materials.deflectorMaterial[materialIndex] );
 
     this.group.add( this.engineeringMesh );
     this.group.add( this.deflectoMesh );

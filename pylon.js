@@ -23,6 +23,7 @@ export default class Pylon extends HullComponent {
     engineeringAftOffset, // distance away from aft edge of engineering hull 1.0 = Full fore})
     thickness,
     midpointOffset, //0-1 where 0 is engineering center and 1 is nacelle center, established where the elbow of the pylon is
+    materialIndex=0,
   }){
 
     this.clear();
@@ -177,7 +178,7 @@ export default class Pylon extends HullComponent {
     this.geometry.uvsNeedUpdate = true;
 
 
-    this.mesh = new THREE.Mesh( this.geometry, materials.pylonMaterial );
+    this.mesh = new THREE.Mesh( this.geometry, materials.pylonMaterial[materialIndex] );
     this.group.add( this.mesh );
   }
 

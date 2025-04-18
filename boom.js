@@ -18,7 +18,14 @@ export default class Boom extends HullComponent {
     return this;
   }
 
-  update({ length, width, widthRatio, rotation=0, segments=32, skew=0 }) {
+  update({ length,
+    width,
+    widthRatio,
+    rotation=0,
+    segments=32,
+    skew=0,
+    materialIndex=0,
+  }) {
 
     this.clear();
 
@@ -60,8 +67,8 @@ export default class Boom extends HullComponent {
     this.noseGeometry.scale(widthRatio, 1.1, 1.1);
     this.noseGeometry.rotateY(rotation);
 
-    this.boomMesh = new THREE.Mesh( this.boomGeometry, materials.engMaterial );
-    this.noseMesh = new THREE.Mesh( this.noseGeometry, materials.engMaterial );
+    this.boomMesh = new THREE.Mesh( this.boomGeometry, materials.engMaterial[materialIndex] );
+    this.noseMesh = new THREE.Mesh( this.noseGeometry, materials.engMaterial[materialIndex] );
 
     const Szy = skew;
     const matrix = new THREE.Matrix4();
