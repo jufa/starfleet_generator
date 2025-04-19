@@ -371,7 +371,7 @@ export default class Builder {
       width: controlParams.engineering_radius,
       widthRatio: controlParams.engineering_widthRatio,
       skew: controlParams.engineering_skew,
-      segments: controlParams.engineering_segments,
+      segments: controlParams.engineering_segments || 32,
       undercut: controlParams.engineering_undercut,
       undercutStart: controlParams.engineering_undercutStart,
       undercutCurve: controlParams.engineering_undercutCurve,
