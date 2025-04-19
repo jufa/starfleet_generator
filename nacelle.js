@@ -107,18 +107,12 @@ export default class Nacelle extends HullComponent {
     this.bussardInnerGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardInnerGeometry.rotateY(rotation);
 
-    this.ballGeometry = new THREE.SphereGeometry(width/2, 16, 16, 0);
-    this.ballGeometry.scale(widthRatio, 2, 1);
-    this.ballGeometry.rotateY(rotation);
-
     this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, materials.nacelleMaterial[materialIndex] );
     this.bussardMesh = new THREE.Mesh( this.bussardGeometry, materials.bussardMaterial[materialIndex] );
     this.bussardInnerMaterial = materials.bussardInnerMaterial[materialIndex].clone();
     this.bussardInnerMaterial.emissiveMap = materials.bussardInnerMaterial[materialIndex].emissiveMap.clone();
     this.bussardInnerMesh = new THREE.Mesh( this.bussardInnerGeometry, this.bussardInnerMaterial);
-    this.ballMesh = new THREE.Mesh( this.ballGeometry, materials.ballMaterial[materialIndex] );
-    this.ballMesh.position.set(Math.sin(rotation)*(-width * 0.1) * 0, width * 1.0, Math.cos(rotation)*(-width * 0.1));
-
+    
     // skew not currently exposed to controls
     const Szy = skew;
     const matrix = new THREE.Matrix4();
@@ -133,7 +127,6 @@ export default class Nacelle extends HullComponent {
     this.group.add( this.nacelleMesh );
     this.group.add( this.bussardMesh );
     this.group.add( this.bussardInnerMesh );
-    // this.group.add( this.ballMesh );
 
     this.computeBoundingBox(this.nacelleGeometry);
   }
@@ -158,7 +151,6 @@ export default class Nacelle extends HullComponent {
       this.nacelleGeometry.dispose();
       this.bussardGeometry.dispose();
       this.bussardInnerGeometry.dispose();
-      this.ballGeometry.dispose();
       for (var i = this.group.children.length - 1; i >= 0; i--) {
         this.group.remove(this.group.children[i]);
       }

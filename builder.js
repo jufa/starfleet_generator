@@ -35,8 +35,8 @@ export default class Builder {
     this.transitionRate = 0.06;
     this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
-    this.materialNames = ['Standard', 'Gold Desk Model', 'Chrome Desk Model'];
-    this.materialIndex = 0;
+    this.materialNames = ['Standard', 'Bleachy', 'Gold Desk Model', 'Chrome Desk Model'];
+    this.materialIndex = 1;
     this.lights = [];
 
 
@@ -160,6 +160,7 @@ export default class Builder {
     this.lights = [];
 
     const lightConfigs = [
+      this.addLightsDefault,
       this.addLightsDefault,
       this.addLightsDeskModel,
       this.addLightsDeskModel,

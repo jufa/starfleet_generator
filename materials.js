@@ -75,7 +75,24 @@ import * as THREE from "three";
     // bumpMap:texSaucerEm,
     // bumpScale: 12,
   });
+  const hullMaterial_02 = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    emissive: 0xffffff,
+    side: THREE.DoubleSide,
+    flatShading: false,
+    wireframe: false,
+    // map: texSaucer,
+    emissiveMap: texSaucerEm,
+    emissiveIntensity: 0.8,
+    metalnessMap: texSaucer,
+    metalness: 0.7,
+    // roughnessMap: texSaucer,
+    roughness: 0.6,
+    // bumpMap:texSaucerEm,
+    // bumpScale: 12,
+  });
   hullMaterial.push(hullMaterial_01);
+  hullMaterial.push(hullMaterial_02);
   hullMaterial.push(goldMaterial);
   hullMaterial.push(chromeMaterial);
 
@@ -112,7 +129,22 @@ import * as THREE from "three";
     // roughnessMap: texBridge,
     roughness: roughness,
   });
+  const bridgeMaterial_02 = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    emissive: 0xffffff,
+    side: THREE.DoubleSide,
+    flatShading: false,
+    wireframe: false,
+    // map: texSaucer,
+    emissiveMap: texBridgeEm,
+    emissiveIntensity: 0.7,
+    metalnessMap: texBridge,
+    metalness: 0.6,
+    // roughnessMap: texBridge,
+    roughness: 0.6,
+  });
   bridgeMaterial.push(bridgeMaterial_01);
+  bridgeMaterial.push(bridgeMaterial_02);
   bridgeMaterial.push(goldMaterial);
   bridgeMaterial.push(chromeMaterial);
 
@@ -150,7 +182,22 @@ import * as THREE from "three";
     // roughnessMap: texNotchSp,
     roughness: roughness,
   });
+  const notchMaterial_02 = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    emissive: 0xffffff,
+    side: THREE.DoubleSide,
+    flatShading: false,
+    wireframe: false,
+    // map: texNotch,
+    emissiveMap: texNotchEm,
+    emissiveIntensity: 1.0,
+    metalnessMap: texNotchSp,
+    metalness: 0.5,
+    // roughnessMap: texNotchSp,
+    roughness: roughness,
+  });
   notchMaterial.push(notchMaterial_01);
+  notchMaterial.push(notchMaterial_02);
   notchMaterial.push(goldMaterial);
   notchMaterial.push(chromeMaterial);
 
@@ -187,7 +234,22 @@ import * as THREE from "three";
     // roughnessMap: texEng,
     roughness: roughness,
   });
+  const engMaterial_02 = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    emissive: 0xffffff,
+    emissiveMap: texEngEm,
+    emissiveIntensity: 0.7,
+    side: THREE.DoubleSide,
+    flatShading: false,
+    wireframe: false,
+    // map: texEng,
+    metalnessMap: texEngSp,
+    metalness: 0.3,
+    // roughnessMap: texEng,
+    roughness: roughness,
+  });
   engMaterial.push(engMaterial_01);
+  engMaterial.push(engMaterial_02);
   engMaterial.push(goldMaterial);
   engMaterial.push(chromeMaterial);
 
@@ -226,7 +288,24 @@ import * as THREE from "three";
     // normalMap: texNeckNm,
     // normalScale: new THREE.Vector2(0.5, 0.5),
   });
+  const neckMaterial_02 = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    emissive: 0xffffff,
+    // emissiveMap: texNeckEm,
+    emissiveIntensity: 0.0,
+    side: THREE.DoubleSide,
+    flatShading: false,
+    wireframe: false,
+    // map: texNeck,
+    metalnessMap: texNeckSp,
+    metalness: 0.3,
+    // roughnessMap: texNeck,
+    roughness: roughness,
+    // normalMap: texNeckNm,
+    // normalScale: new THREE.Vector2(0.5, 0.5),
+  });
   neckMaterial.push(neckMaterial_01);
+  neckMaterial.push(neckMaterial_02);
   neckMaterial.push(goldMaterial);
   neckMaterial.push(chromeMaterial);
   
@@ -272,7 +351,23 @@ import * as THREE from "three";
     // roughnessMap: texPylon,
     roughness: roughness,
   });
+  const pylonMaterial_02 = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    // emissive: 0xffffff,
+    side: THREE.DoubleSide,
+    // flatShading: true,
+    // wireframe: true,
+    // wireframeLineWidth: 10,
+    // map: texPylon,
+    metalnessMap: texPylonSp,
+    metalness: 1.0,
+    // emissiveMap: texPylonEm,
+    // emissiveIntensity: 0.2,
+    // roughnessMap: texPylon,
+    roughness: roughness,
+  });
   pylonMaterial.push(pylonMaterial_01);
+  pylonMaterial.push(pylonMaterial_02);
   pylonMaterial.push(goldMaterial);
   pylonMaterial.push(chromeMaterial);
 
@@ -312,7 +407,22 @@ import * as THREE from "three";
     metalness: 0.8,
     roughness: roughness,
   });
+  const nacelleMaterial_02 = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    emissive: 0xccffff,
+    side: THREE.DoubleSide,
+    flatShading: false,
+    wireframe: false,
+    // map: texNacelle,
+    // roughnessMap: texNacelle,
+    emissiveMap: texNacelleEm,
+    emissiveIntensity: 0.8,
+    metalnessMap: texNacelleSp,
+    metalness: 0.7,
+    roughness: 0.6,
+  });
   nacelleMaterial.push(nacelleMaterial_01);
+  nacelleMaterial.push(nacelleMaterial_02);
   nacelleMaterial.push(goldMaterial);
   nacelleMaterial.push(chromeMaterial);
 
@@ -348,7 +458,23 @@ import * as THREE from "three";
     // bumpMap: texDishSp,
     // bumpScale: 0.09,
   } );
+  const deflectorMaterial_02 = new THREE.MeshStandardMaterial( {
+    color: 0xffffff,
+    emissive: 0x99ddff,
+    emissiveMap: texDishEm,
+    emissiveIntensity: 3.0,
+    side: THREE.DoubleSide,
+    flatShading: false,
+    // map: texDish,
+    // metalnessMap: texDishSp,
+    metalness: 0.9,
+    // roughnessMap: texDish,
+    roughness: 1.0,
+    // bumpMap: texDishSp,
+    // bumpScale: 0.09,
+  } );
   deflectorMaterial.push(deflectorMaterial_01);
+  deflectorMaterial.push(deflectorMaterial_02);
   deflectorMaterial.push(goldMaterial);
   deflectorMaterial.push(chromeMaterial);
 
@@ -373,25 +499,20 @@ import * as THREE from "three";
   });
 
   const bussardMaterial_02 = new THREE.MeshStandardMaterial({
-    color: 0x000000,
-    emissive: 0xff0000,
-    emissiveIntensity: 4,
-    opacity: 0.5,
-    transparent: false,
+    color: 0x00ffff,
+    emissive: 0x99aaff,
+    emissiveIntensity: 0.2,
+    opacity: 0.6,
+    transparent: true,
     flatShading: false,
-    // map: texBussard,
-    emissiveMap: texBussard,
-    // metalnessMap: texBussard,
-    // roughnessMap: texBussard,
-    // alphaMap: tex,
-    // alphaTest: -0.01,
-    // bumpMap: tex,
-    // bumpScale: 1.0,
-    metalness: 0.6,
-    roughness: 0.5,
+    metalnessMap: texBussard,
+    roughnessMap: texBussard,
+    metalness: 0,
+    roughness: 0.7,
   });
 
   bussardMaterial.push(bussardMaterial_01);
+  bussardMaterial.push(bussardMaterial_02);
   bussardMaterial.push(goldMaterial);
   bussardMaterial.push(chromeMaterial);
   
@@ -413,32 +534,27 @@ import * as THREE from "three";
     metalness: 0.6,
     roughness: 0.5,
   });
-
-
-
-  bussardInnerMaterial.push(bussardInnerMaterial_01);
-  bussardInnerMaterial.push(goldMaterial);
-  bussardInnerMaterial.push(chromeMaterial);
-
-  export const ballMaterial = [];
-  const ballMaterial_01 = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    emissive: 0xfffffff,
-    emissiveIntensity: 0,
+  const bussardInnerMaterial_02 = new THREE.MeshStandardMaterial({
+    color: 0x000000,
+    emissive: 0x99ffff,
+    emissiveIntensity: 2.2,
     transparent: false,
     flatShading: false,
-    // map: texBussard,
-    // emissiveMap: texBussard,
+    // opacity: 0.05,
+    // map: tex,
+    emissiveMap: texBussard.clone(),
     metalnessMap: texBussard,
     // roughnessMap: texBussard,
-    // alphaMap: tex,
-    // alphaTest: -0.01,
+    alphaMap: texBussard,
+    alphaTest: 0.01,
     // bumpMap: tex,
     // bumpScale: 1.0,
     metalness: 0.6,
-    roughness: 0.7,
+    roughness: 1.0,
   });
 
-  ballMaterial.push(ballMaterial_01);
-  ballMaterial.push(goldMaterial);
-  ballMaterial.push(chromeMaterial);
+  bussardInnerMaterial.push(bussardInnerMaterial_01);
+  bussardInnerMaterial.push(bussardInnerMaterial_02);
+  bussardInnerMaterial.push(goldMaterial);
+  bussardInnerMaterial.push(chromeMaterial);
+
