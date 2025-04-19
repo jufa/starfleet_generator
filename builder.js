@@ -32,7 +32,7 @@ export default class Builder {
     this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
     this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
     this.predefinedShipTransitionFrames = 60*2; // the total number of frames to do the transition animation
-    this.transitionRate = 0.05;
+    this.transitionRate = 0.06;
     this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
     this.materialNames = ['Standard', 'Gold Desk Model', 'Chrome Desk Model'];
@@ -55,13 +55,13 @@ export default class Builder {
         thickness: [4, 1, 10, 0.01],
         widthRatio: [1, 0.01, 10, 0.01],
         pointiness: [0.0, -1.0, 1.5, 0.01],
-        segments: [64, 3, 64, 1],
+        // segments: [64, 3, 64, 1],
         bridgeThickness:  [0.8, 0.5, 9, 0.01],
         bridgeRadius: [0.1, 0.01, 1.2, 0.01],
         bridgeWidthRatio: [1, 0.01, 2, 0.01],
         bridgeZ: [-3.0, -1, 3, 0.01],
         bridgeY: [0, -1, 1, 0.01],
-        bridgeSegments: [64, 3, 64, 1],
+        // bridgeSegments: [64, 3, 64, 1],
         notchAngle: [0, 0, Math.PI, 0.01],
         
       },
@@ -83,8 +83,9 @@ export default class Builder {
         widthRatio: [1, 0.1, 10, 0.01],
         skew: [0, -5, 5, 0.01],
         // segments: [32, 3, 32, 1],
-        undercut: [0, 0, 1.0, 0.01],
+        undercut: [0.75, 0, 1.0, 0.01],
         undercutStart: [0.7, 0, 1.0, 0.01],
+        undercutCurve: [2, 1, 10, 0.01],
         dishRadius: [1, 0.3, 1.1, 0.01],
         dishInset: [0, 0, 2.0, 0.01],
       },
@@ -95,9 +96,11 @@ export default class Builder {
         length: [12, 1, 50, 0.01],
         radius: [1, 0.2, 12, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
-        rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
+        rotation: [0, -Math.PI, Math.PI, 0.01],
         // segments: [32, 3, 32, 1],
         // skew: [0, -1.5, 1.5, 0.01],
+        undercutStart: [0.9, 0.0, 1.0, 0.01],
+        undercut: [0.75, 0, 1.0, 0.01],
       },
       pylon: {
         nacelleForeOffset: [0.3, -0.3, 1.5, 0.01],
@@ -114,9 +117,11 @@ export default class Builder {
         length: [12, 1, 50, 0.01],
         radius: [1, 0.2, 12, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
-        rotation: [0, -Math.PI / 2, Math.PI / 2, 0.01],
+        rotation: [0, -Math.PI, Math.PI, 0.01],
         // segments: [32, 3, 32, 1],
         // skew: [0, -1.5, 1.5, 0.01],
+        undercutStart: [0.9, 0.0, 1.0, 0.01],
+        undercut: [0.75, 0, 1.0, 0.01],
       },
       boomLower: {
       },
@@ -184,7 +189,7 @@ export default class Builder {
     this.scene.add( this.lights[ 1 ] );
     this.scene.add( this.lights[ 2 ] );
     this.scene.add( this.lights[ 3 ] );
-    this.camera.add( this.lights[ 4 ] );
+    // this.camera.add( this.lights[ 4 ] );
     // this.scene.add( this.camera );
   };
 
@@ -207,7 +212,7 @@ export default class Builder {
     this.scene.add( this.lights[ 1 ] );
     this.scene.add( this.lights[ 2 ] );
     this.scene.add( this.lights[ 3 ] );
-    this.camera.add( this.lights[ 4 ] );
+    // this.camera.add( this.lights[ 4 ] );
     // this.scene.add( this.camera );
   };
 
@@ -304,8 +309,8 @@ export default class Builder {
       bridgeZ: controlParams.primary_bridgeZ,
       bridgeY: controlParams.primary_bridgeY,
       notchAngle: controlParams.primary_notchAngle,
-      // segments: controlParams.primary_segments,
-      // bridgeSegments: controlParams.primary_bridgeSegments,
+      segments: controlParams.primary_segments,
+      bridgeSegments: controlParams.primary_bridgeSegments,
       materialIndex: this.materialIndex,
     });
     this.primary.group.position.set(0.0, controlParams.primary_y, controlParams.primary_z);
@@ -319,6 +324,8 @@ export default class Builder {
     let rotation = controlParams.nacelle_rotation;
     let segments = controlParams.nacelle_segments || 32;
     let skew = controlParams.nacelle_skew || 0;
+    let undercutStart = controlParams.nacelle_undercutStart || 0;
+    let undercut = controlParams.nacelle_undercut || 0;
 
     let separation2 = controlParams.nacelleLower_x * 2.0;
     let aft2 = controlParams.nacelleLower_y;
@@ -329,29 +336,31 @@ export default class Builder {
     let rotation2 = controlParams.nacelleLower_rotation;
     let segments2 = controlParams.nacelleLower_segments || 32;
     let skew2 = controlParams.nacelleLower_skew || 0;
+    let undercutStart2 = controlParams.nacelleLower_undercutStart || 0;
+    let undercut2 = controlParams.nacelleLower_undercut || 0;
 
     this.nacelleUpperPort.group.visible = this.controlParams.nacelle_toggle;
-    this.nacelleUpperPort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation, segments: segments, skew: skew, materialIndex: this.materialIndex});
+    this.nacelleUpperPort.update({length: length, width: width, widthRatio: widthRatio, rotation: rotation, segments: segments, skew: skew, materialIndex: this.materialIndex, undercutStart: undercutStart, undercut: undercut});
     this.nacelleUpperPort.group.position.set(separation, -aft-length, -height);
 
     this.nacelleUpperStarboard.group.visible = this.controlParams.nacelle_toggle;
-    this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation, segments: segments, skew: skew, materialIndex: this.materialIndex});
+    this.nacelleUpperStarboard.update({length: length, width: width, widthRatio: widthRatio, rotation: -rotation, segments: segments, skew: skew, materialIndex: this.materialIndex, undercutStart: undercutStart, undercut: undercut});
     this.nacelleUpperStarboard.group.position.set(-separation, -aft-length, -height);
     
     this.nacelleLowerPort.group.visible = this.controlParams.nacelleLower_toggle;
-    this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex});
+    this.nacelleLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex, undercutStart: undercutStart2, undercut: undercut2});
     this.nacelleLowerPort.group.position.set(separation2, -aft2-length2, height2);
 
     this.nacelleLowerStarboard.group.visible = this.controlParams.nacelleLower_toggle;
-    this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex});
+    this.nacelleLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex, undercutStart: undercutStart2, undercut: undercut2});
     this.nacelleLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
 
     this.boomLowerPort.group.visible = this.controlParams.boomLower_toggle;
-    this.boomLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex });
+    this.boomLowerPort.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex, undercutStart: undercutStart2, undercut: undercut2,});
     this.boomLowerPort.group.position.set(separation2, -aft2-length2, height2);
 
     this.boomLowerStarboard.group.visible = this.controlParams.boomLower_toggle;
-    this.boomLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex });
+    this.boomLowerStarboard.update({length: length2, width: width2, widthRatio: widthRatio2, rotation: -rotation2, segments: segments2, skew: skew2, materialIndex: this.materialIndex, undercutStart: undercutStart2, undercut: undercut2});
     this.boomLowerStarboard.group.position.set(-separation2, -aft2-length2, height2);
 
 
@@ -362,9 +371,10 @@ export default class Builder {
       width: controlParams.engineering_radius,
       widthRatio: controlParams.engineering_widthRatio,
       skew: controlParams.engineering_skew,
-      segments: 36, //controlParams.engineering_segments,
+      segments: controlParams.engineering_segments,
       undercut: controlParams.engineering_undercut,
       undercutStart: controlParams.engineering_undercutStart,
+      undercutCurve: controlParams.engineering_undercutCurve,
       dishRadius: controlParams.engineering_dishRadius,
       dishInset: controlParams.engineering_dishInset,
       materialIndex: this.materialIndex,

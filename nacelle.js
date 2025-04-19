@@ -27,6 +27,8 @@ export default class Nacelle extends HullComponent {
     segments=32,
     skew=0,
     materialIndex=0,
+    undercutStart=0.0,
+    undercut=0.0,
   }) {
     
     this.clear();
@@ -36,7 +38,7 @@ export default class Nacelle extends HullComponent {
       new THREE.Vector2( 0.0, 0.0 )
     ];
 
-    var nacellePointCount = 5.0;
+    var nacellePointCount = 40.0;
     var r = 0.0;
     
     for ( var i = 0; i <= nacellePointCount; i++ ) {  
@@ -71,9 +73,29 @@ export default class Nacelle extends HullComponent {
         )
       );
     }
-    
 
     this.nacelleGeometry = new THREE.LatheGeometry(nacellePoints, segments, Math.PI*0);
+    // undercut plasma exhaust sat rear bottom:
+    
+    const positions = this.nacelleGeometry.attributes.position.array;
+    for (let i = 0; i < positions.length; i += 3) {
+      let y = positions[i + 1]; // Get Y value
+      let z = positions[i + 2]; // Get Z value
+      let zNormalized = z / width;
+      let yNormalized = y / length;
+      let compression = 1.0;
+      let offsetZ = 0.0;
+      let extensionY = 0.0;
+      if (yNormalized < (1.0 - undercutStart) && zNormalized >= 0.0) {
+        let compressionAmount = 1.0 + (yNormalized - (1-undercutStart))/(1-undercutStart);
+        compressionAmount = compressionAmount**2.0 + (1.0 - undercut);
+        compression = Math.min(1.0, compressionAmount);
+      }
+      let newZ = z * compression; 
+      positions[i + 2] = newZ;
+    }
+    
+    this.nacelleGeometry.attributes.position.needsUpdate = true;
     this.nacelleGeometry.scale(widthRatio, 1.0, 1.0);
     this.nacelleGeometry.rotateY(rotation);
 
@@ -85,12 +107,19 @@ export default class Nacelle extends HullComponent {
     this.bussardInnerGeometry.scale(widthRatio, 1.0, 1.0);
     this.bussardInnerGeometry.rotateY(rotation);
 
+    this.ballGeometry = new THREE.SphereGeometry(width/2, 16, 16, 0);
+    this.ballGeometry.scale(widthRatio, 2, 1);
+    this.ballGeometry.rotateY(rotation);
+
     this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, materials.nacelleMaterial[materialIndex] );
     this.bussardMesh = new THREE.Mesh( this.bussardGeometry, materials.bussardMaterial[materialIndex] );
     this.bussardInnerMaterial = materials.bussardInnerMaterial[materialIndex].clone();
     this.bussardInnerMaterial.emissiveMap = materials.bussardInnerMaterial[materialIndex].emissiveMap.clone();
     this.bussardInnerMesh = new THREE.Mesh( this.bussardInnerGeometry, this.bussardInnerMaterial);
+    this.ballMesh = new THREE.Mesh( this.ballGeometry, materials.ballMaterial[materialIndex] );
+    this.ballMesh.position.set(Math.sin(rotation)*(-width * 0.1) * 0, width * 1.0, Math.cos(rotation)*(-width * 0.1));
 
+    // skew not currently exposed to controls
     const Szy = skew;
     const matrix = new THREE.Matrix4();
     matrix.set(   1,     0,    0,  0,
@@ -100,10 +129,11 @@ export default class Nacelle extends HullComponent {
     this.nacelleGeometry.applyMatrix4( matrix );
     this.bussardGeometry.applyMatrix4( matrix );
     this.bussardInnerGeometry.applyMatrix4( matrix );
-
+  
     this.group.add( this.nacelleMesh );
     this.group.add( this.bussardMesh );
     this.group.add( this.bussardInnerMesh );
+    // this.group.add( this.ballMesh );
 
     this.computeBoundingBox(this.nacelleGeometry);
   }
@@ -128,6 +158,7 @@ export default class Nacelle extends HullComponent {
       this.nacelleGeometry.dispose();
       this.bussardGeometry.dispose();
       this.bussardInnerGeometry.dispose();
+      this.ballGeometry.dispose();
       for (var i = this.group.children.length - 1; i >= 0; i--) {
         this.group.remove(this.group.children[i]);
       }

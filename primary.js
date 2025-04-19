@@ -32,6 +32,7 @@ export default class Primary extends HullComponent{
     bridgeSegments=64,
     materialIndex=0,
   }) {
+    bridgeSegments = segments = 64;
 
     this.clear();
 

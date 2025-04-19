@@ -282,9 +282,9 @@ import * as THREE from "three";
   texNacelle.wrapT = THREE.MirroredRepeatWrapping;
   texNacelle.repeat.set( 2, 1 );
   texNacelle.rotation = nacelleDefaultRotation;
-  // texNacelle.center.set(0.0, 0.5); // Set rotation center to the middle of the texture
+  texNacelle.offset.set(0.0, 0.0); // Set rotation center to the middle of the texture
 
-  var texNacelleEm = new THREE.TextureLoader().load( "./images/nacelle_em.png");
+  var texNacelleEm = new THREE.TextureLoader().load( "./images/nacelle_em2.png");
   texNacelleEm.wrapS = THREE.MirroredRepeatWrapping;
   texNacelleEm.wrapT = THREE.MirroredRepeatWrapping;
   texNacelleEm.repeat.set( 2, 1 );
@@ -420,4 +420,25 @@ import * as THREE from "three";
   bussardInnerMaterial.push(goldMaterial);
   bussardInnerMaterial.push(chromeMaterial);
 
+  export const ballMaterial = [];
+  const ballMaterial_01 = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    emissive: 0xfffffff,
+    emissiveIntensity: 0,
+    transparent: false,
+    flatShading: false,
+    // map: texBussard,
+    // emissiveMap: texBussard,
+    metalnessMap: texBussard,
+    // roughnessMap: texBussard,
+    // alphaMap: tex,
+    // alphaTest: -0.01,
+    // bumpMap: tex,
+    // bumpScale: 1.0,
+    metalness: 0.6,
+    roughness: 0.7,
+  });
 
+  ballMaterial.push(ballMaterial_01);
+  ballMaterial.push(goldMaterial);
+  ballMaterial.push(chromeMaterial);

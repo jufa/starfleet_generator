@@ -28,6 +28,7 @@ export default class Engineering extends HullComponent {
     segments = 32,
     undercut = 0.0,
     undercutStart = 0.0,
+    undercutCurve = 1.0,
     dishRadius = 1.0,
     dishInset = 0.0,
     materialIndex = 0,
@@ -43,7 +44,7 @@ export default class Engineering extends HullComponent {
 
     // engineering hull
     var engineeringPoints = [new THREE.Vector2(0, 0)];
-    var engineeringPointCount = 10;
+    var engineeringPointCount = 40;
     for ( var i = 0; i <= engineeringPointCount; i ++ ) {
       engineeringPoints.push(
         new THREE.Vector2(
@@ -90,13 +91,15 @@ export default class Engineering extends HullComponent {
     for (let i = 0; i < positions.length; i += 3) {
       let y = positions[i + 1]; // Get Y value
       let z = positions[i + 2]; // Get Z value
-      let zNormalized = z / this.width;
-      let yNormalized = y / this.length;
+      let zNormalized = z / width;
+      let yNormalized = y / length;
       let compression = 1.0;
-      if (zNormalized >= 0.0 && yNormalized < (1.0 - undercutStart)) {
-        compression = (1.0 - undercut);
+      let offsetZ = 0.0;
+      if ((yNormalized < (1.0 - undercutStart) && zNormalized >= 0.0)) {
+        let compressionAmount = 1.0 + (yNormalized - (1-undercutStart))/(1-undercutStart);
+        compressionAmount = compressionAmount**undercutCurve + (1.0 - undercut);
+        compression = Math.min(1.0, compressionAmount) ;
       }
-      // let compression = (yNormalized > (1.0 - undercutStart) || zNormalized <= 0.0) ? 1.0 : (1.0 - undercut);
       let newZ = z * compression; // Stretch along the Z-axis
       positions[i + 2] = newZ; // Update Z position
     }
