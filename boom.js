@@ -25,6 +25,8 @@ export default class Boom extends HullComponent {
     segments=32,
     skew=0,
     materialIndex=0,
+    undercutStart=0.0,
+    undercut=0.0,
   }) {
 
     this.clear();
@@ -60,6 +62,25 @@ export default class Boom extends HullComponent {
     }
 
     this.boomGeometry = new THREE.LatheGeometry(boomPoints, segments);
+
+    const positions = this.boomGeometry.attributes.position.array;
+    for (let i = 0; i < positions.length; i += 3) {
+      let y = positions[i + 1]; // Get Y value
+      let z = positions[i + 2]; // Get Z value
+      let zNormalized = z / width;
+      let yNormalized = y / length;
+      let compression = 1.0;
+      let offsetZ = 0.0;
+      let extensionY = 0.0;
+      if (yNormalized < (1.0 - undercutStart) && zNormalized >= 0.0) {
+        let compressionAmount = 1.0 + (yNormalized - (1-undercutStart))/(1-undercutStart);
+        compressionAmount = compressionAmount**2.0 + (1.0 - undercut);
+        compression = Math.min(1.0, compressionAmount);
+      }
+      let newZ = z * compression; 
+      positions[i + 2] = newZ;
+    }
+
     this.boomGeometry.scale(widthRatio, 1.1, 1.1);
     this.boomGeometry.rotateY(rotation);
 
