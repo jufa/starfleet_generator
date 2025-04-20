@@ -35,7 +35,7 @@ export default class Builder {
     this.transitionRate = 0.06;
     this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
-    this.materialNames = ['Standard', 'Bleachy', 'Gold Desk Model', 'Chrome Desk Model'];
+    this.materialNames = ['Standard', 'Bleachy', 'Grid31', 'Gold Desk Model', 'Chrome Desk Model'];
     this.materialIndex = 0;
     this.lights = [];
 
@@ -160,6 +160,7 @@ export default class Builder {
     this.lights = [];
 
     const lightConfigs = [
+      this.addLightsDefault,
       this.addLightsDefault,
       this.addLightsDefault,
       this.addLightsDeskModel,
@@ -557,6 +558,8 @@ export default class Builder {
     for (let i in nacelles) {
       nacelles[i].rotateBussard(angle);
     }
+
+    // this.ship.rotateZ(0.003);
 
     this.controls.update( shipBuilder.clock.getDelta() );
     // this.renderer.render( this.scene, this.camera );
