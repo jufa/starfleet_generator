@@ -31,11 +31,11 @@ export default class Builder {
     this.currentShip = {}; // storage of currently selected predefined ship params independent of control parmas
     this.targetParams = {}; // if a new predefined ship is selected, the target params are stored here
     this.predefinedShipTransitionFrameCounter = 0; // this is decrement to 0 during the predefined ship transition animation
-    this.predefinedShipTransitionFrames = 60*2; // the total number of frames to do the transition animation
-    this.transitionRate = 0.06;
+    this.predefinedShipTransitionFrames = 60*1; // the total number of frames to do the transition animation
+    this.transitionRate = 0.08;
     this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
-    this.materialNames = ['Standard', 'Bleachy', 'Grid31', 'Gold Desk Model', 'Chrome Desk Model'];
+    this.materialNames = ['Standard', 'Bleachy', 'Grid32', 'Gold Desk Model', 'Chrome Desk Model'];
     this.materialIndex = 0;
     this.lights = [];
 
@@ -706,11 +706,11 @@ export default class Builder {
     for (var param in this.targetParams) {
       let target = this.targetParams[param];
       let current = this.controlParams[param];
-      let delta = 0.0;
+      let delta = (target - current)
       if (this.predefinedShipTransitionFrameCounter <= 0) {
         delta = (target - current);
       } else {
-        delta = (target - current) * this.transitionRate;
+        delta = delta * this.transitionRate;
       }
       this.controlParams[param] = current + delta;
     }
