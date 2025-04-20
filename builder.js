@@ -459,7 +459,7 @@ export default class Builder {
     this.btnScreenshot = document.getElementById('screenshot');
 
     // camera & controls
-    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 5, 2000 );
+    this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 5, 2000 );
     this.camera.position.z = 50;
     this.controls = new OrbitControls( this.camera, this.container );
     this.controls.enableDamping = true;
@@ -871,9 +871,6 @@ export default class Builder {
     utilsFolder.add({ scale_up: this.rescale.bind(this, 1) }, 'scale_up').name('SCALE UP');
     utilsFolder.add({ scale_down: this.rescale.bind(this, -1) }, 'scale_down').name('SCALE DOWN');
 
-    // Material selector:
-    const dummy = {skin: this.materialNames[this.materialIndex]};
-    utilsFolder.add(dummy, 'skin', this.materialNames).name("SKIN").onChange( (value) => { this.handleMaterialIndexChange(value) } );
 
     // predefined ships:
     this.currentShip.name = this.predefinedShips[0].name;
@@ -884,6 +881,10 @@ export default class Builder {
         this.setPredefinedShip(newShipName);
       }.bind(this)
     );
+
+    // Material selector:
+    const dummy = {skin: this.materialNames[this.materialIndex]};
+    gui.add(dummy, 'skin', this.materialNames).name("SKIN").onChange( (value) => { this.handleMaterialIndexChange(value) } );
 
     // params:
     const that = this;
