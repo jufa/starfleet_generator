@@ -101,7 +101,7 @@ import * as THREE from "three";
     emissiveMap: texSaucerEm,
     emissiveIntensity: 1.1,
     metalnessMap: texSaucer,
-    metalness: 0.7,
+    metalness: 1.0,
     // roughnessMap: texSaucer,
     roughness: 0.6,
     // bumpMap:texSaucerEm,
@@ -170,7 +170,7 @@ import * as THREE from "three";
     emissiveMap: texBridgeEm,
     emissiveIntensity: 0.7,
     metalnessMap: texBridge,
-    metalness: 0.6,
+    metalness: 1,
     // roughnessMap: texBridge,
     roughness: 0.6,
   });
@@ -238,7 +238,7 @@ import * as THREE from "three";
     emissiveMap: texNotchEm,
     emissiveIntensity: 1.0,
     metalnessMap: texNotchSp,
-    metalness: 0.5,
+    metalness: 1.0,
     // roughnessMap: texNotchSp,
     roughness: roughness,
   });
@@ -305,7 +305,7 @@ import * as THREE from "three";
     wireframe: false,
     // map: texEng,
     metalnessMap: texEngSp,
-    metalness: 0.3,
+    metalness: 1,
     // roughnessMap: texEng,
     roughness: roughness,
   });
@@ -376,7 +376,7 @@ import * as THREE from "three";
     wireframe: false,
     // map: texNeck,
     metalnessMap: texNeckSp,
-    metalness: 0.3,
+    metalness: 1,
     // roughnessMap: texNeck,
     roughness: roughness,
     // normalMap: texNeckNm,
@@ -411,8 +411,16 @@ import * as THREE from "three";
   texPylonEm.wrapT = THREE.MirroredRepeatWrapping;
   texPylonEm.rotation = rotation;
   texPylonEm.repeat.set(1, 1);
-  texPylonEm.offset.set(0.05, 0.0);
+  texPylonEm.offset.set(0.0, 0.0);
   texPylonEm.colorSpace = THREE.SRGBColorSpace
+
+  var texPylonSp_03 = new THREE.TextureLoader().load( "./images/pylonEm2.png");
+  texPylonSp_03.wrapS = THREE.MirroredRepeatWrapping;
+  texPylonSp_03.wrapT = THREE.MirroredRepeatWrapping;
+  texPylonSp_03.rotation = rotation;
+  texPylonSp_03.repeat.set(2, 2);
+  texPylonSp_03.offset.set(0.0, 0.0);
+  texPylonSp_03.colorSpace = THREE.SRGBColorSpace
 
   export const pylonMaterial = [];
   const pylonMaterial_01 = new THREE.MeshStandardMaterial({
@@ -453,7 +461,7 @@ import * as THREE from "three";
     // wireframe: true,
     // wireframeLineWidth: 10,
     // map: texPylon,
-    metalnessMap: texPylonSp,
+    metalnessMap: texPylonSp_03,
     metalness: 1.0,
     emissiveMap: texPylonEm,
     emissiveIntensity: 1,
@@ -527,7 +535,7 @@ import * as THREE from "three";
     emissiveMap: texNacelleEm,
     emissiveIntensity: 0.8,
     metalnessMap: texNacelleSp,
-    metalness: 0.7,
+    metalness: 1,
     roughness: 0.6,
   });
   nacelleMaterial.push(nacelleMaterial_01);
