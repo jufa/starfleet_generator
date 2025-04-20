@@ -5,13 +5,14 @@ import * as materials from './materials.js';
 
 
 export default class Neck extends HullComponent {
-  constructor({ primary, engineering }) {
+  constructor({ primary, engineering, name }) {
     super();
     this.group = new THREE.Group();
     this.geometry = {};
     this.mesh = {};
     this.primary = primary;
     this.engineering = engineering;
+    this.name = name;
 
     return this;
   }
@@ -177,6 +178,7 @@ export default class Neck extends HullComponent {
     this.geometry.uvsNeedUpdate = true;
 
     this.mesh = new THREE.Mesh( this.geometry, materials.neckMaterial[materialIndex] );
+    this.mesh.name = this.name;
     this.group.add( this.mesh );
   }
 

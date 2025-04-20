@@ -3,7 +3,7 @@ import HullComponent from './hull_component.js';
 import * as materials from './materials.js';
 
 export default class Nacelle extends HullComponent {
-  constructor() {
+  constructor({name}) {
     super();
 
     this.group = new THREE.Group();
@@ -14,6 +14,8 @@ export default class Nacelle extends HullComponent {
 
     this.nacelleMesh = {};
     this.bussardMesh = {};
+
+    this.name = name;
 
     return this;
 
@@ -108,7 +110,9 @@ export default class Nacelle extends HullComponent {
     this.bussardInnerGeometry.rotateY(rotation);
 
     this.nacelleMesh = new THREE.Mesh( this.nacelleGeometry, materials.nacelleMaterial[materialIndex] );
+    this.nacelleMesh.name = this.name + '_nacelle';
     this.bussardMesh = new THREE.Mesh( this.bussardGeometry, materials.bussardMaterial[materialIndex] );
+    this.bussardMesh.name = this.name + '_bussard';
     this.bussardInnerMaterial = materials.bussardInnerMaterial[materialIndex].clone();
     this.bussardInnerMaterial.emissiveMap = materials.bussardInnerMaterial[materialIndex].emissiveMap.clone();
     this.bussardInnerMesh = new THREE.Mesh( this.bussardInnerGeometry, this.bussardInnerMaterial);

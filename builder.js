@@ -38,6 +38,7 @@ export default class Builder {
     this.materialNames = ['Standard', 'Bleachy', 'Grid32', 'Gold Desk Model', 'Chrome Desk Model'];
     this.materialIndex = 0;
     this.lights = [];
+    this.raycaster = new THREE.Raycaster();
 
 
     //prepend user-saved ships:
@@ -192,7 +193,7 @@ export default class Builder {
     this.scene.add( this.lights[ 2 ] );
     this.scene.add( this.lights[ 3 ] );
     // this.camera.add( this.lights[ 4 ] );
-    // this.scene.add( this.camera );
+    this.scene.add( this.camera );
   };
 
   addLightsDeskModel() {
@@ -233,54 +234,59 @@ export default class Builder {
     this.primary = new Primary();
     this.mount(this.ship, this.primary.group);
 
-    this.nacelleUpperPort = new Nacelle();
+    this.nacelleUpperPort = new Nacelle({name: 'nacelleUpperPort'});
     this.mount(this.ship, this.nacelleUpperPort.group);
 
-    this.nacelleUpperStarboard = new Nacelle();
+    this.nacelleUpperStarboard = new Nacelle({name: 'nacelleUpperStarboard'});
     this.mount(this.ship, this.nacelleUpperStarboard.group);
 
-    this.nacelleLowerPort = new Nacelle();
+    this.nacelleLowerPort = new Nacelle({name: 'nacelleLowerPort'});
     this.mount(this.ship, this.nacelleLowerPort.group);
 
-    this.nacelleLowerStarboard = new Nacelle();
+    this.nacelleLowerStarboard = new Nacelle({name: 'nacelleLowerStarboard'});
     this.mount(this.ship, this.nacelleLowerStarboard.group);
 
-    this.engineering = new Engineering();
+    this.engineering = new Engineering({name: 'engineering'});
     this.mount(this.ship, this.engineering.group);
 
-    this.boomLowerPort = new Boom();
+    this.boomLowerPort = new Boom({name: 'boomLowerPort'});
       this.mount(this.ship, this.boomLowerPort.group);
     
-    this.boomLowerStarboard = new Boom();
+    this.boomLowerStarboard = new Boom({name: 'boomLowerStarboard'});
       this.mount(this.ship, this.boomLowerStarboard.group);
 
     this.neck = new Neck({
       primary: this.primary,
       engineering: this.engineering,
+      name: 'neck',
     });
     this.mount(this.ship, this.neck.group);
 
     this.portUpperPylon = new Pylon({
       nacelle: this.nacelleUpperPort,
       engineering: this.engineering,
+      name: 'portUpperPylon',
     });
     this.mount(this.ship, this.portUpperPylon.group);
 
     this.starboardUpperPylon = new Pylon({
       nacelle: this.nacelleUpperStarboard,
       engineering: this.engineering,
+      name: 'starboardUpperPylon',
     });
     this.mount(this.ship, this.starboardUpperPylon.group);
 
     this.portLowerPylon = new Pylon({
       nacelle: this.nacelleLowerPort,
       engineering: this.engineering,
+      name: 'portLowerPylon',
     });
     this.mount(this.ship, this.portLowerPylon.group);
 
     this.starboardLowerPylon = new Pylon({
       nacelle: this.nacelleLowerStarboard,
       engineering: this.engineering,
+      name: 'starboardLowerPylon',
     });
     this.mount(this.ship, this.starboardLowerPylon.group);
 
@@ -529,7 +535,37 @@ export default class Builder {
 
     this.container.innerHTML = "";
     this.container.appendChild( this.renderer.domElement );
+    
+    this.onPointerDown = this.onPointerDown.bind(this);
+    window.addEventListener('pointerdown', this.onPointerDown);
+  }
 
+  onPointerDown(event) {
+    // Normalize mouse coordinates (-1 to +1)
+    const mouse = new THREE.Vector2();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    
+    this.raycaster.setFromCamera(mouse, this.camera);
+    
+    function isEffectivelyVisible(obj) {
+      while (obj) {
+        if (!obj.visible) return false;
+        obj = obj.parent;
+      }
+      return true;
+    }
+
+    const intersects = this.raycaster.intersectObjects(this.scene.children, true).filter((i) => isEffectivelyVisible(i.object));
+    if (intersects.length > 0) {
+      for (let i = 0; i < intersects.length; i++) {
+        const intersect = intersects[i];
+        if (intersect.object.name) {
+          console.log(intersect.object.name);
+          return;
+        }
+      }
+    }
   }
 
   handleWindowResize() {

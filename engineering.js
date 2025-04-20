@@ -3,7 +3,7 @@ import * as materials from './materials.js';
 import HullComponent from './hull_component.js';
 
 export default class Engineering extends HullComponent {
-  constructor() {
+  constructor({name}) {
     super();
 
     this.group = new THREE.Group();
@@ -17,6 +17,8 @@ export default class Engineering extends HullComponent {
 
     //dimensions
     this.dimensions = {};
+
+    this.name = name;
     return this;
   }
 
@@ -124,7 +126,10 @@ export default class Engineering extends HullComponent {
     this.engineeringGeometry.applyMatrix4( matrix );
 
     this.engineeringMesh = new THREE.Mesh( this.engineeringGeometry, materials.engMaterial[materialIndex] );
+    this.engineeringMesh.name = this.name + '_engineering';
     this.deflectoMesh = new THREE.Mesh( this.deflectorGeometry, materials.deflectorMaterial[materialIndex] );
+    this.deflectoMesh.name = this.name + '_deflector';
+    
 
     this.group.add( this.engineeringMesh );
     this.group.add( this.deflectoMesh );

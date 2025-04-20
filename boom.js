@@ -3,7 +3,7 @@ import HullComponent from './hull_component.js';
 import * as materials from './materials.js';
 
 export default class Boom extends HullComponent {
-  constructor() {
+  constructor({name}) {
     super();
 
     this.group = new THREE.Group();
@@ -14,6 +14,8 @@ export default class Boom extends HullComponent {
 
     this.boomMesh = {};
     this.noseMesh = {};
+
+    this.name = name;
 
     return this;
   }
@@ -89,7 +91,9 @@ export default class Boom extends HullComponent {
     this.noseGeometry.rotateY(rotation);
 
     this.boomMesh = new THREE.Mesh( this.boomGeometry, materials.engMaterial[materialIndex] );
+    this.boomMesh.name = this.name;
     this.noseMesh = new THREE.Mesh( this.noseGeometry, materials.engMaterial[materialIndex] );
+    this.noseMesh.name = this.name + '_nose';
 
     const Szy = skew;
     const matrix = new THREE.Matrix4();

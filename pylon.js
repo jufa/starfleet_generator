@@ -4,13 +4,14 @@ import { LoopSubdivision } from 'three-subdivide';
 import * as materials from './materials.js';
 
 export default class Pylon extends HullComponent {
-  constructor({ nacelle, engineering }) {
+  constructor({ nacelle, engineering, name }) {
     super();
     this.group = new THREE.Group();
     this.geometry = {};
     this.mesh = {};
     this.nacelle = nacelle;
     this.engineering = engineering;
+    this.name = name;
 
     return this;
   }
@@ -179,6 +180,7 @@ export default class Pylon extends HullComponent {
 
 
     this.mesh = new THREE.Mesh( this.geometry, materials.pylonMaterial[materialIndex] );
+    this.mesh.name = this.name;
     this.group.add( this.mesh );
   }
 
