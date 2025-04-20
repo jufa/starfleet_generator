@@ -89,10 +89,18 @@
         background-color: #444;
       }
       .lil-gui, .lil-gui.root {
-        --width: 100% !important;
+        /* --width: 100% !important; */
         /* width: 100%; */
-        min-width: 300px;
-        max-width: 600px;
+        /* min-width: 340px; */
+        /* max-width: 800px; */
+        max-width: 500px !important;
+        width: 500px !important;
+        --name-width: 0px;
+        --input-font-size: 10px !important;
+        --slider-knob-width: 10px !important;
+      }
+      .lil-gui input[type=number] {
+        max-width: 0;
       }
       .lil-gui, .lil-gui button { 
         font-size: 16px;
@@ -102,6 +110,12 @@
       }
       .lil-gui button { 
         color: aqua;
+      }
+      @media screen and (max-width: 500px) {
+        .lil-gui, .lil-gui.root {
+          max-width: 100vw !important;
+          width: 100vw !important;
+        }
       }
     </style>
 </head>

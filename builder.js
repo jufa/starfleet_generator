@@ -841,7 +841,7 @@ export default class Builder {
     this.btnPrev.addEventListener('click', function(){ this.prevPredefinedShip() }.bind(this));
     this.btnScreenshot.addEventListener('click', function(){ this.takeScreenshot() }.bind(this));
 
-    this.gui = new dat.GUI( { autoPlace: false, width: 300 } );
+    this.gui = new dat.GUI( { autoPlace: false, touchStyles: false } );
     const gui = this.gui;
     gui.close();
     gui.onOpenClose( changedGUI => {
