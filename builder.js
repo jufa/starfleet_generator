@@ -35,7 +35,7 @@ export default class Builder {
     this.transitionRate = 0.08;
     this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
-    this.materialNames = ['Standard', 'Bleachy', 'Grid32', 'Gold Desk Model', 'Chrome Desk Model'];
+    this.materialNames = ['Standard', 'Bleachy', 'Grid32', 'Gold Desk Model', 'Chrome Desk Model', "Wireframe"];
     this.materialIndex = 0;
     this.lights = [];
     this.raycaster = new THREE.Raycaster();
@@ -166,6 +166,7 @@ export default class Builder {
       this.addLightsDefault,
       this.addLightsDeskModel,
       this.addLightsDeskModel,
+      this.addLightsDefault,
     ];
 
     lightConfigs[configIndex].call(this);
@@ -197,8 +198,8 @@ export default class Builder {
   };
 
   addLightsDeskModel() {
-    const intensity = 55**2;
-    const dist = 60;
+    const intensity = 60**2;
+    const dist = 90;
     this.lights[ 0 ] = new THREE.PointLight( 0xdddddd, intensity*1, 0 );
     this.lights[ 1 ] = new THREE.PointLight( 0x888888, intensity*1, 0 ); //bottom
     this.lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
@@ -215,6 +216,31 @@ export default class Builder {
     this.scene.add( this.lights[ 1 ] );
     this.scene.add( this.lights[ 2 ] );
     this.scene.add( this.lights[ 3 ] );
+    // this.scene.fog = new THREE.FogExp2( 0x000000, 0.004 );
+    // this.camera.add( this.lights[ 4 ] );
+    // this.scene.add( this.camera );
+  };
+
+  addLightsLow() {
+    const intensity = 40**2;
+    const dist = 1000;
+    this.lights[ 0 ] = new THREE.PointLight( 0xdddddd, intensity*1, 0 );
+    this.lights[ 1 ] = new THREE.PointLight( 0x888888, intensity*1, 0 ); //bottom
+    this.lights[ 2 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
+    this.lights[ 3 ] = new THREE.PointLight( 0xffffff, intensity*1, 0 );
+    // this.lights[ 4 ] = new THREE.PointLight( 0xffffff, intensity/2, 0 );
+
+    this.lights[ 0 ].position.set( dist, dist, -dist );
+    this.lights[ 1 ].position.set( -dist, -dist, 0 );
+    this.lights[ 2 ].position.set( 0, 0, dist*2 );
+    this.lights[ 3 ].position.set( dist, -dist, 0 );
+    // this.lights[ 4 ].position.set(0, 20, 0);
+
+    this.scene.add( this.lights[ 0 ] );
+    this.scene.add( this.lights[ 1 ] );
+    this.scene.add( this.lights[ 2 ] );
+    this.scene.add( this.lights[ 3 ] );
+    // this.scene.fog = new THREE.FogExp2( 0x000000, 0.004 );
     // this.camera.add( this.lights[ 4 ] );
     // this.scene.add( this.camera );
   };

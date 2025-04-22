@@ -114,7 +114,9 @@ export default class Nacelle extends HullComponent {
     this.bussardMesh = new THREE.Mesh( this.bussardGeometry, materials.bussardMaterial[materialIndex] );
     this.bussardMesh.name = this.name + '_bussard';
     this.bussardInnerMaterial = materials.bussardInnerMaterial[materialIndex].clone();
-    this.bussardInnerMaterial.emissiveMap = materials.bussardInnerMaterial[materialIndex].emissiveMap.clone();
+    if (this.bussardInnerMaterial.emissiveMap) {
+      this.bussardInnerMaterial.emissiveMap = materials.bussardInnerMaterial[materialIndex].emissiveMap.clone();
+    };
     this.bussardInnerMesh = new THREE.Mesh( this.bussardInnerGeometry, this.bussardInnerMaterial);
     
     // skew not currently exposed to controls
@@ -146,8 +148,10 @@ export default class Nacelle extends HullComponent {
     const worldPos = new THREE.Vector3();
     this.group.getWorldPosition(worldPos);
     const rotationSense = worldPos.x > 0 ? -1 : 1;
-    this.bussardInnerMaterial.emissiveMap.offset.x = rotationSense * rotation;
-    this.bussardInnerMaterial.emissiveMap.offset.y = rotation/8;
+    if (this.bussardInnerMaterial.emissiveMap) { 
+      this.bussardInnerMaterial.emissiveMap.offset.x = rotationSense * rotation;
+      this.bussardInnerMaterial.emissiveMap.offset.y = rotation/8;
+    };
   }
 
   clear(){

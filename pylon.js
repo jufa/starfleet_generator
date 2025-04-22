@@ -178,6 +178,17 @@ export default class Pylon extends HullComponent {
     this.geometry.computeVertexNormals(); // Needed for shading
     this.geometry.uvsNeedUpdate = true;
 
+    const iterations = 1;
+
+    const params = {
+        split:          true,       // optional, default: true
+        uvSmooth:       false,      // optional, default: false
+        preserveEdges:  false,      // optional, default: false
+        flatOnly:       true,      // optional, default: false
+        maxTriangles:   Infinity,   // optional, default: Infinity
+    };
+    
+    // this.geometry = LoopSubdivision.modify(this.geometry, iterations, params);
 
     this.mesh = new THREE.Mesh( this.geometry, materials.pylonMaterial[materialIndex] );
     this.mesh.name = this.name;

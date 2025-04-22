@@ -164,16 +164,16 @@ export default class Neck extends HullComponent {
     this.geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
     this.geometry.computeVertexNormals(); // Needed for shading
 
-    // const iterations = 2;
-    // const params = {
-    //     split:          true,       // optional, default: true
-    //     uvSmooth:       true,      // optional, default: false
-    //     preserveEdges:  true,      // optional, default: false
-    //     flatOnly:       true,      // optional, default: false
-    //     maxTriangles:   Infinity,   // optional, default: Infinity
-    // };
+    const iterations = 1;
+    const params = {
+        split:          true,       // optional, default: true
+        uvSmooth:       true,      // optional, default: false
+        preserveEdges:  true,      // optional, default: false
+        flatOnly:       true,      // optional, default: false
+        maxTriangles:   Infinity,   // optional, default: Infinity
+    };
     // this.geometry = LoopSubdivision.modify(this.geometry, iterations, params);
-    // this.geometry.computeVertexNormals(); // Needed for shading
+    this.geometry.computeVertexNormals(); // Needed for shading
     
     this.geometry.uvsNeedUpdate = true;
 
