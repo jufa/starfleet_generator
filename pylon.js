@@ -25,6 +25,7 @@ export default class Pylon extends HullComponent {
     thickness,
     midpointOffset, //0-1 where 0 is engineering center and 1 is nacelle center, established where the elbow of the pylon is
     materialIndex=0,
+    engineeringZOffset=0,
   }){
 
     this.clear();
@@ -47,7 +48,7 @@ export default class Pylon extends HullComponent {
     let engineeringFore = engineeringAft + engineeringLength;
     let engineeringCenterX = engineering.group.position.x;
     let engineeringCenterY = engineering.group.position.y;
-    let engineeringCenterZ = engineering.group.position.z;
+    let engineeringCenterZ = engineering.group.position.z + engineeringZOffset;
 
     nacelleFore -= nacelleLength * nacelleForeOffset;
     nacelleAft += nacelleLength * nacelleAftOffset;
@@ -57,7 +58,7 @@ export default class Pylon extends HullComponent {
 
     let midCenterX = (nacelle.group.position.x - engineering.group.position.x) * midpointOffset;
     let midCenterY = engineering.group.position.y;
-    let midCenterZ = engineering.group.position.z;
+    let midCenterZ = engineering.group.position.z + engineeringZOffset;
     let midFore = engineeringFore;
     let midAft = engineeringAft;
 

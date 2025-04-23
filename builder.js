@@ -108,6 +108,7 @@ export default class Builder {
         nacelleAftOffset: [0.3, -0.3, 1.5, 0.01],
         engineeringForeOffset: [-0.3, -0.3, 1.5, 0.01],
         engineeringAftOffset: [-0.3, -0.3, 1.5, 0.01],
+        engineeringZOffset: [0, -6, 6, 0.01],
         midPointOffset: [0.01, 0.01, 1.5, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
@@ -131,6 +132,7 @@ export default class Builder {
         nacelleAftOffset: [0.3, -0.3, 1.5, 0.01],
         engineeringForeOffset: [0.3, -0.3, 1.5, 0.01],
         engineeringAftOffset: [0.3, -0.3, 1.5, 0.01],
+        engineeringZOffset: [0, -6, 6, 0.01],
         midPointOffset: [0.01, 0.01, 1.5, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
@@ -426,6 +428,7 @@ export default class Builder {
       midpointOffset: controlParams.pylon_midPointOffset,
       thickness: controlParams.pylon_thickness,
       materialIndex: this.materialIndex,
+      engineeringZOffset: controlParams.pylon_engineeringZOffset,
     });
 
     this.starboardUpperPylon.group.visible = this.controlParams.pylon_toggle;
@@ -437,6 +440,7 @@ export default class Builder {
       midpointOffset: controlParams.pylon_midPointOffset,
       thickness: controlParams.pylon_thickness,
       materialIndex: this.materialIndex,
+      engineeringZOffset: controlParams.pylon_engineeringZOffset,
     });
 
     this.portLowerPylon.group.visible = this.controlParams.pylonLower_toggle;
@@ -448,6 +452,7 @@ export default class Builder {
       midpointOffset: controlParams.pylonLower_midPointOffset,
       thickness: controlParams.pylonLower_thickness,
       materialIndex: this.materialIndex,
+      engineeringZOffset: controlParams.pylonLower_engineeringZOffset,
     });
 
     this.starboardLowerPylon.group.visible = this.controlParams.pylonLower_toggle;
@@ -459,6 +464,7 @@ export default class Builder {
       midpointOffset: controlParams.pylonLower_midPointOffset,
       thickness: controlParams.pylonLower_thickness,
       materialIndex: this.materialIndex,
+      engineeringZOffset: controlParams.pylonLower_engineeringZOffset,
     });
 
     this.neck.group.visible = this.controlParams.neck_toggle;
