@@ -106,8 +106,8 @@ export default class Builder {
       pylon: {
         nacelleForeOffset: [0.3, -0.3, 1.5, 0.01],
         nacelleAftOffset: [0.3, -0.3, 1.5, 0.01],
-        engineeringForeOffset: [-0.3, -0.3, 1.5, 0.01],
-        engineeringAftOffset: [-0.3, -0.3, 1.5, 0.01],
+        engineeringForeOffset: [-0.3, -0.7, 1.5, 0.01],
+        engineeringAftOffset: [-0.3, -0.7, 1.5, 0.01],
         engineeringZOffset: [0, -6, 6, 0.01],
         midPointOffset: [0.01, 0.01, 1.5, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
@@ -130,8 +130,8 @@ export default class Builder {
       pylonLower: {
         nacelleForeOffset: [0.3, -0.3, 1.5, 0.01],
         nacelleAftOffset: [0.3, -0.3, 1.5, 0.01],
-        engineeringForeOffset: [0.3, -0.3, 1.5, 0.01],
-        engineeringAftOffset: [0.3, -0.3, 1.5, 0.01],
+        engineeringForeOffset: [0.3, -0.7, 1.5, 0.01],
+        engineeringAftOffset: [0.3, -0.7, 1.5, 0.01],
         engineeringZOffset: [0, -6, 6, 0.01],
         midPointOffset: [0.01, 0.01, 1.5, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
