@@ -196,6 +196,15 @@ import * as THREE from "three";
     map: texDesk,
   } );
 
+  const goldDishMaterial = new THREE.MeshMatcapMaterial( {
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+    matcap: new THREE.TextureLoader().load( "./images/matcap_gold.jpeg"),
+    map: texDish,
+    bumpMap: texDish,
+    bumpScale: 0.006
+  } );
+
   const porcMaterial = new THREE.MeshMatcapMaterial( {
     color: 0xffffff,
     // emissive: 0xffffff,
@@ -584,13 +593,14 @@ import * as THREE from "three";
     metalness: 0.9,
     roughness: 1.0,
   } );
+
   deflectorMaterial.push(deflectorMaterial_01);
   deflectorMaterial.push(deflectorMaterial_02);
   deflectorMaterial.push(deflectorMaterial_03);
   deflectorMaterial.push(goldMaterial);
   deflectorMaterial.push(chromeMaterial);
   deflectorMaterial.push(wireframeMaterial);
-  deflectorMaterial.push(goldMaterial);
+  deflectorMaterial.push(goldDishMaterial);
 
   export const bussardMaterial = [];
   const bussardMaterial_01 = new THREE.MeshStandardMaterial({
