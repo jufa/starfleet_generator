@@ -16,11 +16,18 @@ import * as THREE from "three";
     "back.jpg",  // -Z (back)
   ]);
 
+  const nacelleDefaultRotation = Math.PI * 0.0;
   const texturePorcEqui = new THREE.TextureLoader().load( './images/porcEqui.jpg' );
   texturePorcEqui.mapping = THREE.EquirectangularReflectionMapping;
   texturePorcEqui.colorSpace = THREE.SRGBColorSpace;
 
-  const nacelleDefaultRotation = Math.PI * 0.0;
+  var texNacellePorc = new THREE.TextureLoader().load( "./images/nacelle_porc.jpg");
+  texNacellePorc.wrapS = THREE.MirroredRepeatWrapping;
+  texNacellePorc.wrapT = THREE.MirroredRepeatWrapping;
+  texNacellePorc.repeat.set( 1, 3 );
+  texNacellePorc.rotation = nacelleDefaultRotation;
+  texNacellePorc.colorSpace = THREE.SRGBColorSpace;
+
   var texNacelle = new THREE.TextureLoader().load( "./images/nacelle.png");
   texNacelle.wrapS = THREE.MirroredRepeatWrapping;
   texNacelle.wrapT = THREE.MirroredRepeatWrapping;
@@ -213,14 +220,32 @@ import * as THREE from "three";
     map: texDesk,
   } );
 
-  const goldDishMaterial = new THREE.MeshMatcapMaterial( {
-    color: 0xffffff,
+  // const goldDishMaterial = new THREE.MeshMatcapMaterial( {
+  //   color: 0xffffff,
+  //   side: THREE.DoubleSide,
+  //   matcap: new THREE.TextureLoader().load( "./images/matcap_gold.jpeg"),
+  //   map: texDish,
+  //   bumpMap: texDish,
+  //   bumpScale: 0.006
+  // } );
+
+  const goldDishMaterial = new THREE.MeshStandardMaterial({
+    color: 0xffaa22,
+    emissive: 0xff9922,
     side: THREE.DoubleSide,
-    matcap: new THREE.TextureLoader().load( "./images/matcap_gold.jpeg"),
+    // matcap: new THREE.TextureLoader().load( "./images/matcap-porcelain-white.jpg"),
+    envMap: texturePorcEqui,
+    envMapIntensity: 4.0,
+    emissiveMap: texSaucerEm,
+    emissiveIntensity: 5.1,
+    roughness: 0.9,
+    roughnessMap: texDishEm,
+    metallessMap: texDish,
+    metalness: 0.9,
     map: texDish,
-    bumpMap: texDish,
-    bumpScale: 0.006
-  } );
+    // bumpMap: texDishSp,
+    // bumpScale: 0.006,
+} );
 
   const porcEnvMapIntesity = 1.5;
 
@@ -228,15 +253,28 @@ import * as THREE from "three";
     color: 0xffffff,
     emissive: 0xffffff,
     side: THREE.DoubleSide,
-    map: texEngPorc,
+    map: texNacellePorc,
     envMap: texturePorcEqui,
     envMapIntensity: porcEnvMapIntesity,
     // emissiveMap: texSaucerEm,
     emissiveIntensity: 0.0,
-    roughnessMap: texEngSp,
-    roughness: 5.9,
+    roughnessMap: texNacelleSp,
+    roughness: 1.5,
     metalness: 0.0,
-    map: tex1963,
+  } );
+
+  const porcNacelleMaterial = new THREE.MeshStandardMaterial( {
+    color: 0xffffff,
+    emissive: 0xaaccff,
+    side: THREE.DoubleSide,
+    map: texNacellePorc,
+    envMap: texturePorcEqui,
+    envMapIntensity: porcEnvMapIntesity,
+    emissiveMap: texNacelleEm,
+    emissiveIntensity: 0.6,
+    roughnessMap: texNacelleSp,
+    roughness: 1.5,
+    metalness: 0.0,
   } );
 
   const porcEngMaterial = new THREE.MeshStandardMaterial( {
@@ -263,8 +301,8 @@ import * as THREE from "three";
       envMapIntensity: porcEnvMapIntesity,
       emissiveMap: texSaucerEm,
       emissiveIntensity: 0.6,
-      roughness: 0.2,
-      metalness: 0.1,
+      roughness: 0.4,
+      metalness: 0.2,
       roughnessMap: texSaucer,
       map: tex1963,
   } );
@@ -597,7 +635,7 @@ import * as THREE from "three";
   nacelleMaterial.push(goldMaterial);
   nacelleMaterial.push(chromeMaterial);
   nacelleMaterial.push(wireframeMaterial);
-  nacelleMaterial.push(porcMaterial);
+  nacelleMaterial.push(porcNacelleMaterial);
 
   export const deflectorMaterial = [];
   const deflectorMaterial_01 = new THREE.MeshStandardMaterial( {

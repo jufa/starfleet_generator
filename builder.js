@@ -536,8 +536,8 @@ export default class Builder {
 
     // renderer
     this.renderer = new THREE.WebGLRenderer({
-      depth: false,
-      antialias: false,
+      depth: true,
+      antialias: true,
       toneMapping: THREE.ACESFilmicToneMapping,
       toneMappingExposure: 2,
       preserveDrawingBuffer: true, // for screenshotting
@@ -556,9 +556,9 @@ export default class Builder {
     // Add UnrealBloomPass
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.7, // Strength
+      0.4, // Strength
       0.0, // Radius
-      0.8 // Threshold
+      0.5 // Threshold
     );
     this.composer.addPass(bloomPass);
 

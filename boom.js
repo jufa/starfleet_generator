@@ -92,7 +92,7 @@ export default class Boom extends HullComponent {
 
     this.boomMesh = new THREE.Mesh( this.boomGeometry, materials.engMaterial[materialIndex] );
     this.boomMesh.name = this.name;
-    this.noseMesh = new THREE.Mesh( this.noseGeometry, materials.engMaterial[materialIndex] );
+    this.noseMesh = new THREE.Mesh( this.noseGeometry, materials.pylonMaterial[materialIndex] );
     this.noseMesh.name = this.name + '_nose';
 
     const Szy = skew;
