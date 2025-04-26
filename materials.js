@@ -48,7 +48,14 @@ import * as THREE from "three";
   texNacelleSp.repeat.set( 1, 3 );
   texNacelleSp.rotation = nacelleDefaultRotation;
 
+  
+  var texNacellePorcEm = new THREE.TextureLoader().load( "./images/nacelle_porc_emmissive.jpg");
+  texNacellePorcEm.wrapS = THREE.MirroredRepeatWrapping;
+  texNacellePorcEm.wrapT = THREE.MirroredRepeatWrapping;
+  texNacellePorcEm.repeat.set( 2, 1 );
+  texNacellePorcEm.rotation =  Math.PI * 1.0;
   const rotation = - Math.PI * 1.0;
+
   var texPylon = new THREE.TextureLoader().load( "./images/pylon.png");
   texPylon.wrapS = THREE.MirroredRepeatWrapping;
   texPylon.wrapT = THREE.MirroredRepeatWrapping;
@@ -370,8 +377,6 @@ import * as THREE from "three";
   hullMaterial.push(wireframeMaterial);
   hullMaterial.push(porcSaucerMaterial);
 
-  
-
   export const bridgeMaterial = [];
   const bridgeMaterial_01 = new THREE.MeshStandardMaterial({
     color: 0xeeeeef,
@@ -681,16 +686,18 @@ import * as THREE from "three";
 
   export const bussardMaterial = [];
   const bussardMaterial_01 = new THREE.MeshStandardMaterial({
-    color: 0x000000,
+    color: 0xff0000,
     emissive: 0xff0000,
-    emissiveIntensity: 2,
-    opacity: 0.4,
+    emissiveIntensity: 0.6,
+    opacity: 0.8,
     transparent: true,
     flatShading: false,
     metalnessMap: texBussard,
     roughnessMap: texBussard,
-    metalness: 1,
-    roughness: 0.9,
+    envMap: texturePorcEqui,
+    envMapIntensity: 10,
+    metalness: 2,
+    roughness: 0.5,
   });
 
   const bussardMaterial_02 = new THREE.MeshStandardMaterial({
@@ -729,16 +736,18 @@ import * as THREE from "three";
   
   export const bussardInnerMaterial = [];
   const bussardInnerMaterial_01 = new THREE.MeshStandardMaterial({
-    color: 0x000000,
-    emissive: 0xff4400,
-    emissiveIntensity: 8,
+    color: 0xffaa00,
+    emissive: 0xffdd00,
+    emissiveIntensity: 2,
     transparent: false,
     flatShading: false,
     emissiveMap: texBussard.clone(),
     metalnessMap: texBussard,
-    roughnessMap: texBussard,
-    metalness: 0.6,
-    roughness: 0.5,
+    // roughnessMap: texBussard,
+    metalness: 0,
+    roughness: 0,
+    alphaMap: texBussard,
+    alphaTest: 0.01,
   });
   const bussardInnerMaterial_02 = new THREE.MeshStandardMaterial({
     color: 0x000000,
