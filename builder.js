@@ -497,6 +497,7 @@ export default class Builder {
     this.btnNext = document.getElementById('next');
     this.btnPrev = document.getElementById('prev');
     this.btnScreenshot = document.getElementById('screenshot');
+    this.btnTexture = document.getElementById('texture-next');
 
     // camera & controls
     this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 5, 2000 );
@@ -539,7 +540,7 @@ export default class Builder {
       depth: true,
       antialias: true,
       toneMapping: THREE.ACESFilmicToneMapping,
-      toneMappingExposure: 2,
+      toneMappingExposure: 1,
       preserveDrawingBuffer: true, // for screenshotting
     });
     this.renderer.setClearColor( this.CLEAR_COLOUR );
@@ -556,9 +557,9 @@ export default class Builder {
     // Add UnrealBloomPass
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.4, // Strength
+      0.5, // Strength
       0.0, // Radius
-      0.5 // Threshold
+      0.7 // Threshold
     );
     this.composer.addPass(bloomPass);
 
@@ -760,6 +761,12 @@ export default class Builder {
     this.shipSelector.setValue(this.predefinedShips[index].name);
   }
 
+  nextTexture() {
+    const materialIndex = (this.materialIndex + 1) % this.materialNames.length;
+    this.materialSelectorControl.setValue(this.materialNames[materialIndex]);
+    // this.handleMaterialIndexChange(this.materialNames[materialIndex]);
+  }
+
   currentShipIndex() {
     return this.predefinedShips.map( function(ship){ return ship.name; } ).indexOf(this.currentShip.name);
   }
@@ -873,6 +880,7 @@ export default class Builder {
     this.btnNext.addEventListener('click', function(){ this.nextPredefinedShip() }.bind(this));
     this.btnPrev.addEventListener('click', function(){ this.prevPredefinedShip() }.bind(this));
     this.btnScreenshot.addEventListener('click', function(){ this.takeScreenshot() }.bind(this));
+    this.btnTexture.addEventListener('click', function(){ this.nextTexture() }.bind(this));
 
     this.gui = new dat.GUI( { autoPlace: false, touchStyles: false } );
     const gui = this.gui;
@@ -956,7 +964,8 @@ export default class Builder {
 
     // Material selector:
     const dummy = {skin: this.materialNames[this.materialIndex]};
-    gui.add(dummy, 'skin', this.materialNames).name("SKIN").onChange( (value) => { this.handleMaterialIndexChange(value) } );
+    this.materialSelectorControl = gui.add(dummy, 'skin', this.materialNames).name("SKIN").onChange( (value) => { this.handleMaterialIndexChange(value) } );
+    console.log("materialSelectorControl: ", this.materialSelectorControl);
 
     // params:
     const that = this;

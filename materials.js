@@ -268,20 +268,24 @@ import * as THREE from "three";
     roughnessMap: texNacelleSp,
     roughness: 1.5,
     metalness: 0.0,
+    bumpMap:texNacellePorc,
+    bumpScale: 0.01,
   } );
 
   const porcNacelleMaterial = new THREE.MeshStandardMaterial( {
     color: 0xffffff,
-    emissive: 0xaaccff,
+    emissive: 0xffffff,
     side: THREE.DoubleSide,
     map: texNacellePorc,
     envMap: texturePorcEqui,
     envMapIntensity: porcEnvMapIntesity,
     emissiveMap: texNacelleEm,
-    emissiveIntensity: 0.6,
+    emissiveIntensity: 0.5,
     roughnessMap: texNacelleSp,
     roughness: 1.5,
     metalness: 0.0,
+    bumpMap: texNacelleSp,
+    bumpScale: 0.009,
   } );
 
   const porcEngMaterial = new THREE.MeshStandardMaterial( {
@@ -297,6 +301,10 @@ import * as THREE from "three";
     roughnessMap: texEngSp,
     roughness: 0.5,
     metalness: 0.1,
+    // normalMap: texEngEm,
+    // normalScale: new THREE.Vector2( 0.1, 0.1 ),
+    bumpMap: texEngSp,
+    bumpScale: 0.001,
   } );
 
   const porcSaucerMaterial = new THREE.MeshStandardMaterial({
@@ -307,20 +315,25 @@ import * as THREE from "three";
       envMap: texturePorcEqui,
       envMapIntensity: porcEnvMapIntesity,
       emissiveMap: texSaucerEm,
-      emissiveIntensity: 0.6,
+      emissiveIntensity: 1.2,
       roughness: 0.4,
       metalness: 0.2,
       roughnessMap: texSaucer,
       map: tex1963,
+      bumpMap: texSaucer,
+      bumpScale: 0.009,
   } );
 
   const wireframeMaterial = new THREE.MeshStandardMaterial( {
     color: 0xffffff,
-    emissive: 0x99aaff,
-    emissiveIntensity: 0.2,
-    side: THREE.DoubleSide,
+    emissive: 0xffffff,
+    emissiveIntensity: 0.1,
+    side: THREE.FrontSide,
+    // transparent: true,
+    // opacity: 0.3,
     wireframe: true,
-    map: texDesk,
+    envMap: texturePorcEqui,
+    envMapIntensity: 1.0,
   } );
 
   const chromeMaterial = new THREE.MeshMatcapMaterial( {
@@ -645,15 +658,18 @@ import * as THREE from "three";
   export const deflectorMaterial = [];
   const deflectorMaterial_01 = new THREE.MeshStandardMaterial( {
     color: 0xffdd22,
-    emissive: 0xdd9900,
+    emissive: 0xff9900,
     emissiveMap: texDishEm,
-    emissiveIntensity: 3.0,
+    emissiveIntensity: 1.0,
     side: THREE.DoubleSide,
     flatShading: false,
     map: texDishSp,
     metalnessMap: texDishSp,
-    metalness: 7.0,
-    roughness: 0.55,
+    metalness: 2.0,
+    roughness: 0.2,
+    roughnessMap: texDish,
+    envMap: texturePorcEqui,
+    envMapIntensity: 3.0,
   } );
   const deflectorMaterial_02 = new THREE.MeshStandardMaterial( {
     color: 0xffffff,
@@ -703,27 +719,31 @@ import * as THREE from "three";
   const bussardMaterial_02 = new THREE.MeshStandardMaterial({
     color: 0x00ffff,
     emissive: 0x99aaff,
-    emissiveIntensity: 0.2,
-    opacity: 0.6,
+    emissiveIntensity: 0.1,
+    opacity: 0.2,
     transparent: true,
     flatShading: false,
     metalnessMap: texBussard,
     roughnessMap: texBussard,
-    metalness: 0,
-    roughness: 0.7,
+    envMap: texturePorcEqui,
+    envMapIntensity: 10,
+    metalness: 2,
+    roughness: 0.5,
   });
 
   const bussardMaterial_03 = new THREE.MeshStandardMaterial({
     color: 0x00ffff,
-    emissive: 0x00ffff,
-    emissiveIntensity: 0.2,
-    opacity: 0.8,
+    emissive: 0x0099ff,
+    emissiveIntensity: 0.1,
+    opacity: 0.2,
     transparent: true,
     flatShading: false,
     metalnessMap: texBussard,
     roughnessMap: texBussard,
-    metalness: 0,
-    roughness: 0.7,
+    envMap: texturePorcEqui,
+    envMapIntensity: 10,
+    metalness: 2,
+    roughness: 0.5,
   });
 
   bussardMaterial.push(bussardMaterial_01);
@@ -752,7 +772,7 @@ import * as THREE from "three";
   const bussardInnerMaterial_02 = new THREE.MeshStandardMaterial({
     color: 0x000000,
     emissive: 0x99ffff,
-    emissiveIntensity: 8,
+    emissiveIntensity: 1,
     transparent: false,
     flatShading: false,
     emissiveMap: texBussard.clone(),
@@ -765,7 +785,7 @@ import * as THREE from "three";
   const bussardInnerMaterial_03 = new THREE.MeshStandardMaterial({
     color: 0x000000,
     emissive: 0x99ffff,
-    emissiveIntensity: 4,
+    emissiveIntensity: 1,
     transparent: false,
     flatShading: false,
     emissiveMap: texBussard.clone(),
