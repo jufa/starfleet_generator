@@ -215,10 +215,10 @@ export default class Builder {
     this.lights[ 3 ].position.set( dist, -dist, 0 );
     // this.lights[ 4 ].position.set(0, 20, 0);
 
-    this.scene.add( this.lights[ 0 ] );
-    this.scene.add( this.lights[ 1 ] );
-    this.scene.add( this.lights[ 2 ] );
-    this.scene.add( this.lights[ 3 ] );
+    // this.scene.add( this.lights[ 0 ] );
+    // this.scene.add( this.lights[ 1 ] );
+    // this.scene.add( this.lights[ 2 ] );
+    // this.scene.add( this.lights[ 3 ] );
     // this.scene.fog = new THREE.FogExp2( 0x000000, 0.004 );
     // this.camera.add( this.lights[ 4 ] );
     // this.scene.add( this.camera );
