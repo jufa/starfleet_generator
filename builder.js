@@ -884,6 +884,7 @@ export default class Builder {
 
     this.gui = new dat.GUI( { autoPlace: false, touchStyles: false } );
     const gui = this.gui;
+    this.gui.$title.innerHTML = "Ship Editor Control Panel";
     gui.close();
     gui.onOpenClose( changedGUI => {
       this.handleOpenCloseFolder( changedGUI );
