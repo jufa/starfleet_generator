@@ -662,19 +662,16 @@ import * as THREE from "three";
 
   export const deflectorMaterial = [];
   const deflectorMaterial_01 = new THREE.MeshStandardMaterial( {
-    color: 0x66aaff,
-    emissive: 0x33aaff,
-    emissiveMap: texDishTng,
-    emissiveIntensity: 1.7,
-    side: THREE.DoubleSide,
-    flatShading: false,
+    color: 0x000000,
     map: texDishTng,
-    // metalnessMap: texDishTng,
-    metalness: 0.0,
-    roughness: 0.2,
-    roughnessMap: texDishTng,
+    emissive: 0x55ddff,
+    emissiveMap: texDishTng,
+    emissiveIntensity: 1.6,
+    side: THREE.DoubleSide,
+    // roughness: 0.9,
+    // roughnessMap: texDishTng,
     envMap: texturePorcEqui,
-    envMapIntensity: 3.0,
+    envMapIntensity: 0.0,
   } );
 
   const deflectorMaterial_02 = new THREE.MeshStandardMaterial( {
@@ -708,16 +705,17 @@ import * as THREE from "three";
 
   export const bussardMaterial = [];
   const bussardMaterial_00 = new THREE.MeshStandardMaterial({
-    color: 0xff2200,
-    emissive: 0xff0022,
-    emissiveIntensity: 1.8,
-    opacity: 0.6,
+    color: 0xff0000,
+    emissive: 0xff0000,
+    emissiveIntensity: 0.1,
+    opacity: 0.8,
     transparent: true,
     flatShading: false,
+    // emissiveMap: texDishEm,
     // metalnessMap: texBussard,
     // roughnessMap: texBussard,
     envMap: texturePorcEqui,
-    envMapIntensity: 5,
+    envMapIntensity: 10,
     metalness: 1,
     roughness: 0.5,
   });
@@ -776,20 +774,20 @@ import * as THREE from "three";
   
   export const bussardInnerMaterial = [];
   const bussardInnerMaterial_00 = new THREE.MeshStandardMaterial({
-    color: 0x000000,
+    color: 0xffffff,
     emissive: 0xffffff,
-    emissiveIntensity: 0.7,
+    emissiveIntensity: 5.0,
     // transparent: true,
     flatShading: false,
-    emissiveMap: texDishTng.clone(),
-    // metalnessMap: texBussard,
+    emissiveMap: texDishEm.clone(),
+    map: texBussard,
     // roughnessMap: texBussard,
-    envMap: texturePorcEqui,
-    envMapIntensity: 10,
-    metalness: 0,
+    // envMap: texturePorcEqui,
+    // envMapIntensity: 10,
+    // metalness: 29,
     roughness: 0,
     alphaMap: texDishEm,
-    alphaTest: 0.15,
+    alphaTest: 0.1,
   });
   const bussardInnerMaterial_01 = new THREE.MeshStandardMaterial({
     color: 0xffaa00,
