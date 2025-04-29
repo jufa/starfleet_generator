@@ -91,9 +91,9 @@ export default class Builder {
         dishInset: [0, 0, 2.0, 0.01],
       },
       nacelle: {
-        y: [40, -30, 50, 0.01],
-        x: [2.5, -30, 50, 0.01],
-        z: [-3.5, -30, 50, 0.01],
+        y: [5, -20, 20, 0.01],
+        x: [2.5, -10, 10, 0.01],
+        z: [-3.5, -10, 10, 0.01],
         length: [12, 1, 50, 0.01],
         radius: [1, 0.2, 12, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
@@ -113,9 +113,9 @@ export default class Builder {
         thickness: [0.15, 0.01, 5, 0.01],
       },
       nacelleLower: {
-        y: [40, -30, 50, 0.01],
-        x: [2.5, -30, 50, 0.01],
-        z: [-3.5, -30, 50, 0.01],
+        y: [5, -20, 20, 0.01],
+        x: [2.5, -10, 10, 0.01],
+        z: [-3.5, -10, 10, 0.01],
         length: [12, 1, 50, 0.01],
         radius: [1, 0.2, 12, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
@@ -691,11 +691,9 @@ export default class Builder {
     var a = document.createElement('a');
     a.href = this.renderer.domElement.toDataURL().replace("image/png", "image/octet-stream");
     a.download = `${this.currentShip.name} ${timeDateStamp}.png`
-    if (/(iPad|iPhone|iPod)/.test(navigator.userAgent)) {
-      window.open(dataUrl, '_blank');
-    } else {
-      a.click();
-    }
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
   setPredefinedShip(shipName) {
