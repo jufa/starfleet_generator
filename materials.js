@@ -663,11 +663,11 @@ import * as THREE from "three";
 
   export const deflectorMaterial = [];
   const deflectorMaterial_01 = new THREE.MeshStandardMaterial( {
-    color: 0xbbbbbb,
+    color: 0xffffff,
     map: texDishTng,
-    emissive: 0x00ddff,
+    emissive: 0x0099ff,
     emissiveMap: texDishTng,
-    emissiveIntensity: 1.5,
+    emissiveIntensity: 2.7,
     side: THREE.DoubleSide,
     // roughness: 0.9,
     // roughnessMap: texDishTng,
