@@ -663,18 +663,18 @@ import * as THREE from "three";
 
   export const deflectorMaterial = [];
   const deflectorMaterial_01 = new THREE.MeshStandardMaterial( {
-    color: 0x5599ff,
-    // map: texDishTng,
-    emissive: 0x55ddff,
+    color: 0xbbbbbb,
+    map: texDishTng,
+    emissive: 0x00ddff,
     emissiveMap: texDishTng,
-    emissiveIntensity: 1.3,
+    emissiveIntensity: 1.5,
     side: THREE.DoubleSide,
     // roughness: 0.9,
     // roughnessMap: texDishTng,
-    // metalness: 3.9,
+    // metalness: 13.9,
     // metalnessMap: texDishTng,
-    envMap: texturePorcEqui,
-    envMapIntensity: 1.0,
+    // envMap: texturePorcEqui,
+    // envMapIntensity: 0.0,
     // alphaMap: texDishTng,
     // alphaTest: 0.1,
   } );

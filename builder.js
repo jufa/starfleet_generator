@@ -109,7 +109,7 @@ export default class Builder {
         engineeringForeOffset: [-0.3, -0.7, 1.5, 0.01],
         engineeringAftOffset: [-0.3, -0.7, 1.5, 0.01],
         engineeringZOffset: [0, -6, 6, 0.01],
-        midPointOffset: [0.01, 0.01, 1.5, 0.01],
+        midPointOffset: [0.01, 0.01, 2.0, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
       nacelleLower: {
@@ -133,7 +133,7 @@ export default class Builder {
         engineeringForeOffset: [0.3, -0.7, 1.5, 0.01],
         engineeringAftOffset: [0.3, -0.7, 1.5, 0.01],
         engineeringZOffset: [0, -6, 6, 0.01],
-        midPointOffset: [0.01, 0.01, 1.5, 0.01],
+        midPointOffset: [0.01, 0.01, 2.0, 0.01],
         thickness: [0.15, 0.01, 5, 0.01],
       },
     };
