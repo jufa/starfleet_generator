@@ -210,8 +210,9 @@ import * as THREE from "three";
 
   var texDishTng = new THREE.TextureLoader().load( "./images/dish-tgn.jpg");
   texDishTng.wrapS = THREE.RepeatWrapping;
-  texDishTng.wrapT = THREE.RepeatWrapping;
-  texDishTng.repeat.set( 9, 1 );
+  texDishTng.wrapT = THREE.MirroredRepeatWrapping;
+  texDishTng.repeat.set( 9, 1.0 );
+  texDishTng.offset.set(0.0, 0.0);
 
   var texDishEm = new THREE.TextureLoader().load( "./images/dish_sp.png");
   texDishEm.wrapS = THREE.MirroredRepeatWrapping;
@@ -662,16 +663,20 @@ import * as THREE from "three";
 
   export const deflectorMaterial = [];
   const deflectorMaterial_01 = new THREE.MeshStandardMaterial( {
-    color: 0x000000,
-    map: texDishTng,
+    color: 0x5599ff,
+    // map: texDishTng,
     emissive: 0x55ddff,
     emissiveMap: texDishTng,
-    emissiveIntensity: 1.6,
+    emissiveIntensity: 1.3,
     side: THREE.DoubleSide,
     // roughness: 0.9,
     // roughnessMap: texDishTng,
+    // metalness: 3.9,
+    // metalnessMap: texDishTng,
     envMap: texturePorcEqui,
-    envMapIntensity: 0.0,
+    envMapIntensity: 1.0,
+    // alphaMap: texDishTng,
+    // alphaTest: 0.1,
   } );
 
   const deflectorMaterial_02 = new THREE.MeshStandardMaterial( {

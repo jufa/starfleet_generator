@@ -82,7 +82,7 @@ export default class Engineering extends HullComponent {
     lastDishPoint.setX(deflectorOuterEdge.x * 0.1);
 
     deflectorPoints.push (
-      new THREE.Vector2( 0.0, deflectorOuterEdge.y + 0.9 )
+      new THREE.Vector2( 0.0, deflectorOuterEdge.y + 0.4 )
     );
 
     this.engineeringGeometry = new THREE.LatheGeometry(engineeringPoints, segments);
