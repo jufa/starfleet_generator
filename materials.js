@@ -708,17 +708,17 @@ import * as THREE from "three";
 
   export const bussardMaterial = [];
   const bussardMaterial_00 = new THREE.MeshStandardMaterial({
-    color: 0xff0000,
-    emissive: 0xff0000,
-    emissiveIntensity: 0.3,
-    opacity: 0.8,
+    color: 0xff2200,
+    emissive: 0xff0022,
+    emissiveIntensity: 1.8,
+    opacity: 0.6,
     transparent: true,
     flatShading: false,
     // metalnessMap: texBussard,
     // roughnessMap: texBussard,
     envMap: texturePorcEqui,
-    envMapIntensity: 10,
-    metalness: 0,
+    envMapIntensity: 5,
+    metalness: 1,
     roughness: 0.5,
   });
   const bussardMaterial_01 = new THREE.MeshStandardMaterial({
@@ -777,19 +777,19 @@ import * as THREE from "three";
   export const bussardInnerMaterial = [];
   const bussardInnerMaterial_00 = new THREE.MeshStandardMaterial({
     color: 0x000000,
-    emissive: 0xffff00,
+    emissive: 0xffffff,
     emissiveIntensity: 0.7,
     // transparent: true,
     flatShading: false,
-    emissiveMap: texBussard.clone(),
+    emissiveMap: texDishTng.clone(),
     // metalnessMap: texBussard,
     // roughnessMap: texBussard,
     envMap: texturePorcEqui,
     envMapIntensity: 10,
     metalness: 0,
     roughness: 0,
-    alphaMap: texBussard,
-    alphaTest: 0.1,
+    alphaMap: texDishEm,
+    alphaTest: 0.15,
   });
   const bussardInnerMaterial_01 = new THREE.MeshStandardMaterial({
     color: 0xffaa00,
