@@ -36,7 +36,7 @@ export default class Builder {
     this.maxTransitionTime = 2000; // ms for transition. If it takes longer than this it is forced to finish
     this.scaleIncrement = 0.1;
     this.materialNames = ['Standard', 'Bleachy', 'Grid32', 'Gold Desk Model', 'Chrome Desk Model', "Wireframe", "1963"];
-    this.materialIndex = 0;
+    this.materialIndex = 6;
     this.lights = [];
     this.raycaster = new THREE.Raycaster();
 
