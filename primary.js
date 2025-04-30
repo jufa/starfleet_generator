@@ -89,13 +89,13 @@ export default class Primary extends HullComponent{
     const shape = new THREE.Shape(points);
 
     // Create flat geometry
-    this.notchGeometry = new THREE.ShapeGeometry(shape);
-    const closeMesh1 = new THREE.Mesh(this.notchGeometry, materials.notchMaterial[materialIndex]);
-    const closeMesh2 = closeMesh1.clone();
-    closeMesh1.rotateY( (Math.PI * 0.5) + foreExclusionAngle );
-    closeMesh2.rotateY( (Math.PI * 0.5) - foreExclusionAngle );
-    closeMesh1.geometry.attributes.position.needsUpdate = true;
-    closeMesh2.geometry.attributes.position.needsUpdate = true;
+    // this.notchGeometry = new THREE.ShapeGeometry(shape);
+    // const closeMesh1 = new THREE.Mesh(this.notchGeometry, materials.notchMaterial[materialIndex]);
+    // const closeMesh2 = closeMesh1.clone();
+    // closeMesh1.rotateY( (Math.PI * 0.5) + foreExclusionAngle );
+    // closeMesh2.rotateY( (Math.PI * 0.5) - foreExclusionAngle );
+    // closeMesh1.geometry.attributes.position.needsUpdate = true;
+    // closeMesh2.geometry.attributes.position.needsUpdate = true;
 
     // egg-distort
     // const positions = this.geometry.vertices;
@@ -120,6 +120,31 @@ export default class Primary extends HullComponent{
     
     this.geometry.attributes.position.needsUpdate = true;
 
+    // next attempt:
+    const posAttr = this.geometry.attributes.position;
+    const vertices = [];
+    for (let i = 0; i < posAttr.count; i++) {
+      vertices.push(new THREE.Vector3().fromBufferAttribute(posAttr, i));
+    }
+
+    const profileCount = points.length;
+
+    // Get start ring (angle = 0)
+    const startRing = [];
+    for (let i = 0; i < profileCount; i++) {
+      startRing.push(vertices[i]);
+    }
+
+    // Get end ring (angle = sweep angle)
+    const endRing = [];
+    for (let i = 0; i < profileCount; i++) {
+      endRing.push(vertices[vertices.length - profileCount + i]);
+    }
+
+    const closeMesh1 = new THREE.Mesh(this.createCapGeometry(startRing), materials.notchMaterial[materialIndex] );
+    const closeMesh2 = new THREE.Mesh(this.createCapGeometry(endRing), materials.notchMaterial[materialIndex] );
+
+
     this.computeBoundingBox(this.geometry);
     this.mesh = new THREE.Mesh( this.geometry, materials.hullMaterial[materialIndex] );
     this.bridgeMesh = new THREE.Mesh( this.bridgeGeometry, materials.bridgeMaterial[materialIndex] );
@@ -141,6 +166,60 @@ export default class Primary extends HullComponent{
     this.dimensions.y = measuredGeom.boundingBox.max.y - measuredGeom.boundingBox.min.y;
     this.dimensions.z = measuredGeom.boundingBox.max.z - measuredGeom.boundingBox.min.z;
   }
+
+  createCapGeometry(ring, uRepeat = 20, vRepeat = 4) {
+    if (ring.length < 3) throw new Error("Need at least 3 points");
+  
+    const center = new THREE.Vector3();
+    ring.forEach(p => center.add(p));
+    center.divideScalar(ring.length);
+  
+    const allPoints = [center, ...ring];
+  
+    // Project to 2D (assume cap lies roughly in XY plane)
+    const projected = allPoints.map(p => new THREE.Vector2(p.x, p.y));
+  
+    // Find bounds
+    let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+    for (const p of projected) {
+      minX = Math.min(minX, p.x);
+      maxX = Math.max(maxX, p.x);
+      minY = Math.min(minY, p.y);
+      maxY = Math.max(maxY, p.y);
+    }
+  
+    const width = maxX - minX;
+    const height = maxY - minY;
+  
+    // Generate UVs in [0, 1] and apply repeat scaling
+    const uvs = projected.map(p => [
+      ((p.x - minX) / width) * uRepeat,  // Apply U repeat scaling
+      ((p.y - minY) / height) * vRepeat, // Apply V repeat scaling
+    ]).flat();
+  
+    // Build positions and indices
+    const positions = allPoints.map(p => p.toArray()).flat();
+    const indices = [];
+  
+    for (let i = 1; i <= ring.length; i++) {
+      const a = 0; // center
+      const b = i;
+      const c = (i % ring.length) + 1;
+      indices.push(a, b, c);
+    }
+  
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geometry.setIndex(indices);
+    geometry.computeVertexNormals();
+  
+    return geometry;
+  }
+  
+  
+  
 
   clear(){
     if (this.geometry['dispose']) {
