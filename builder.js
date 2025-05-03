@@ -50,10 +50,10 @@ export default class Builder {
       // folderName: {paramName: [default, min, max, step]}
       // refer to variable in code as controlParams.folderName_paramName
       primary: {
-        y: [-10, -30, 50, 0.01],
-        z: [0.5, -30, 50, 0.01],
+        y: [-10, -20, 20, 0.01],
+        z: [0.5, -15, 15, 0.01],
         radius: [12, 1, 30, 0.01],
-        thickness: [4, 1, 10, 0.01],
+        thickness: [4, 1, 20, 0.01],
         widthRatio: [1, 0.01, 10, 0.01],
         pointiness: [0.0, -1.0, 1.5, 0.01],
         // segments: [64, 3, 64, 1],
@@ -77,8 +77,8 @@ export default class Builder {
         afttaper: [1.0, 0.01, 3, 0.01],
       },
       engineering: {
-        y: [-25, -60, 60, 0.01],
-        z: [6, -30, 50, 0.01],
+        y: [-25, -40, 0, 0.01],
+        z: [6, -10, 20, 0.01],
         length: [10, 1, 50, 0.01],
         radius: [1, 0, 10, 0.01],
         widthRatio: [1, 0.1, 10, 0.01],
