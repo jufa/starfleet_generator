@@ -1,6 +1,8 @@
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const webpack = require('webpack').default;
 
 module.exports = {
   entry: {
@@ -17,6 +19,10 @@ module.exports = {
       filename: 'terms.html', // Output in dist/terms.html
       inject: false,
     }),
+    new CopyWebpackPlugin([
+        { from: 'manifest.json', to: 'manifest.json' }
+      ]
+    )
   ],
   output: {
     filename: 'bundle.js',
