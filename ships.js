@@ -443,7 +443,7 @@
       "pylonLower_engineeringZOffset": 0,
       "pylonLower_midPointOffset": 0.34,
       "pylonLower_thickness": 0.01,
-      "name": "Plumpcelsior",
+      "name": "plumpcelsior",
       "nacelle_lowerToggle": false,
       "engineering_segments": null,
       "nacelle_segments": null,
