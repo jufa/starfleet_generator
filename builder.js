@@ -504,6 +504,7 @@ export default class Builder {
     this.camera.position.z = 50;
     this.controls = new OrbitControls( this.camera, this.container );
     this.controls.enableDamping = true;
+    this.controls.zoomSpeed = 0.5;
 
     // this.controls.screenSpacePanning = false;
     // this.controls.lookSpeed = 0.3;
